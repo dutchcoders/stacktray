@@ -18,6 +18,15 @@
 		4063841A190D38E50027AA38 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383F9190D38E50027AA38 /* Cocoa.framework */; };
 		40638422190D38E50027AA38 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40638420190D38E50027AA38 /* InfoPlist.strings */; };
 		40638424190D38E50027AA38 /* StackTrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638423190D38E50027AA38 /* StackTrayTests.m */; };
+		4063843A190D62C00027AA38 /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40638439190D62C00027AA38 /* AWSiOSSDK.framework */; };
+		4063843C190DA86F0027AA38 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4063843B190DA86F0027AA38 /* PreferencePanes.framework */; };
+		40638441190EEDC20027AA38 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638440190EEDC20027AA38 /* PreferencesWindowController.m */; };
+		40638444190EFA330027AA38 /* PreferencesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638443190EFA330027AA38 /* PreferencesView.m */; };
+		40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40638445190EFAE50027AA38 /* PreferencesWindow.xib */; };
+		40638449190EFD600027AA38 /* PreferencesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638448190EFD600027AA38 /* PreferencesDataSource.m */; };
+		40B3DF31191268C600756C26 /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */; };
+		40B3DF3419127B3A00756C26 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF3319127B3A00756C26 /* Stack.m */; };
+		40B3DF351912898500756C26 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383FD190D38E50027AA38 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +59,18 @@
 		4063841F190D38E50027AA38 /* StackTrayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StackTrayTests-Info.plist"; sourceTree = "<group>"; };
 		40638421190D38E50027AA38 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		40638423190D38E50027AA38 /* StackTrayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StackTrayTests.m; sourceTree = "<group>"; };
+		40638439190D62C00027AA38 /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSiOSSDK.framework; path = "../aws-sdk-ios/AWSiOSSDK.framework"; sourceTree = "<group>"; };
+		4063843B190DA86F0027AA38 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
+		4063843F190EEDC20027AA38 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
+		40638440190EEDC20027AA38 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
+		40638442190EFA330027AA38 /* PreferencesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesView.h; sourceTree = "<group>"; };
+		40638443190EFA330027AA38 /* PreferencesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesView.m; sourceTree = "<group>"; };
+		40638445190EFAE50027AA38 /* PreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
+		40638447190EFD600027AA38 /* PreferencesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesDataSource.h; sourceTree = "<group>"; };
+		40638448190EFD600027AA38 /* PreferencesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesDataSource.m; sourceTree = "<group>"; };
+		40B3DF30191268C600756C26 /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
+		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
+		40B3DF3319127B3A00756C26 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +78,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40B3DF351912898500756C26 /* CoreData.framework in Frameworks */,
+				4063843C190DA86F0027AA38 /* PreferencePanes.framework in Frameworks */,
+				4063843A190D62C00027AA38 /* AWSiOSSDK.framework in Frameworks */,
 				406383FA190D38E50027AA38 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +119,8 @@
 		406383F8190D38E50027AA38 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4063843B190DA86F0027AA38 /* PreferencePanes.framework */,
+				40638439190D62C00027AA38 /* AWSiOSSDK.framework */,
 				406383F9190D38E50027AA38 /* Cocoa.framework */,
 				40638418190D38E50027AA38 /* XCTest.framework */,
 				406383FB190D38E50027AA38 /* Other Frameworks */,
@@ -115,11 +141,21 @@
 		406383FF190D38E50027AA38 /* StackTray */ = {
 			isa = PBXGroup;
 			children = (
+				40B3DF3219127B3A00756C26 /* Stack.h */,
+				40B3DF3319127B3A00756C26 /* Stack.m */,
 				4063840B190D38E50027AA38 /* AppDelegate.h */,
 				4063840C190D38E50027AA38 /* AppDelegate.m */,
 				4063840E190D38E50027AA38 /* MainMenu.xib */,
 				40638411190D38E50027AA38 /* Images.xcassets */,
 				40638400190D38E50027AA38 /* Supporting Files */,
+				4063843F190EEDC20027AA38 /* PreferencesWindowController.h */,
+				40638440190EEDC20027AA38 /* PreferencesWindowController.m */,
+				40638442190EFA330027AA38 /* PreferencesView.h */,
+				40638443190EFA330027AA38 /* PreferencesView.m */,
+				40638445190EFAE50027AA38 /* PreferencesWindow.xib */,
+				40638447190EFD600027AA38 /* PreferencesDataSource.h */,
+				40638448190EFD600027AA38 /* PreferencesDataSource.m */,
+				40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -233,6 +269,7 @@
 				40638404190D38E50027AA38 /* InfoPlist.strings in Resources */,
 				40638412190D38E50027AA38 /* Images.xcassets in Resources */,
 				4063840A190D38E50027AA38 /* Credits.rtf in Resources */,
+				40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */,
 				40638410190D38E50027AA38 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,7 +290,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4063840D190D38E50027AA38 /* AppDelegate.m in Sources */,
+				40B3DF3419127B3A00756C26 /* Stack.m in Sources */,
+				40638444190EFA330027AA38 /* PreferencesView.m in Sources */,
+				40638441190EEDC20027AA38 /* PreferencesWindowController.m in Sources */,
 				40638406190D38E50027AA38 /* main.m in Sources */,
+				40B3DF31191268C600756C26 /* StackTray.xcdatamodeld in Sources */,
+				40638449190EFD600027AA38 /* PreferencesDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,8 +428,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/remco/Projects/aws-sdk-ios/src/build/framework",
+					"/Users/remco/Projects/aws-sdk-ios",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StackTray/StackTray-Prefix.pch";
+				INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "";
 				INFOPLIST_FILE = "StackTray/StackTray-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -399,8 +447,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/remco/Projects/aws-sdk-ios/src/build/framework",
+					"/Users/remco/Projects/aws-sdk-ios",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StackTray/StackTray-Prefix.pch";
+				INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "";
 				INFOPLIST_FILE = "StackTray/StackTray-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -466,6 +520,7 @@
 				40638429190D38E50027AA38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4063842A190D38E50027AA38 /* Build configuration list for PBXNativeTarget "StackTrayTests" */ = {
 			isa = XCConfigurationList;
@@ -474,8 +529,22 @@
 				4063842C190D38E50027AA38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				40B3DF30191268C600756C26 /* StackTray.xcdatamodel */,
+			);
+			currentVersion = 40B3DF30191268C600756C26 /* StackTray.xcdatamodel */;
+			path = StackTray.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 406383EE190D38E50027AA38 /* Project object */;
 }

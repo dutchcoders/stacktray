@@ -9,7 +9,26 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
+{
+    NSStatusItem *statusItem;
+    NSMutableDictionary* instances;
+    IBOutlet NSMenu *statusMenu;
+}
+
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+
+- (IBAction)itemOne:(id)sender;
+- (IBAction)itemTwo:(id)sender;
+- (IBAction)itemThree:(id)sender;
+- (void)refresh;
 
 @property (assign) IBOutlet NSWindow *window;
 
+- (NSURL *)applicationDocumentsDirectory;
+
++ (AppDelegate *)sharedAppDelegate;
 @end
+
