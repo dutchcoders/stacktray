@@ -70,6 +70,15 @@
 
     EC2Instance* instance = (EC2Instance*)menuItem.representedObject;
 
+    NSString* address = instance.publicDnsName;
+    
+    if ([address length]==0) {
+        address = instance.privateDnsName;
+    }
+    
+    // get from settings
+    NSString* username = @"ubuntu";
+
     NSString *script = [NSString stringWithFormat:@"tell application \"iTerm\" \n"
                     "activate \n"
                     "make new terminal \n"
@@ -77,10 +86,10 @@
                     "activate current session \n"
                     "launch session \"Default Session\" \n"
                     "tell the last session \n"
-                    "write text \"ssh ubuntu@%@\" \n"
+                    "write text \"ssh %@@%@\" \n"
                     "end tell \n"
                     "end tell \n"
-                    "end tell \n", instance.privateIpAddress ];
+                    "end tell \n", username, address ];
                 
     NSAppleScript *appleScript =
             [[NSAppleScript alloc] initWithSource:script];
@@ -90,11 +99,63 @@
         [appleScript executeAndReturnError:&error];
 }
 
-- (IBAction)reboot:(id)sender {
+- (IBAction)browse:(id)sender {
+    // http://lifehacker.com/5533695/open-links-in-your-macs-current-browser-instead-of-the-default
+    
     NSMenuItem* menuItem= (NSMenuItem*)sender;
     
     EC2Instance* instance = (EC2Instance*)menuItem.representedObject;
+    
+    NSString* address = instance.publicDnsName;
+    
+    if ([address length]==0) {
+        address = instance.privateDnsName;
+    }
+    
+    NSString *script = [NSString stringWithFormat:@"open location \"http://%@/\" \n", address ];
+    
+    NSAppleScript *appleScript =
+    [[NSAppleScript alloc] initWithSource:script];
+    
+    NSDictionary *error;
+    NSAppleEventDescriptor *result =
+    [appleScript executeAndReturnError:&error];
+}
 
+
+- (IBAction)reboot:(id)sender {
+    NSMenuItem* menuItem= (NSMenuItem*)sender;
+    
+    AmazonEC2Client* client = (AmazonEC2Client*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"client"];
+    EC2Instance* instance = (EC2Instance*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"instance"];
+    
+    EC2RebootInstancesRequest* rq = [[EC2RebootInstancesRequest alloc] initWithInstanceIds:[[NSMutableArray alloc] initWithObjects: instance.instanceId, nil]];
+    
+    EC2RebootInstancesResponse* response = [client rebootInstances:(EC2RebootInstancesRequest *)rq];
+
+}
+
+- (IBAction)start:(id)sender {
+    NSMenuItem* menuItem= (NSMenuItem*)sender;
+    
+    AmazonEC2Client* client = (AmazonEC2Client*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"client"];
+    EC2Instance* instance = (EC2Instance*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"instance"];
+    
+    EC2StartInstancesRequest* rq = [[EC2StartInstancesRequest alloc] initWithInstanceIds:[[NSMutableArray alloc] initWithObjects: instance.instanceId, nil]];
+    
+    EC2StartInstancesResponse* response = [client startInstances:(EC2StartInstancesRequest *)rq];
+    // check response
+}
+
+- (IBAction)stop:(id)sender {
+    NSMenuItem* menuItem= (NSMenuItem*)sender;
+    
+    AmazonEC2Client* client = (AmazonEC2Client*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"client"];
+    EC2Instance* instance = (EC2Instance*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"instance"];
+    
+    EC2StopInstancesRequest* rq = [[EC2StopInstancesRequest alloc] initWithInstanceIds:[[NSMutableArray alloc] initWithObjects: instance.instanceId, nil]];
+    
+    EC2StopInstancesResponse* response = [client stopInstances:(EC2StopInstancesRequest *)rq];
 }
 
 - (IBAction)refresh:(id)sender {
@@ -165,7 +226,6 @@
                     [instanceMenu addItem:[NSMenuItem separatorItem]];
 
                     subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clipboard" action:nil keyEquivalent:@""];
-                    subMenuItem.representedObject=[instance instanceId];
                     [instanceMenu addItem:subMenuItem];
                     
                     subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateDnsName] action:@selector(copy:) keyEquivalent:@""];
@@ -192,14 +252,33 @@
                     
                     if ([[[instance state] name] caseInsensitiveCompare:@"running"]!=NSOrderedSame) {
                         // [instanceMenuItem setAttributedTitle:[[NSAttributedString alloc] initWithHTML:[[NSString stringWithFormat:@"<span style='color: red;'>%@</span>", title] dataUsingEncoding:NSUTF8StringEncoding] baseURL:nil documentAttributes:nil]];
+//                        &#9679;
                     }
                     
                     [instanceMenu addItem:[NSMenuItem separatorItem]];
                     
+                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Actions" action:nil keyEquivalent:@""];
+                    [instanceMenu addItem:subMenuItem];
+
                     subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Connect" action:@selector(connect:) keyEquivalent:@""];
                     subMenuItem.representedObject=instance;
                     [instanceMenu addItem:subMenuItem];
-                    
+
+                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Browse" action:@selector(browse:) keyEquivalent:@""];
+                    subMenuItem.representedObject=instance;
+                    [instanceMenu addItem:subMenuItem];
+
+                    if ([[[instance state] name ] caseInsensitiveCompare:@"running"]==NSOrderedSame) {
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Stop" action:@selector(stop:) keyEquivalent:@""];
+                        subMenuItem.representedObject=instance;
+                        [instanceMenu addItem:subMenuItem];
+                    } else {
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Start" action:@selector(start:) keyEquivalent:@""];
+                        NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
+                        subMenuItem.representedObject=dict;
+                        [instanceMenu addItem:subMenuItem];
+                    }
+
                     subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Reboot" action:@selector(reboot:) keyEquivalent:@""];
                     subMenuItem.representedObject=instance;
                     [instanceMenu addItem:subMenuItem];
