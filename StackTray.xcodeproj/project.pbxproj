@@ -24,6 +24,8 @@
 		40638444190EFA330027AA38 /* PreferencesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638443190EFA330027AA38 /* PreferencesView.m */; };
 		40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40638445190EFAE50027AA38 /* PreferencesWindow.xib */; };
 		40638449190EFD600027AA38 /* PreferencesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638448190EFD600027AA38 /* PreferencesDataSource.m */; };
+		4079DBB5192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4079DBB4192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset */; };
+		407A568C192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns in Resources */ = {isa = PBXBuildFile; fileRef = 407A568B192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns */; };
 		40B3DF31191268C600756C26 /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */; };
 		40B3DF3419127B3A00756C26 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF3319127B3A00756C26 /* Stack.m */; };
 		40B3DF351912898500756C26 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383FD190D38E50027AA38 /* CoreData.framework */; };
@@ -68,6 +70,8 @@
 		40638445190EFAE50027AA38 /* PreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		40638447190EFD600027AA38 /* PreferencesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesDataSource.h; sourceTree = "<group>"; };
 		40638448190EFD600027AA38 /* PreferencesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesDataSource.m; sourceTree = "<group>"; };
+		4079DBB4192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = "Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset"; sourceTree = "<group>"; };
+		407A568B192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns"; sourceTree = "<group>"; };
 		40B3DF30191268C600756C26 /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		40B3DF3319127B3A00756C26 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 		40638400190D38E50027AA38 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4079DBB4192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset */,
+				407A568B192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns */,
 				40638401190D38E50027AA38 /* StackTray-Info.plist */,
 				40638402190D38E50027AA38 /* InfoPlist.strings */,
 				40638405190D38E50027AA38 /* main.m */,
@@ -266,7 +272,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4079DBB5192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset in Resources */,
 				40638404190D38E50027AA38 /* InfoPlist.strings in Resources */,
+				407A568C192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns in Resources */,
 				40638412190D38E50027AA38 /* Images.xcassets in Resources */,
 				4063840A190D38E50027AA38 /* Credits.rtf in Resources */,
 				40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */,
@@ -437,6 +445,7 @@
 				GCC_PREFIX_HEADER = "StackTray/StackTray-Prefix.pch";
 				INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "";
 				INFOPLIST_FILE = "StackTray/StackTray-Info.plist";
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -456,6 +465,7 @@
 				GCC_PREFIX_HEADER = "StackTray/StackTray-Prefix.pch";
 				INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "";
 				INFOPLIST_FILE = "StackTray/StackTray-Info.plist";
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
