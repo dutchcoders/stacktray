@@ -71,6 +71,7 @@
 		40638447190EFD600027AA38 /* PreferencesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesDataSource.h; sourceTree = "<group>"; };
 		40638448190EFD600027AA38 /* PreferencesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesDataSource.m; sourceTree = "<group>"; };
 		4079DBB4192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = "Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset"; sourceTree = "<group>"; };
+		4079DBB6192F9AF400759BB4 /* StackTray.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StackTray.entitlements; sourceTree = "<group>"; };
 		407A568B192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns"; sourceTree = "<group>"; };
 		40B3DF30191268C600756C26 /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
@@ -145,6 +146,7 @@
 		406383FF190D38E50027AA38 /* StackTray */ = {
 			isa = PBXGroup;
 			children = (
+				4079DBB6192F9AF400759BB4 /* StackTray.entitlements */,
 				40B3DF3219127B3A00756C26 /* Stack.h */,
 				40B3DF3319127B3A00756C26 /* Stack.m */,
 				4063840B190D38E50027AA38 /* AppDelegate.h */,
@@ -243,6 +245,14 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = DutchCoders;
 				TargetAttributes = {
+					406383F5190D38E50027AA38 = {
+						DevelopmentTeam = JV6YYK93WA;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 					40638416190D38E50027AA38 = {
 						TestTargetID = 406383F5190D38E50027AA38;
 					};
@@ -435,6 +445,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = StackTray/StackTray.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -455,6 +467,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = StackTray/StackTray.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
