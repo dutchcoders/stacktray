@@ -176,125 +176,132 @@
     [fetchRequest setEntity:entity];
 
     NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    for (Stack *stack in fetchedObjects) {
-        
-        @try {
-            AmazonEC2Client* client = [[AmazonEC2Client alloc] initWithAccessKey:stack.accessKey withSecretKey:stack.secretKey];
+    
+    if (fetchedObjects.count>0) {
+        for (Stack *stack in fetchedObjects) {
             
-            client.endpoint =  [@"https://" stringByAppendingString:stack.region];
-
-            NSLog(@"%@ %@ %@", stack.accessKey, stack.secretKey, [@"https://" stringByAppendingString:stack.region]);
-            EC2DescribeInstancesRequest* rq = [EC2DescribeInstancesRequest alloc];
-            EC2DescribeInstancesResponse* response = [client describeInstances:(EC2DescribeInstancesRequest *)rq];
-            
-            NSMenu* instancesMenu = [[NSMenu alloc]initWithTitle: stack.title];
-            
-            NSMenuItem* instancesMenuItem = [[NSMenuItem alloc] initWithTitle:stack.title action:nil keyEquivalent:@"" ];
-            [instancesMenuItem setSubmenu:instancesMenu];
-            
-            for (EC2Reservation* reservation in [response reservations]) {
-                NSLog(@"%@",reservation);
+            @try {
+                AmazonEC2Client* client = [[AmazonEC2Client alloc] initWithAccessKey:stack.accessKey withSecretKey:stack.secretKey];
                 
-                for (EC2Instance* instance in [reservation instances]) {
-                    [instances setObject:instance forKey:[instance instanceId]];
+                client.endpoint =  [@"https://" stringByAppendingString:stack.region];
 
-                    NSLog(@"%@",instance.tags);
+                NSLog(@"%@ %@ %@", stack.accessKey, stack.secretKey, [@"https://" stringByAppendingString:stack.region]);
+                EC2DescribeInstancesRequest* rq = [EC2DescribeInstancesRequest alloc];
+                EC2DescribeInstancesResponse* response = [client describeInstances:(EC2DescribeInstancesRequest *)rq];
+                
+                NSMenu* instancesMenu = [[NSMenu alloc]initWithTitle: stack.title];
+                
+                NSMenuItem* instancesMenuItem = [[NSMenuItem alloc] initWithTitle:stack.title action:nil keyEquivalent:@"" ];
+                [instancesMenuItem setSubmenu:instancesMenu];
+                
+                for (EC2Reservation* reservation in [response reservations]) {
+                    NSLog(@"%@",reservation);
                     
-                    NSString* title=[instance instanceId];
+                    for (EC2Instance* instance in [reservation instances]) {
+                        [instances setObject:instance forKey:[instance instanceId]];
 
-                    for (EC2Tag* tag in [instance tags]) {
-                        if ([tag.key caseInsensitiveCompare:@"Name"]==NSOrderedSame) {
-                            title = tag.value;
+                        NSLog(@"%@",instance.tags);
+                        
+                        NSString* title=[instance instanceId];
+
+                        for (EC2Tag* tag in [instance tags]) {
+                            if ([tag.key caseInsensitiveCompare:@"Name"]==NSOrderedSame) {
+                                title = tag.value;
+                            }
                         }
-                    }
-                    
-                    NSMenu* instanceMenu = [[NSMenu alloc]initWithTitle: title];
-                    
-                    NSMenuItem* subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"InstanceId: %@", [instance instanceId]] action:nil keyEquivalent:@""];
-                    subMenuItem.representedObject=[instance instanceId];
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Type: %@",[instance instanceType]] action:nil keyEquivalent:@""];
-                    subMenuItem.representedObject=[instance instanceId];
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"State: %@", [[instance state] name ]] action:nil keyEquivalent:@""];
-                    subMenuItem.representedObject=[instance instanceId];
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    [instanceMenu addItem:[NSMenuItem separatorItem]];
-
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clipboard" action:nil keyEquivalent:@""];
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateDnsName] action:@selector(copy:) keyEquivalent:@""];
-                    subMenuItem.representedObject=[instance privateDnsName];
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateIpAddress] action:@selector(copy:) keyEquivalent:@""];
-                    subMenuItem.representedObject=[instance privateIpAddress];
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    if ([[instance publicDnsName] length]>0) {
-                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance publicDnsName] action:@selector(copy:) keyEquivalent:@""];
-                        subMenuItem.representedObject=[instance publicDnsName];
+                        
+                        NSMenu* instanceMenu = [[NSMenu alloc]initWithTitle: title];
+                        
+                        NSMenuItem* subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"InstanceId: %@", [instance instanceId]] action:nil keyEquivalent:@""];
+                        subMenuItem.representedObject=[instance instanceId];
                         [instanceMenu addItem:subMenuItem];
-                    }
-                    
-                    if ([[instance publicIpAddress] length]>0) {
-                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance publicIpAddress] action:@selector(copy:) keyEquivalent:@""];
-                        subMenuItem.representedObject=[instance publicIpAddress];
+                        
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Type: %@",[instance instanceType]] action:nil keyEquivalent:@""];
+                        subMenuItem.representedObject=[instance instanceId];
                         [instanceMenu addItem:subMenuItem];
-                    }
-                    
-                    NSMenuItem* instanceMenuItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@"" ];
-                    
-                    if ([[[instance state] name] caseInsensitiveCompare:@"running"]!=NSOrderedSame) {
-                        // [instanceMenuItem setAttributedTitle:[[NSAttributedString alloc] initWithHTML:[[NSString stringWithFormat:@"<span style='color: red;'>%@</span>", title] dataUsingEncoding:NSUTF8StringEncoding] baseURL:nil documentAttributes:nil]];
-//                        &#9679;
-                    }
-                    
-                    [instanceMenu addItem:[NSMenuItem separatorItem]];
-                    
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Actions" action:nil keyEquivalent:@""];
-                    [instanceMenu addItem:subMenuItem];
+                        
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"State: %@", [[instance state] name ]] action:nil keyEquivalent:@""];
+                        subMenuItem.representedObject=[instance instanceId];
+                        [instanceMenu addItem:subMenuItem];
+                        
+                        [instanceMenu addItem:[NSMenuItem separatorItem]];
 
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Connect" action:@selector(connect:) keyEquivalent:@""];
-                    subMenuItem.representedObject=instance;
-                    [instanceMenu addItem:subMenuItem];
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clipboard" action:nil keyEquivalent:@""];
+                        [instanceMenu addItem:subMenuItem];
+                        
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateDnsName] action:@selector(copy:) keyEquivalent:@""];
+                        subMenuItem.representedObject=[instance privateDnsName];
+                        [instanceMenu addItem:subMenuItem];
+                        
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateIpAddress] action:@selector(copy:) keyEquivalent:@""];
+                        subMenuItem.representedObject=[instance privateIpAddress];
+                        [instanceMenu addItem:subMenuItem];
+                        
+                        if ([[instance publicDnsName] length]>0) {
+                            subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance publicDnsName] action:@selector(copy:) keyEquivalent:@""];
+                            subMenuItem.representedObject=[instance publicDnsName];
+                            [instanceMenu addItem:subMenuItem];
+                        }
+                        
+                        if ([[instance publicIpAddress] length]>0) {
+                            subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance publicIpAddress] action:@selector(copy:) keyEquivalent:@""];
+                            subMenuItem.representedObject=[instance publicIpAddress];
+                            [instanceMenu addItem:subMenuItem];
+                        }
+                        
+                        NSMenuItem* instanceMenuItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@"" ];
+                        
+                        if ([[[instance state] name] caseInsensitiveCompare:@"running"]!=NSOrderedSame) {
+                            // [instanceMenuItem setAttributedTitle:[[NSAttributedString alloc] initWithHTML:[[NSString stringWithFormat:@"<span style='color: red;'>%@</span>", title] dataUsingEncoding:NSUTF8StringEncoding] baseURL:nil documentAttributes:nil]];
+    //                        &#9679;
+                        }
+                        
+                        [instanceMenu addItem:[NSMenuItem separatorItem]];
+                        
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Actions" action:nil keyEquivalent:@""];
+                        [instanceMenu addItem:subMenuItem];
 
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Browse" action:@selector(browse:) keyEquivalent:@""];
-                    subMenuItem.representedObject=instance;
-                    [instanceMenu addItem:subMenuItem];
-
-                    if ([[[instance state] name ] caseInsensitiveCompare:@"running"]==NSOrderedSame) {
-                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Stop" action:@selector(stop:) keyEquivalent:@""];
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Connect" action:@selector(connect:) keyEquivalent:@""];
                         subMenuItem.representedObject=instance;
                         [instanceMenu addItem:subMenuItem];
-                    } else {
-                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Start" action:@selector(start:) keyEquivalent:@""];
-                        NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
-                        subMenuItem.representedObject=dict;
-                        [instanceMenu addItem:subMenuItem];
-                    }
 
-                    subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Reboot" action:@selector(reboot:) keyEquivalent:@""];
-                    subMenuItem.representedObject=instance;
-                    [instanceMenu addItem:subMenuItem];
-                    
-                    [instanceMenuItem setSubmenu:instanceMenu];
-                    
-                    [instancesMenu addItem:instanceMenuItem];
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Browse" action:@selector(browse:) keyEquivalent:@""];
+                        subMenuItem.representedObject=instance;
+                        [instanceMenu addItem:subMenuItem];
+
+                        if ([[[instance state] name ] caseInsensitiveCompare:@"running"]==NSOrderedSame) {
+                            subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Stop" action:@selector(stop:) keyEquivalent:@""];
+                            subMenuItem.representedObject=instance;
+                            [instanceMenu addItem:subMenuItem];
+                        } else {
+                            subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Start" action:@selector(start:) keyEquivalent:@""];
+                            NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
+                            subMenuItem.representedObject=dict;
+                            [instanceMenu addItem:subMenuItem];
+                        }
+
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Reboot" action:@selector(reboot:) keyEquivalent:@""];
+                        subMenuItem.representedObject=instance;
+                        [instanceMenu addItem:subMenuItem];
+                        
+                        [instanceMenuItem setSubmenu:instanceMenu];
+                        
+                        [instancesMenu addItem:instanceMenuItem];
+                    }
                 }
+                
+                [statusMenu addItem:instancesMenuItem];
+                
+                
+                
+            } @catch (NSException* e) {
+                NSLog(@"%@", e);
             }
-            
-            [statusMenu addItem:instancesMenuItem];
-            
-            
-            
-        } @catch (NSException* e) {
-            NSLog(@"%@", e);
         }
+    } else {
+        NSMenuItem* instancesMenuItem = [[NSMenuItem alloc] initWithTitle:@"No instances added yet" action:nil keyEquivalent:@"" ];
+        [statusMenu addItem:instancesMenuItem];
+
     }
     
     [statusMenu addItem:[NSMenuItem separatorItem]];
@@ -419,17 +426,15 @@
     [pasteboard writeObjects:copiedObjects];
 }
 
-- (IBAction)itemTwo:(id)sender {
-}
-
-- (IBAction)itemThree:(id)sender {
-}
 
 - (void)save:(id)sender {
     NSError* error;
     if (![[self managedObjectContext] save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
+
+    // AppDelegate * appDelegate = (AppDelegate *) [[NSApplication sharedApplication] delegate];
+    [self refresh];
 }
 
 - (void)managedObjectContextObjectsDidChange:(NSNotification *)notification;

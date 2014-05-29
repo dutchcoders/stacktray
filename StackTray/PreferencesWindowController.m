@@ -38,8 +38,6 @@ static PreferencesWindowController *_sharedPreferencesWindowController = nil;
 }
 
 - (BOOL)windowWillClose:(id)sender{
-    AppDelegate * appDelegate = (AppDelegate *) [[NSApplication sharedApplication] delegate];
-    [appDelegate refresh];
     return (YES);
 }
 
