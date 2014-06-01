@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "PreferencesWindowController.h"
+#import "AboutWindowController.h"
 
 #import </Users/remco/Projects/aws-sdk-ios/src/include/EC2/AmazonEC2Client.h>
 
@@ -179,6 +180,17 @@
     
     if (fetchedObjects.count>0) {
         for (Stack *stack in fetchedObjects) {
+            if ([stack.accessKey isEqualToString:@""]) {
+                continue;
+            }
+            
+            if ([stack.accessKey isEqualToString:@""]) {
+                continue;
+            }
+            
+            if ([stack.region isEqualToString:@""]) {
+                continue;
+            }
             
             @try {
                 AmazonEC2Client* client = [[AmazonEC2Client alloc] initWithAccessKey:stack.accessKey withSecretKey:stack.secretKey];
@@ -311,9 +323,12 @@
     
     NSMenuItem* preferencesMenuItem = [[NSMenuItem alloc] initWithTitle:@"Open Preferences..." action:@selector(preferences:) keyEquivalent:@"" ];
     [statusMenu addItem:preferencesMenuItem];
-    
+
     [statusMenu addItem:[NSMenuItem separatorItem]];
-    
+
+    NSMenuItem* aboutMenuItem = [[NSMenuItem alloc] initWithTitle:@"About" action:@selector(about:) keyEquivalent:@"" ];
+    [statusMenu addItem:aboutMenuItem];
+
     NSMenuItem* quitMenuItem = [[NSMenuItem alloc] initWithTitle:@"Quit StackTray" action:@selector(quit:) keyEquivalent:@"" ];
     [statusMenu addItem:quitMenuItem];
 
@@ -331,6 +346,15 @@
     //Focus on window
     [NSApp activateIgnoringOtherApps:YES];
     [[preferencesWindowController window] makeKeyAndOrderFront:nil];
+}
+
+- (IBAction)about:(id)sender {
+    AboutWindowController* aboutWindowController = [AboutWindowController sharedAboutWindowController];
+    [aboutWindowController showWindow:self];
+    
+    //Focus on window
+    [NSApp activateIgnoringOtherApps:YES];
+    [[aboutWindowController window] makeKeyAndOrderFront:nil];
 }
 
 #pragma mark - Core Data stack

@@ -29,6 +29,8 @@
 		40B3DF31191268C600756C26 /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */; };
 		40B3DF3419127B3A00756C26 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF3319127B3A00756C26 /* Stack.m */; };
 		40B3DF351912898500756C26 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383FD190D38E50027AA38 /* CoreData.framework */; };
+		40F9C41B193BBA8300D0FFE0 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */; };
+		40F9C41E193BBAF900D0FFE0 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,9 @@
 		40B3DF30191268C600756C26 /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		40B3DF3319127B3A00756C26 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
+		40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindow.xib; path = ../AboutWindow.xib; sourceTree = "<group>"; };
+		40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
+		40F9C41D193BBAF900D0FFE0 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +167,9 @@
 				40638447190EFD600027AA38 /* PreferencesDataSource.h */,
 				40638448190EFD600027AA38 /* PreferencesDataSource.m */,
 				40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */,
+				40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */,
+				40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */,
+				40F9C41D193BBAF900D0FFE0 /* AboutWindowController.h */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -285,6 +293,7 @@
 				4079DBB5192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset in Resources */,
 				40638404190D38E50027AA38 /* InfoPlist.strings in Resources */,
 				407A568C192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns in Resources */,
+				40F9C41B193BBA8300D0FFE0 /* AboutWindow.xib in Resources */,
 				40638412190D38E50027AA38 /* Images.xcassets in Resources */,
 				4063840A190D38E50027AA38 /* Credits.rtf in Resources */,
 				40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */,
@@ -308,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4063840D190D38E50027AA38 /* AppDelegate.m in Sources */,
+				40F9C41E193BBAF900D0FFE0 /* AboutWindowController.m in Sources */,
 				40B3DF3419127B3A00756C26 /* Stack.m in Sources */,
 				40638444190EFA330027AA38 /* PreferencesView.m in Sources */,
 				40638441190EEDC20027AA38 /* PreferencesWindowController.m in Sources */,
