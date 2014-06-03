@@ -12,5 +12,8 @@ http://dutchcoders.github.io/stacktray/
 https://itunes.apple.com/nl/app/stacktray/id881891876?l=en&mt=12
 
 ## Contributions
-* Remco (DutchCoders)
+* Remco (DutchCoders, Github: @nl5887, Twitter: @remco_verhoef)
 
+
+## DutchCoders
+@dutchcoders
