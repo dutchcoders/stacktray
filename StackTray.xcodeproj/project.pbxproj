@@ -29,6 +29,7 @@
 		40B3DF31191268C600756C26 /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */; };
 		40B3DF3419127B3A00756C26 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF3319127B3A00756C26 /* Stack.m */; };
 		40B3DF351912898500756C26 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383FD190D38E50027AA38 /* CoreData.framework */; };
+		40D2386A193DE33400FFC147 /* connect.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 40D23869193DE33400FFC147 /* connect.scpt */; };
 		40F9C41B193BBA8300D0FFE0 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */; };
 		40F9C41E193BBAF900D0FFE0 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */; };
 /* End PBXBuildFile section */
@@ -78,6 +79,7 @@
 		40B3DF30191268C600756C26 /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		40B3DF3319127B3A00756C26 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
+		40D23869193DE33400FFC147 /* connect.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = connect.scpt; sourceTree = "<group>"; };
 		40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindow.xib; path = ../AboutWindow.xib; sourceTree = "<group>"; };
 		40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
 		40F9C41D193BBAF900D0FFE0 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 		40638400190D38E50027AA38 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				40D23869193DE33400FFC147 /* connect.scpt */,
 				4079DBB4192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset */,
 				407A568B192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns */,
 				40638401190D38E50027AA38 /* StackTray-Info.plist */,
@@ -298,6 +301,7 @@
 				4063840A190D38E50027AA38 /* Credits.rtf in Resources */,
 				40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */,
 				40638410190D38E50027AA38 /* MainMenu.xib in Resources */,
+				40D2386A193DE33400FFC147 /* connect.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

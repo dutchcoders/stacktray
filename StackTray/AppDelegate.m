@@ -27,6 +27,11 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+}
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification{
+    return YES;
 }
 
 - (void)awakeFromNib
@@ -77,26 +82,30 @@
     }
     
     // get from settings
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"connect" ofType:@"scpt"];
+
+    NSString *script = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    
     NSString* username = @"ubuntu";
 
-    NSString *script = [NSString stringWithFormat:@"tell application \"iTerm\" \n"
-                    "activate \n"
-                    "make new terminal \n"
-                    "tell the current terminal \n"
-                    "activate current session \n"
-                    "launch session \"Default Session\" \n"
-                    "tell the last session \n"
-                    "write text \"ssh %@@%@\" \n"
-                    "end tell \n"
-                    "end tell \n"
-                    "end tell \n", username, address ];
-                
+    NSLog(@"%@", script);
+    
+    
     NSAppleScript *appleScript =
-            [[NSAppleScript alloc] initWithSource:script];
+    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, [instance instanceId], username, address]];
 
     NSDictionary *error;
     NSAppleEventDescriptor *result =
         [appleScript executeAndReturnError:&error];
+    
+    if (error!=nil) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Close"];
+        [alert setMessageText:@"Error connecting to iTerm."];
+        [alert setInformativeText: [error objectForKey:@"NSAppleScriptErrorMessage"]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
 }
 
 - (IBAction)browse:(id)sender {
@@ -133,18 +142,67 @@
     
     EC2RebootInstancesResponse* response = [client rebootInstances:(EC2RebootInstancesRequest *)rq];
 
+    // wait for reboot up status, then show notification
+    /*
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.title = @"Server rebooted";
+    notification.informativeText = [NSString stringWithFormat:@"Server %@ has been rebooted.", [instance instanceId]];
+    notification.soundName = NSUserNotificationDefaultSoundName;
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+    */
 }
 
-- (IBAction)start:(id)sender {
+- (IBAction)consoleOutput:(id)sender {
     NSMenuItem* menuItem= (NSMenuItem*)sender;
     
     AmazonEC2Client* client = (AmazonEC2Client*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"client"];
     EC2Instance* instance = (EC2Instance*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"instance"];
     
+    EC2GetConsoleOutputRequest* rq = [[EC2GetConsoleOutputRequest alloc] initWithInstanceId:instance.instanceId];
+    
+    @try {
+        EC2GetConsoleOutputResponse* response = [client getConsoleOutput:(EC2GetConsoleOutputRequest *)rq];
+        
+        NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:[response output] options:0];
+        NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", decodedString); // foo
+    }
+    @catch (AmazonClientException *exception) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Close"];
+        [alert setMessageText:[exception name]];
+        [alert setInformativeText:[exception message]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+}
+
+
+- (IBAction)start:(id)sender {
+    NSMenuItem* menuItem= (NSMenuItem*)sender;
+
+    AmazonEC2Client* client = (AmazonEC2Client*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"client"];
+    EC2Instance* instance = (EC2Instance*)[((NSDictionary*)menuItem.representedObject) objectForKey:@"instance"];
+    
     EC2StartInstancesRequest* rq = [[EC2StartInstancesRequest alloc] initWithInstanceIds:[[NSMutableArray alloc] initWithObjects: instance.instanceId, nil]];
     
-    EC2StartInstancesResponse* response = [client startInstances:(EC2StartInstancesRequest *)rq];
-    // check response
+    @try {
+        EC2StartInstancesResponse* response = [client startInstances:(EC2StartInstancesRequest *)rq];
+    }
+    @catch (AmazonClientException *exception) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Close"];
+        [alert setMessageText:[exception name]];
+        [alert setInformativeText:[exception message]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
 }
 
 - (IBAction)stop:(id)sender {
@@ -155,7 +213,20 @@
     
     EC2StopInstancesRequest* rq = [[EC2StopInstancesRequest alloc] initWithInstanceIds:[[NSMutableArray alloc] initWithObjects: instance.instanceId, nil]];
     
-    EC2StopInstancesResponse* response = [client stopInstances:(EC2StopInstancesRequest *)rq];
+    @try {
+        EC2StopInstancesResponse* response = [client stopInstances:(EC2StopInstancesRequest *)rq];
+    }
+    @catch (AmazonClientException *exception) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Close"];
+        [alert setMessageText:[exception name]];
+        [alert setInformativeText:[exception message]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
 }
 
 - (IBAction)refresh:(id)sender {
@@ -180,15 +251,15 @@
     
     if (fetchedObjects.count>0) {
         for (Stack *stack in fetchedObjects) {
-            if ([stack.accessKey isEqualToString:@""]) {
+            if (stack.accessKey==nil || [stack.accessKey isEqualToString:@""]) {
                 continue;
             }
             
-            if ([stack.accessKey isEqualToString:@""]) {
+            if (stack.secretKey==nil || [stack.secretKey isEqualToString:@""]) {
                 continue;
             }
             
-            if ([stack.region isEqualToString:@""]) {
+            if (stack.region == nil || [stack.region isEqualToString:@""]) {
                 continue;
             }
             
@@ -281,21 +352,26 @@
                         subMenuItem.representedObject=instance;
                         [instanceMenu addItem:subMenuItem];
 
+                        NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
+
                         if ([[[instance state] name ] caseInsensitiveCompare:@"running"]==NSOrderedSame) {
                             subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Stop" action:@selector(stop:) keyEquivalent:@""];
-                            subMenuItem.representedObject=instance;
+                            subMenuItem.representedObject=dict;
                             [instanceMenu addItem:subMenuItem];
                         } else {
                             subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Start" action:@selector(start:) keyEquivalent:@""];
-                            NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
                             subMenuItem.representedObject=dict;
                             [instanceMenu addItem:subMenuItem];
                         }
 
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Reboot" action:@selector(reboot:) keyEquivalent:@""];
-                        subMenuItem.representedObject=instance;
+                        subMenuItem.representedObject=dict;
                         [instanceMenu addItem:subMenuItem];
-                        
+
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Console output" action:@selector(consoleOutput:) keyEquivalent:@""];
+                        subMenuItem.representedObject=dict;
+                        [instanceMenu addItem:subMenuItem];
+
                         [instanceMenuItem setSubmenu:instanceMenu];
                         
                         [instancesMenu addItem:instanceMenuItem];
@@ -303,11 +379,20 @@
                 }
                 
                 [statusMenu addItem:instancesMenuItem];
-                
-                
-                
-            } @catch (NSException* e) {
-                NSLog(@"%@", e);
+            }
+            @catch (AmazonClientException *exception) {
+                NSLog(@"%@", exception);
+                /*
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert addButtonWithTitle:@"Close"];
+                [alert setMessageText:[exception name]];
+                [alert setInformativeText:[exception message]];
+                [alert setAlertStyle:NSWarningAlertStyle];
+                [alert runModal];
+                 */
+            }
+            @catch (NSException *exception) {
+                NSLog(@"%@", exception);
             }
         }
     } else {
