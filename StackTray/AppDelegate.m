@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "PreferencesWindowController.h"
 #import "AboutWindowController.h"
-
+#import "ConsoleWindowController.h"
 #import </Users/remco/Projects/aws-sdk-ios/src/include/EC2/AmazonEC2Client.h>
 
 #import "Stack.h"
@@ -165,7 +165,13 @@
         
         NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:[response output] options:0];
         NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", decodedString); // foo
+     
+        ConsoleWindowController* consoleWindowController = [ConsoleWindowController sharedConsoleWindowController];
+        [consoleWindowController setOutput:decodedString];
+        [consoleWindowController showWindow:self];
+        
+        [NSApp activateIgnoringOtherApps:YES];
+        [[consoleWindowController window] makeKeyAndOrderFront:nil];
     }
     @catch (AmazonClientException *exception) {
         NSAlert *alert = [[NSAlert alloc] init];

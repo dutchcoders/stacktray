@@ -30,6 +30,8 @@
 		40B3DF3419127B3A00756C26 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF3319127B3A00756C26 /* Stack.m */; };
 		40B3DF351912898500756C26 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383FD190D38E50027AA38 /* CoreData.framework */; };
 		40D2386A193DE33400FFC147 /* connect.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 40D23869193DE33400FFC147 /* connect.scpt */; };
+		40D2386C193DEDB500FFC147 /* ConsoleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40D2386B193DEDB500FFC147 /* ConsoleWindow.xib */; };
+		40D2386F193DEDD400FFC147 /* ConsoleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D2386E193DEDD400FFC147 /* ConsoleWindowController.m */; };
 		40F9C41B193BBA8300D0FFE0 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */; };
 		40F9C41E193BBAF900D0FFE0 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */; };
 /* End PBXBuildFile section */
@@ -80,6 +82,9 @@
 		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		40B3DF3319127B3A00756C26 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
 		40D23869193DE33400FFC147 /* connect.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = connect.scpt; sourceTree = "<group>"; };
+		40D2386B193DEDB500FFC147 /* ConsoleWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsoleWindow.xib; sourceTree = "<group>"; };
+		40D2386D193DEDD400FFC147 /* ConsoleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleWindowController.h; sourceTree = SOURCE_ROOT; };
+		40D2386E193DEDD400FFC147 /* ConsoleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleWindowController.m; sourceTree = SOURCE_ROOT; };
 		40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindow.xib; path = ../AboutWindow.xib; sourceTree = "<group>"; };
 		40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
 		40F9C41D193BBAF900D0FFE0 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
@@ -172,6 +177,9 @@
 				40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */,
 				40F9C41C193BBAF900D0FFE0 /* AboutWindowController.m */,
 				40F9C41D193BBAF900D0FFE0 /* AboutWindowController.h */,
+				40D2386B193DEDB500FFC147 /* ConsoleWindow.xib */,
+				40D2386D193DEDD400FFC147 /* ConsoleWindowController.h */,
+				40D2386E193DEDD400FFC147 /* ConsoleWindowController.m */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -294,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4079DBB5192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset in Resources */,
+				40D2386C193DEDB500FFC147 /* ConsoleWindow.xib in Resources */,
 				40638404190D38E50027AA38 /* InfoPlist.strings in Resources */,
 				407A568C192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns in Resources */,
 				40F9C41B193BBA8300D0FFE0 /* AboutWindow.xib in Resources */,
@@ -323,6 +332,7 @@
 				4063840D190D38E50027AA38 /* AppDelegate.m in Sources */,
 				40F9C41E193BBAF900D0FFE0 /* AboutWindowController.m in Sources */,
 				40B3DF3419127B3A00756C26 /* Stack.m in Sources */,
+				40D2386F193DEDD400FFC147 /* ConsoleWindowController.m in Sources */,
 				40638444190EFA330027AA38 /* PreferencesView.m in Sources */,
 				40638441190EEDC20027AA38 /* PreferencesWindowController.m in Sources */,
 				40638406190D38E50027AA38 /* main.m in Sources */,

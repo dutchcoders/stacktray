@@ -10,13 +10,5 @@
 	<array>
 		<string>com.googlecode.iterm2</string>
 	</array>
-	<key>com.apple.security.scripting-targets</key>
-	<dict>
-		<key>com.googlecode.iterm2</key>
-		<array>
-			<string>com.googlecode.iterm2.exec</string>
-			<string>com.googlecode.iterm2.make</string>
-		</array>
-	</dict>
 </dict>
 </plist>
