@@ -86,13 +86,11 @@
 
     NSString *script = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     
-    NSString* username = @"ubuntu";
-
     NSLog(@"%@", script);
     
     
     NSAppleScript *appleScript =
-    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, [instance instanceId], username, address]];
+    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, address]];
 
     NSDictionary *error;
     NSAppleEventDescriptor *result =
@@ -106,6 +104,9 @@
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert runModal];
     }
+    
+    
+    
 }
 
 - (IBAction)browse:(id)sender {
@@ -121,10 +122,15 @@
         address = instance.privateDnsName;
     }
     
-    NSString *script = [NSString stringWithFormat:@"open location \"http://%@/\" \n", address ];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"browse" ofType:@"scpt"];
+    
+    NSString *script = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    
+    NSLog(@"%@", script);
+    
     
     NSAppleScript *appleScript =
-    [[NSAppleScript alloc] initWithSource:script];
+    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, address]];
     
     NSDictionary *error;
     NSAppleEventDescriptor *result =

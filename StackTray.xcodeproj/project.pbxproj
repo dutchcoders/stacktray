@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4030BE941941982D00CCAD5D /* browse.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 4030BE931941982D00CCAD5D /* browse.scpt */; };
 		406383FA190D38E50027AA38 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383F9190D38E50027AA38 /* Cocoa.framework */; };
 		40638404190D38E50027AA38 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40638402190D38E50027AA38 /* InfoPlist.strings */; };
 		40638406190D38E50027AA38 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 40638405190D38E50027AA38 /* main.m */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4030BE931941982D00CCAD5D /* browse.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = browse.scpt; sourceTree = "<group>"; };
 		406383F6190D38E50027AA38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		406383F9190D38E50027AA38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		406383FC190D38E50027AA38 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -195,6 +197,7 @@
 				40638405190D38E50027AA38 /* main.m */,
 				40638407190D38E50027AA38 /* StackTray-Prefix.pch */,
 				40638408190D38E50027AA38 /* Credits.rtf */,
+				4030BE931941982D00CCAD5D /* browse.scpt */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				4063840A190D38E50027AA38 /* Credits.rtf in Resources */,
 				40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */,
 				40638410190D38E50027AA38 /* MainMenu.xib in Resources */,
+				4030BE941941982D00CCAD5D /* browse.scpt in Resources */,
 				40D2386A193DE33400FFC147 /* connect.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
