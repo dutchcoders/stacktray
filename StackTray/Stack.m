@@ -15,5 +15,6 @@
 @dynamic secretKey;
 @dynamic accessKey;
 @dynamic title;
+@dynamic pemFileLocation;
 
 @end
