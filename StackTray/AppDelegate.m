@@ -321,7 +321,7 @@
                     
                     for (EC2Instance* instance in [reservation instances]) {
                         [instances setObject:instance forKey:[instance instanceId]];
-                                                
+                        
                         NSString* title=[instance instanceId];
 
                         for (EC2Tag* tag in [instance tags]) {
@@ -396,6 +396,7 @@
 
                         NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
 
+                        /**
                         if ([[[instance state] name ] caseInsensitiveCompare:@"running"]==NSOrderedSame) {
                             subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Stop" action:@selector(stop:) keyEquivalent:@""];
                             subMenuItem.representedObject=dict;
@@ -409,6 +410,7 @@
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Reboot" action:@selector(reboot:) keyEquivalent:@""];
                         subMenuItem.representedObject=dict;
                         [instanceMenu addItem:subMenuItem];
+                        */
 
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Console output" action:@selector(consoleOutput:) keyEquivalent:@""];
                         subMenuItem.representedObject=dict;
