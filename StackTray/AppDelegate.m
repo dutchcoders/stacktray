@@ -249,6 +249,29 @@
     [self updateMenu];
 }
 
+-(void)sortMenu:(NSMenu*)menu
+{
+    // [CH] Get an array of all menu items.
+    NSArray* items = [menu itemArray];
+    [menu removeAllItems];
+    // [CH] Sort the array
+    NSSortDescriptor* alphaDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    items = [items sortedArrayUsingDescriptors:[NSArray arrayWithObjects:alphaDescriptor, nil]];
+    // [CH] ok, now set it back.
+    for(NSMenuItem* item in items){
+        [menu addItem:item];
+        /**
+         * [CH] The following code fixes NSPopUpButton's confusion that occurs when
+         * we sort this list. NSPopUpButton listens to the NSMenu's add notifications
+         * and hides the first item. Sorting this blows it up.
+         **/
+        if(item.isHidden){
+            item.hidden = false;
+        }
+    }
+}
+
+
 - (void)updateMenu {
     statusMenu = [[NSMenu alloc]initWithTitle: @"Tray"];
     
@@ -292,14 +315,13 @@
                 NSMenuItem* instancesMenuItem = [[NSMenuItem alloc] initWithTitle:stack.title action:nil keyEquivalent:@"" ];
                 [instancesMenuItem setSubmenu:instancesMenu];
                 
+
+                
                 for (EC2Reservation* reservation in [response reservations]) {
-//                    NSLog(@"%@",reservation);
                     
                     for (EC2Instance* instance in [reservation instances]) {
                         [instances setObject:instance forKey:[instance instanceId]];
-
-                       // NSLog(@"%@",instance.tags);
-                        
+                                                
                         NSString* title=[instance instanceId];
 
                         for (EC2Tag* tag in [instance tags]) {
@@ -350,7 +372,6 @@
                             subMenuItem.representedObject=[instance publicIpAddress];
                             [instanceMenu addItem:subMenuItem];
                         }
-                        NSLog(@"6");
                         
                         NSMenuItem* instanceMenuItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@"" ];
                         
@@ -399,6 +420,9 @@
                     }
                 }
                 
+
+                [self sortMenu:instancesMenu];
+                
                 [statusMenu addItem:instancesMenuItem];
             }
             @catch (AmazonClientException *exception) {
@@ -440,6 +464,7 @@
 
     [statusItem setMenu:statusMenu];
 }
+
 
 - (IBAction)quit:(id)sender {
     [[NSApplication sharedApplication] terminate:nil];
