@@ -48,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 2.xcdatamodel"; sourceTree = "<group>"; };
 		4030BE931941982D00CCAD5D /* browse.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = browse.scpt; sourceTree = "<group>"; };
 		406383F6190D38E50027AA38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		406383F9190D38E50027AA38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -474,12 +475,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = StackTray/StackTray.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/remco/Projects/aws-sdk-ios/src/build/framework",
-					"/Users/remco/Projects/aws-sdk-ios",
+					"/Users/sunil/workspace/buffer/aws-sdk-ios/src/build/framework",
+					"/Users/sunil/workspace/buffer/aws-sdk-ios",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StackTray/StackTray-Prefix.pch";
@@ -497,12 +497,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = StackTray/StackTray.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/remco/Projects/aws-sdk-ios/src/build/framework",
-					"/Users/remco/Projects/aws-sdk-ios",
+					"/Users/sunil/workspace/buffer/aws-sdk-ios/src/build/framework",
+					"/Users/sunil/workspace/buffer/aws-sdk-ios",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StackTray/StackTray-Prefix.pch";
@@ -591,9 +590,10 @@
 		40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */,
 				40B3DF30191268C600756C26 /* StackTray.xcdatamodel */,
 			);
-			currentVersion = 40B3DF30191268C600756C26 /* StackTray.xcdatamodel */;
+			currentVersion = 108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */;
 			path = StackTray.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -10,7 +10,7 @@
 #import "PreferencesWindowController.h"
 #import "AboutWindowController.h"
 #import "ConsoleWindowController.h"
-#import </Users/remco/Projects/aws-sdk-ios/src/include/EC2/AmazonEC2Client.h>
+#import </Users/sunil/workspace/buffer/aws-sdk-ios/src/include/EC2/AmazonEC2Client.h>
 
 #import "Stack.h"
 
@@ -500,7 +500,7 @@
     
     NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
