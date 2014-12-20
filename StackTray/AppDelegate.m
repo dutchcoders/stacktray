@@ -75,22 +75,31 @@
 
     EC2Instance* instance = (EC2Instance*)menuItem.representedObject;
 
-    NSString* address = instance.publicDnsName;
+    NSString* address = instance.publicIpAddress;
+    
+//    instance.publicIpAddress;
     
     if ([address length]==0) {
-        address = instance.privateDnsName;
+        address = instance.publicDnsName;
     }
     
+    NSString* pemFileLocation = [self getPemFileLocation];
+    
+    NSString* scriptName = @"connectwithpem";
+    
+    if(!pemFileLocation) {
+        scriptName = @"connectwithoutpem";
+    }
+    
+    NSString* sshUser = [self getSSHUser];
+    
     // get from settings
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"connect" ofType:@"scpt"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:scriptName ofType:@"scpt"];
 
     NSString *script = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     
-    NSLog(@"%@", script);
-    
-    
     NSAppleScript *appleScript =
-    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, address]];
+    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, address, sshUser, pemFileLocation]];
 
     NSDictionary *error;
     NSAppleEventDescriptor *result =
@@ -271,6 +280,45 @@
     }
 }
 
+- (NSString*)getPemFileLocation {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Stack" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects.count>0) {
+        for (Stack *stack in fetchedObjects) {
+            if(stack.pemFileLocation) {
+                return stack.pemFileLocation;
+            }
+        }
+    }
+    return nil;
+}
+
+- (NSString*)getSSHUser {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Stack" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects.count>0) {
+        for (Stack *stack in fetchedObjects) {
+            if(stack.pemFileLocation) {
+                return stack.sshUser;
+            }
+        }
+    }
+    return nil;
+}
 
 - (void)updateMenu {
     statusMenu = [[NSMenu alloc]initWithTitle: @"Tray"];

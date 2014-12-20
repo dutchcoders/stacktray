@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		108D382D1A4606CD00ED47AF /* connectwithoutpem.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 108D382B1A4606CD00ED47AF /* connectwithoutpem.scpt */; };
+		108D382E1A4606CD00ED47AF /* connectwithpem.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 108D382C1A4606CD00ED47AF /* connectwithpem.scpt */; };
 		4030BE941941982D00CCAD5D /* browse.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 4030BE931941982D00CCAD5D /* browse.scpt */; };
 		406383FA190D38E50027AA38 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383F9190D38E50027AA38 /* Cocoa.framework */; };
 		40638404190D38E50027AA38 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 40638402190D38E50027AA38 /* InfoPlist.strings */; };
@@ -30,7 +32,6 @@
 		40B3DF31191268C600756C26 /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */; };
 		40B3DF3419127B3A00756C26 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B3DF3319127B3A00756C26 /* Stack.m */; };
 		40B3DF351912898500756C26 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 406383FD190D38E50027AA38 /* CoreData.framework */; };
-		40D2386A193DE33400FFC147 /* connect.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 40D23869193DE33400FFC147 /* connect.scpt */; };
 		40D2386C193DEDB500FFC147 /* ConsoleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40D2386B193DEDB500FFC147 /* ConsoleWindow.xib */; };
 		40D2386F193DEDD400FFC147 /* ConsoleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D2386E193DEDD400FFC147 /* ConsoleWindowController.m */; };
 		40F9C41B193BBA8300D0FFE0 /* AboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40F9C41A193BBA8300D0FFE0 /* AboutWindow.xib */; };
@@ -50,6 +51,10 @@
 /* Begin PBXFileReference section */
 		108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */ = {isa = PBXFileReference; explicitFileType = wrapper.xcdatamodel; path = "StackTray 2.xcdatamodel"; sourceTree = "<group>"; };
 		108D382A1A45C96B00ED47AF /* StackTray 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 3.xcdatamodel"; sourceTree = "<group>"; };
+		108D382B1A4606CD00ED47AF /* connectwithoutpem.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = connectwithoutpem.scpt; sourceTree = "<group>"; };
+		108D382C1A4606CD00ED47AF /* connectwithpem.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = connectwithpem.scpt; sourceTree = "<group>"; };
+		108D382F1A460A9000ED47AF /* StackTray 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 4.xcdatamodel"; sourceTree = "<group>"; };
+		108D38301A460B5700ED47AF /* StackTray 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 5.xcdatamodel"; sourceTree = "<group>"; };
 		4030BE931941982D00CCAD5D /* browse.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = browse.scpt; sourceTree = "<group>"; };
 		406383F6190D38E50027AA38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		406383F9190D38E50027AA38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -85,7 +90,6 @@
 		40B3DF30191268C600756C26 /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		40B3DF3219127B3A00756C26 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		40B3DF3319127B3A00756C26 /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
-		40D23869193DE33400FFC147 /* connect.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = connect.scpt; sourceTree = "<group>"; };
 		40D2386B193DEDB500FFC147 /* ConsoleWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsoleWindow.xib; sourceTree = "<group>"; };
 		40D2386D193DEDD400FFC147 /* ConsoleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleWindowController.h; sourceTree = SOURCE_ROOT; };
 		40D2386E193DEDD400FFC147 /* ConsoleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleWindowController.m; sourceTree = SOURCE_ROOT; };
@@ -162,6 +166,8 @@
 		406383FF190D38E50027AA38 /* StackTray */ = {
 			isa = PBXGroup;
 			children = (
+				108D382B1A4606CD00ED47AF /* connectwithoutpem.scpt */,
+				108D382C1A4606CD00ED47AF /* connectwithpem.scpt */,
 				4079DBB6192F9AF400759BB4 /* StackTray.entitlements */,
 				40B3DF3219127B3A00756C26 /* Stack.h */,
 				40B3DF3319127B3A00756C26 /* Stack.m */,
@@ -191,7 +197,6 @@
 		40638400190D38E50027AA38 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				40D23869193DE33400FFC147 /* connect.scpt */,
 				4079DBB4192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset */,
 				407A568B192F97100096F77D /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.icns */,
 				40638401190D38E50027AA38 /* StackTray-Info.plist */,
@@ -306,6 +311,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				108D382E1A4606CD00ED47AF /* connectwithpem.scpt in Resources */,
 				4079DBB5192F98D300759BB4 /* Visualpharm-Icons8-Metro-Style-It-Infrastructure-Cloud.iconset in Resources */,
 				40D2386C193DEDB500FFC147 /* ConsoleWindow.xib in Resources */,
 				40638404190D38E50027AA38 /* InfoPlist.strings in Resources */,
@@ -316,7 +322,7 @@
 				40638446190EFAE50027AA38 /* PreferencesWindow.xib in Resources */,
 				40638410190D38E50027AA38 /* MainMenu.xib in Resources */,
 				4030BE941941982D00CCAD5D /* browse.scpt in Resources */,
-				40D2386A193DE33400FFC147 /* connect.scpt in Resources */,
+				108D382D1A4606CD00ED47AF /* connectwithoutpem.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,11 +597,13 @@
 		40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				108D382F1A460A9000ED47AF /* StackTray 4.xcdatamodel */,
+				108D38301A460B5700ED47AF /* StackTray 5.xcdatamodel */,
 				108D382A1A45C96B00ED47AF /* StackTray 3.xcdatamodel */,
 				108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */,
 				40B3DF30191268C600756C26 /* StackTray.xcdatamodel */,
 			);
-			currentVersion = 108D382A1A45C96B00ED47AF /* StackTray 3.xcdatamodel */;
+			currentVersion = 108D38301A460B5700ED47AF /* StackTray 5.xcdatamodel */;
 			path = StackTray.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

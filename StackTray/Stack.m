@@ -16,5 +16,6 @@
 @dynamic accessKey;
 @dynamic title;
 @dynamic pemFileLocation;
+@dynamic sshUser;
 
 @end

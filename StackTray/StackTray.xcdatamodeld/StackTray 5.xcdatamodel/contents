@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Stack" representedClassName="Stack" syncable="YES">
+        <attribute name="accessKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pemFileLocation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="region" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="secretKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sshUser" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Stack" positionX="-63" positionY="-18" width="128" height="135"/>
+    </elements>
+</model>
