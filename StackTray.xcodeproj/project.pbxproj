@@ -48,7 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 2.xcdatamodel"; sourceTree = "<group>"; };
+		108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */ = {isa = PBXFileReference; explicitFileType = wrapper.xcdatamodel; path = "StackTray 2.xcdatamodel"; sourceTree = "<group>"; };
+		108D382A1A45C96B00ED47AF /* StackTray 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 3.xcdatamodel"; sourceTree = "<group>"; };
 		4030BE931941982D00CCAD5D /* browse.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = browse.scpt; sourceTree = "<group>"; };
 		406383F6190D38E50027AA38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		406383F9190D38E50027AA38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -590,10 +591,11 @@
 		40B3DF2F191268C600756C26 /* StackTray.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				108D382A1A45C96B00ED47AF /* StackTray 3.xcdatamodel */,
 				108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */,
 				40B3DF30191268C600756C26 /* StackTray.xcdatamodel */,
 			);
-			currentVersion = 108D38291A45BF8200ED47AF /* StackTray 2.xcdatamodel */;
+			currentVersion = 108D382A1A45C96B00ED47AF /* StackTray 3.xcdatamodel */;
 			path = StackTray.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
