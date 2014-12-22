@@ -10,7 +10,7 @@
 #import "PreferencesWindowController.h"
 #import "AboutWindowController.h"
 #import "ConsoleWindowController.h"
-#import </Users/remco/Projects/aws-sdk-ios/src/include/EC2/AmazonEC2Client.h>
+#import </Users/sunil/workspace/buffer/aws-sdk-ios/src/include/EC2/AmazonEC2Client.h>
 
 #import "Stack.h"
 
@@ -75,22 +75,31 @@
 
     EC2Instance* instance = (EC2Instance*)menuItem.representedObject;
 
-    NSString* address = instance.publicDnsName;
+    NSString* address = instance.publicIpAddress;
+    
+//    instance.publicIpAddress;
     
     if ([address length]==0) {
-        address = instance.privateDnsName;
+        address = instance.publicDnsName;
     }
     
+    NSString* pemFileLocation = [self getPemFileLocation];
+    
+    NSString* scriptName = @"connectwithpem";
+    
+    if(!pemFileLocation) {
+        scriptName = @"connectwithoutpem";
+    }
+    
+    NSString* sshUser = [self getSSHUser];
+    
     // get from settings
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"connect" ofType:@"scpt"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:scriptName ofType:@"scpt"];
 
     NSString *script = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     
-    NSLog(@"%@", script);
-    
-    
     NSAppleScript *appleScript =
-    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, address]];
+    [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:script, address, sshUser, pemFileLocation]];
 
     NSDictionary *error;
     NSAppleEventDescriptor *result =
@@ -249,6 +258,68 @@
     [self updateMenu];
 }
 
+-(void)sortMenu:(NSMenu*)menu
+{
+    // [CH] Get an array of all menu items.
+    NSArray* items = [menu itemArray];
+    [menu removeAllItems];
+    // [CH] Sort the array
+    NSSortDescriptor* alphaDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    items = [items sortedArrayUsingDescriptors:[NSArray arrayWithObjects:alphaDescriptor, nil]];
+    // [CH] ok, now set it back.
+    for(NSMenuItem* item in items){
+        [menu addItem:item];
+        /**
+         * [CH] The following code fixes NSPopUpButton's confusion that occurs when
+         * we sort this list. NSPopUpButton listens to the NSMenu's add notifications
+         * and hides the first item. Sorting this blows it up.
+         **/
+        if(item.isHidden){
+            item.hidden = false;
+        }
+    }
+}
+
+- (NSString*)getPemFileLocation {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Stack" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects.count>0) {
+        for (Stack *stack in fetchedObjects) {
+            if(stack.pemFileLocation) {
+                return stack.pemFileLocation;
+            }
+        }
+    }
+    return nil;
+}
+
+- (NSString*)getSSHUser {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Stack" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects.count>0) {
+        for (Stack *stack in fetchedObjects) {
+            if(stack.pemFileLocation) {
+                return stack.sshUser;
+            }
+        }
+    }
+    return nil;
+}
+
 - (void)updateMenu {
     statusMenu = [[NSMenu alloc]initWithTitle: @"Tray"];
     
@@ -274,13 +345,16 @@
             if (stack.region == nil || [stack.region isEqualToString:@""]) {
                 continue;
             }
+
             
             @try {
                 AmazonEC2Client* client = [[AmazonEC2Client alloc] initWithAccessKey:stack.accessKey withSecretKey:stack.secretKey];
                 
+                
                 client.endpoint =  [@"https://" stringByAppendingString:stack.region];
 
-                NSLog(@"%@ %@ %@", stack.accessKey, stack.secretKey, [@"https://" stringByAppendingString:stack.region]);
+                NSLog(@"%@ %@ %@, %@", stack.accessKey, stack.secretKey, [@"https://" stringByAppendingString:stack.region], stack.pemFileLocation);
+                
                 EC2DescribeInstancesRequest* rq = [EC2DescribeInstancesRequest alloc];
                 EC2DescribeInstancesResponse* response = [client describeInstances:(EC2DescribeInstancesRequest *)rq];
                 
@@ -289,13 +363,12 @@
                 NSMenuItem* instancesMenuItem = [[NSMenuItem alloc] initWithTitle:stack.title action:nil keyEquivalent:@"" ];
                 [instancesMenuItem setSubmenu:instancesMenu];
                 
+
+                
                 for (EC2Reservation* reservation in [response reservations]) {
-                    NSLog(@"%@",reservation);
                     
                     for (EC2Instance* instance in [reservation instances]) {
                         [instances setObject:instance forKey:[instance instanceId]];
-
-                        NSLog(@"%@",instance.tags);
                         
                         NSString* title=[instance instanceId];
 
@@ -318,7 +391,7 @@
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"State: %@", [[instance state] name ]] action:nil keyEquivalent:@""];
                         subMenuItem.representedObject=[instance instanceId];
                         [instanceMenu addItem:subMenuItem];
-                        
+
                         [instanceMenu addItem:[NSMenuItem separatorItem]];
 
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clipboard" action:nil keyEquivalent:@""];
@@ -327,16 +400,20 @@
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateDnsName] action:@selector(copy:) keyEquivalent:@""];
                         subMenuItem.representedObject=[instance privateDnsName];
                         [instanceMenu addItem:subMenuItem];
-                        
-                        subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance privateIpAddress] action:@selector(copy:) keyEquivalent:@""];
-                        subMenuItem.representedObject=[instance privateIpAddress];
+
+
+                        NSString * ipAddress = instance.privateIpAddress ? instance.privateIpAddress : @"";
+
+                        subMenuItem = [[NSMenuItem alloc] initWithTitle:ipAddress action:@selector(copy:) keyEquivalent:@""];
+                        subMenuItem.representedObject=ipAddress;
                         [instanceMenu addItem:subMenuItem];
-                        
+
                         if ([[instance publicDnsName] length]>0) {
                             subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance publicDnsName] action:@selector(copy:) keyEquivalent:@""];
                             subMenuItem.representedObject=[instance publicDnsName];
                             [instanceMenu addItem:subMenuItem];
                         }
+
                         
                         if ([[instance publicIpAddress] length]>0) {
                             subMenuItem = [[NSMenuItem alloc] initWithTitle:[instance publicIpAddress] action:@selector(copy:) keyEquivalent:@""];
@@ -360,12 +437,14 @@
                         subMenuItem.representedObject=instance;
                         [instanceMenu addItem:subMenuItem];
 
+                        
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Browse" action:@selector(browse:) keyEquivalent:@""];
                         subMenuItem.representedObject=instance;
                         [instanceMenu addItem:subMenuItem];
 
                         NSDictionary* dict= [[NSDictionary alloc] initWithObjectsAndKeys: instance, @"instance", client, @"client", nil];
 
+                        /**
                         if ([[[instance state] name ] caseInsensitiveCompare:@"running"]==NSOrderedSame) {
                             subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Stop" action:@selector(stop:) keyEquivalent:@""];
                             subMenuItem.representedObject=dict;
@@ -379,6 +458,7 @@
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Reboot" action:@selector(reboot:) keyEquivalent:@""];
                         subMenuItem.representedObject=dict;
                         [instanceMenu addItem:subMenuItem];
+                        */
 
                         subMenuItem = [[NSMenuItem alloc] initWithTitle:@"Console output" action:@selector(consoleOutput:) keyEquivalent:@""];
                         subMenuItem.representedObject=dict;
@@ -390,10 +470,13 @@
                     }
                 }
                 
+
+                [self sortMenu:instancesMenu];
+                
                 [statusMenu addItem:instancesMenuItem];
             }
             @catch (AmazonClientException *exception) {
-                NSLog(@"%@", exception);
+                NSLog(@"%@ error", exception);
                 /*
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert addButtonWithTitle:@"Close"];
@@ -431,6 +514,7 @@
 
     [statusItem setMenu:statusMenu];
 }
+
 
 - (IBAction)quit:(id)sender {
     [[NSApplication sharedApplication] terminate:nil];
@@ -500,7 +584,7 @@
     
     NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
