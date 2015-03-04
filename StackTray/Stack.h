@@ -16,5 +16,7 @@
 @property (nonatomic, retain) NSString * secretKey;
 @property (nonatomic, retain) NSString * accessKey;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * pemFileLocation;
+@property (nonatomic, retain) NSString * sshUser;
 
 @end
