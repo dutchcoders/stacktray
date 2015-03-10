@@ -1,6 +1,6 @@
 //
-//  StackTrayTests.swift
-//  StackTrayTests
+//  StackTrayKitTests.swift
+//  StackTrayKitTests
 //
 //  Created by Ruben Cagnie on 3/9/15.
 //  Copyright (c) 2015 dutchcoders. All rights reserved.
@@ -9,14 +9,7 @@
 import Cocoa
 import XCTest
 
-let account1Name = "Test account 1"
-let account1AccessKey = "Test access key 1"
-let account1SecretKey = "Test secret key 1"
-let account1Region = "ec2.us-west-2.amazonaws.com-1"
-
-let account2Name = "Test account 2"
-
-class StackTrayTests: XCTestCase {
+class StackTrayKitTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
