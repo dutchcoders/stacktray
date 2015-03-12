@@ -39,8 +39,11 @@ class AppMenu: NSMenu {
 }
 
 /** Menu item for one account */
-private class AccountMenuItem: NSMenuItem {
-    
+class AccountMenuItem: NSMenuItem {
+    var account: Account {
+        return self.representedObject as Account
+    }
+
     init(account: Account, action: Selector){
         super.init(title: account.name, action: nil, keyEquivalent: "")
         
@@ -48,7 +51,7 @@ private class AccountMenuItem: NSMenuItem {
         submenu = NSMenu(title: account.name)
         
         for instance in account.instances {
-            submenu?.addItem(InstanceMenuItem(instance: instance, action: action))
+            submenu?.addItem(InstanceMenuItem(instance: instance, account: account, action: action))
         }
     }
     
@@ -65,7 +68,7 @@ private class AccountMenuItem: NSMenuItem {
 /** Menu item for one instance */
 class InstanceMenuItem: NSMenuItem {
     
-    init(instance: Instance, action: Selector){
+    init(instance: Instance, account: Account, action: Selector){
         super.init(title: instance.name, action: nil, keyEquivalent: "")
         
         representedObject = instance
@@ -96,12 +99,28 @@ class InstanceMenuItem: NSMenuItem {
         /** Actions */
         menu.addItemWithTitle("Actions", action: nil, keyEquivalent: "")
 
-        menu.addItem(InstanceActionMenuItem(title: "Connect", instance: instance, action: Selector("connect:")))
-        menu.addItem(InstanceActionMenuItem(title: "Browse", instance: instance, action: Selector("browse:")))
-        menu.addItem(InstanceActionMenuItem(title: "Stop", instance: instance, action: Selector("stop:")))
-        menu.addItem(InstanceActionMenuItem(title: "Reboot", instance: instance, action: Selector("reboot:")))
-        menu.addItem(InstanceActionMenuItem(title: "Console Output", instance: instance, action: Selector("console:")))
+        //Connect to the account : RUBEN: Do not know what this is
+//        menu.addItem(InstanceActionMenuItem(title: "Connect", instance: instance, account: account, action: Selector("connect:")))
         
+        //Browse to the account
+        menu.addItem(InstanceActionMenuItem(title: "Browse", instance: instance, account: account, action: Selector("browse:")))
+        
+        //State (to start, stop)
+        if instance.state == .Stopped {
+            menu.addItem(InstanceActionMenuItem(title: "Start", instance: instance, account: account, action: Selector("startInstance:")))
+        } else if instance.state == .Running {
+            menu.addItem(InstanceActionMenuItem(title: "Stop", instance: instance, account: account, action: Selector("stopInstance:")))
+        } else {
+            menu.addItem(InstanceActionMenuItem(title: instance.state.description, instance: instance, account: account, action: nil))
+        }
+        
+        //Reboot
+        menu.addItem(InstanceActionMenuItem(title: "Reboot", instance: instance, account: account, action: Selector("reboot:")))
+        
+        //Console output
+        menu.addItem(InstanceActionMenuItem(title: "Console Output", instance: instance, account: account, action: Selector("console:")))
+        
+        //Set submenu
         submenu = menu
     }
     
@@ -114,8 +133,11 @@ class InstanceActionMenuItem: NSMenuItem {
     var instance: Instance {
         return self.representedObject as Instance
     }
+    var account: Account
     
-    init(title: String, instance: Instance, action: Selector){
+    init(title: String, instance: Instance, account: Account, action: Selector){
+        self.account = account
+        
         super.init(title: title, action: action, keyEquivalent: "")
         
         representedObject = instance

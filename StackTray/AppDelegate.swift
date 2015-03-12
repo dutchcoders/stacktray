@@ -10,7 +10,8 @@ import Cocoa
 //import AWSiOSSDKv2
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountControllerObserver {
+class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountControllerObserver, NSMenuDelegate {
+    let updateInterval: NSTimeInterval = 60 /* minutes */ * 60 /* seconds */
     
     //Main app directory for storing data
     lazy var appDirectory : String = {
@@ -44,13 +45,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         let menu = AppMenu()
         
         menu.dataSource = self
+        menu.delegate = self
         
         return menu
         }()
     
     var statusItem: NSStatusItem!
-
-
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
@@ -80,6 +80,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         if accountController.accounts.count == 0 {
             self.preferences(nil)
         }
+        
+        //Refresh the list once in a while
+        NSTimer.scheduledTimerWithTimeInterval(updateInterval, target: self, selector: Selector("refresh"), userInfo: nil, repeats: true)
+    }
+    
+    func refresh(){
+        accountController.refreshAccounts()
     }
     
     func didAddAccountAtIndex(accountController: AccountController, index: Int) {
@@ -154,11 +161,36 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     /** Browse to an instance */
     func browse(menuItem: InstanceActionMenuItem){
         println("Browse to \(menuItem.instance.instanceId)")
+        
+        var dns = menuItem.instance.publicDnsName
+        if dns.isEmpty {
+            dns = menuItem.instance.privateDnsName
+        }
+        
+        
+        if let url = NSURL(string: "http://\(dns)") {
+            NSWorkspace.sharedWorkspace().openURL(url)
+        }
     }
     
     /** Stop an instance */
-    func stop(menuItem: InstanceActionMenuItem){
+    func stopInstance(menuItem: InstanceActionMenuItem){
         println("Stop \(menuItem.instance.instanceId)")
+        accountController.stopInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
+            if error != nil {
+                NSApplication.sharedApplication().presentError(error!)
+            }
+        }
+    }
+    
+    /** Start an instance */
+    func startInstance(menuItem: InstanceActionMenuItem){
+        println("Start \(menuItem.instance.instanceId)")
+        accountController.startInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
+            if error != nil {
+                NSApplication.sharedApplication().presentError(error!)
+            }
+        }
     }
     
     /** Reboot an instance */
@@ -169,6 +201,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     /** Show the console of an instance */
     func console(menuItem: InstanceActionMenuItem){
         println("Show Console for \(menuItem.instance.instanceId)")
+    }
+    
+    
+    //MARK - Menu Delegate
+    func menuWillOpen(menu: NSMenu){
+        //Refreh the list of accounts when the menu opens
+        self.refresh()
     }
 }
 

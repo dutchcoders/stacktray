@@ -22,6 +22,12 @@ public protocol AccountConnector {
     func updateAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void)
     /** Refresh an account */
     func refreshAccount(account: Account, callback: (error: NSError?, account: Account?)->Void)
+    /** Start instance */
+    func startInstance(account: Account, instance: Instance, callback: (error: NSError?)->Void)
+    /** Stop instance */
+    func stopInstance(account: Account, instance: Instance, callback: (error: NSError?)->Void)
+    /** Reboot instance */
+    func rebootInstance(account: Account, instance: Instance, callback: (error: NSError?)->Void)
 }
 
 /** Is in charge of accounts */
@@ -81,6 +87,15 @@ public class AccountController: NSObject {
         }
     }
     
+    public func refreshAccount(account: Account){
+        if let index = find(accounts, account){
+            println("Refreshing \(account.name)")
+            self.updateAccountAtIndex(index, account: account, callback: { (error, account) -> Void in
+                
+            })
+        }
+    }
+    
     public func refreshAccounts(){
         for (index, account) in enumerate(accounts) {
             self.updateAccountAtIndex(index, account: account, callback: { (error, account) -> Void in
@@ -112,7 +127,7 @@ public class AccountController: NSObject {
                 })
             })
         } else {
-            callback(error: NSError(domain: "AccountController", code: 0, userInfo: [NSLocalizedDescriptionKey : "Unknown type: \(account.description)"]), account: nil)
+            callback(error: createUnknownAccountTypeError(account), account: nil)
         }
     }
     
@@ -160,10 +175,76 @@ public class AccountController: NSObject {
                 })
             })
         } else {
-            callback(error: NSError(domain: "AccountController", code: 0, userInfo: [NSLocalizedDescriptionKey : "Unknown type: \(account.description)"]), account: nil)
+            callback(error: createUnknownAccountTypeError(account), account: nil)
         }
     }
     
+    /** Start instance */
+    public func startInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void){
+        let index = find(accounts, account)
+        if let connector = connectors[account.accountType] {
+            requestQueue.addOperationWithBlock({ () -> Void in
+                connector.startInstance(account, instance: instance, callback: { (error) -> Void in
+                    if error == nil {
+                        self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
+                            callback(error : error)
+                        })
+                    } else {
+                        callback(error: error)
+                    }
+                })
+            })
+        } else {
+            callback(error: createUnknownAccountTypeError(account))
+        }
+    }
+    
+    /** Stop instance */
+    public func stopInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void){
+        let index = find(accounts, account)
+        if let connector = connectors[account.accountType] {
+            requestQueue.addOperationWithBlock({ () -> Void in
+                connector.stopInstance(account, instance: instance, callback: { (error) -> Void in
+                    if error == nil {
+                        self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
+                            callback(error : error)
+                        })
+                    } else {
+                        callback(error: error)
+                    }
+                })
+            })
+        } else {
+            callback(error: createUnknownAccountTypeError(account))
+        }
+    }
+    
+    /** Reboot instance */
+    public func rebootInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void){
+        let index = find(accounts, account)
+        if let connector = connectors[account.accountType] {
+            requestQueue.addOperationWithBlock({ () -> Void in
+                connector.rebootInstance(account, instance: instance, callback: { (error) -> Void in
+                    if error == nil {
+                        self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
+                            callback(error : error)
+                        })
+                    } else {
+                        callback(error: error)
+                    }
+                })
+            })
+        } else {
+            callback(error: createUnknownAccountTypeError(account))
+        }
+    }
+
+    /** Utility function for unknown account types */
+    func createUnknownAccountTypeError(account: Account) -> NSError {
+        return NSError(domain: "AccountController", code: 0, userInfo: [NSLocalizedDescriptionKey : "Unknown type: \(account.accountType.description)"])
+    }
+    
+
     //MARK: Observers
     
     /** Observers */
@@ -214,6 +295,27 @@ public class DummyAccountConnector: NSObject, AccountConnector {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             sleep(1)
             callback(error: nil, account: account)
+        }
+    }
+    
+    public func startInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            sleep(1)
+            callback(error: nil)
+        }
+    }
+    
+    public func stopInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            sleep(1)
+            callback(error: nil)
+        }
+    }
+    
+    public func rebootInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            sleep(1)
+            callback(error: nil)
         }
     }
 }
@@ -290,6 +392,51 @@ public class AWSAccountConnector: NSObject, AccountConnector {
         return (nil, awsConnection)
     }
     
+    public func startInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
+        let aws = account as AWSAccount
+        let (error, awsConnection) = createAwsConnection(aws)
+        if error != nil {
+            callback(error: error)
+        } else {
+            let startRequest = AWSEC2StartInstancesRequest()
+            startRequest.instanceIds = [instance.instanceId]
+            awsConnection?.startInstances(startRequest).continueWithBlock { (task) -> AnyObject! in
+                callback(error: task.error)
+                return nil
+            }
+        }
+    }
+    
+    public func stopInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
+        let aws = account as AWSAccount
+        let (error, awsConnection) = createAwsConnection(aws)
+        if error != nil {
+            callback(error: error)
+        } else {
+            let stopRequest = AWSEC2StopInstancesRequest()
+            stopRequest.instanceIds = [instance.instanceId]
+            awsConnection?.stopInstances(stopRequest).continueWithBlock { (task) -> AnyObject! in
+                callback(error: task.error)
+                return nil
+            }
+        }
+    }
+    
+    public func rebootInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
+        let aws = account as AWSAccount
+        let (error, awsConnection) = createAwsConnection(aws)
+        if error != nil {
+            callback(error: error)
+        } else {
+            let rebootRequest = AWSEC2RebootInstancesRequest()
+            rebootRequest.instanceIds = [instance.instanceId]
+            awsConnection?.rebootInstances(rebootRequest).continueWithBlock { (task) -> AnyObject! in
+                callback(error: task.error)
+                return nil
+            }
+        }
+    }
+    
     /** Create an AWS Account */
     public func createAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void) {
         refreshAccount(account, callback: callback)
@@ -335,12 +482,13 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                             let instanceState = InstanceState(rawValue: instance.state.name.rawValue)
                             let instanceId = instance.instanceId
                             let instanceType = self.instanceTypeToString[instance.instanceType]!
+                            
                             let publicDnsName = instance.publicDnsName
                             let publicIpAddress = instance.publicIpAddress
                             let privateDnsName = instance.privateDnsName
                             let privateIpAddress = instance.privateIpAddress
                             
-                            let instance = Instance(name: name, instanceId: instanceId, type: instanceType, publicDnsName: publicDnsName, publicIpAddress: publicIpAddress, privateDnsName: privateDnsName, privateIpAddress: privateIpAddress)
+                            let instance = Instance(name: name, instanceId: instanceId, type: instanceType, publicDnsName: publicDnsName == nil ? "" : publicDnsName, publicIpAddress: publicIpAddress == nil ? "" : publicIpAddress, privateDnsName: privateDnsName == nil ? "" : privateDnsName, privateIpAddress: privateIpAddress==nil ? "" : privateIpAddress)
                             instance.state = instanceState!
                             
                             instances.append(instance)
