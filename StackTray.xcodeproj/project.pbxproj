@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42975E4AC934F173019B16F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4932D74C135E6DC54C2B5A /* libPods.a */; };
 		450F83711AAE152300E49B38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F83701AAE152300E49B38 /* AppDelegate.swift */; };
 		450F83751AAE152300E49B38 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 450F83741AAE152300E49B38 /* Images.xcassets */; };
 		450F83781AAE152300E49B38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450F83761AAE152300E49B38 /* Main.storyboard */; };
@@ -51,6 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		100900AF11EE8C0909DEFA51 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		450F836B1AAE152200E49B38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		450F836F1AAE152300E49B38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		450F83701AAE152300E49B38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +79,9 @@
 		45D8B6931AAE160B0080DEEC /* StackTray 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 5.xcdatamodel"; sourceTree = "<group>"; };
 		45D8B6941AAE160B0080DEEC /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		45D8B6981AAE64650080DEEC /* AddAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddAccountCell.xib; sourceTree = "<group>"; };
+		45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StackTray-Bridging-Header.h"; sourceTree = "<group>"; };
+		4C2617974971310283D2D4F4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		7B4932D74C135E6DC54C2B5A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42975E4AC934F173019B16F9 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +109,8 @@
 				450F836D1AAE152200E49B38 /* StackTray */,
 				450F83801AAE152300E49B38 /* StackTrayTests */,
 				450F836C1AAE152200E49B38 /* Products */,
+				62839165453401B9E7A6EE9A /* Pods */,
+				F5932AD33D8C0F41ED4EC159 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -130,6 +138,7 @@
 				459DC4051AB11FFC00B0C8B1 /* Models */,
 				450F838D1AAE155E00E49B38 /* Preferences.storyboard */,
 				450F838E1AAE155E00E49B38 /* PreferencesViewController.swift */,
+				45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */,
 				450F836E1AAE152300E49B38 /* Supporting Files */,
 			);
 			path = StackTray;
@@ -189,6 +198,23 @@
 			path = Import;
 			sourceTree = "<group>";
 		};
+		62839165453401B9E7A6EE9A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				100900AF11EE8C0909DEFA51 /* Pods.debug.xcconfig */,
+				4C2617974971310283D2D4F4 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F5932AD33D8C0F41ED4EC159 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B4932D74C135E6DC54C2B5A /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -196,10 +222,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 450F83871AAE152300E49B38 /* Build configuration list for PBXNativeTarget "StackTray" */;
 			buildPhases = (
+				EB324FE24B55616B61E4390D /* Check Pods Manifest.lock */,
 				450F83671AAE152200E49B38 /* Sources */,
 				450F83681AAE152200E49B38 /* Frameworks */,
 				450F83691AAE152200E49B38 /* Resources */,
 				450F83B81AAE15A600E49B38 /* Embed Frameworks */,
+				9602AFA958F43E8F9A34477D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -287,6 +315,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9602AFA958F43E8F9A34477D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB324FE24B55616B61E4390D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		450F83671AAE152200E49B38 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -339,6 +400,7 @@
 /* Begin XCBuildConfiguration section */
 		450F83851AAE152300E49B38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 100900AF11EE8C0909DEFA51 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -381,6 +443,7 @@
 		};
 		450F83861AAE152300E49B38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C2617974971310283D2D4F4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -416,28 +479,36 @@
 		};
 		450F83881AAE152300E49B38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 100900AF11EE8C0909DEFA51 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = StackTray/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "StackTray/StackTray-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		450F83891AAE152300E49B38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C2617974971310283D2D4F4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = StackTray/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "StackTray/StackTray-Bridging-Header.h";
 			};
 			name = Release;
 		};
 		450F838B1AAE152300E49B38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 100900AF11EE8C0909DEFA51 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -452,12 +523,14 @@
 				INFOPLIST_FILE = StackTrayTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "StackTray/StackTray-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StackTray.app/Contents/MacOS/StackTray";
 			};
 			name = Debug;
 		};
 		450F838C1AAE152300E49B38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C2617974971310283D2D4F4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -468,6 +541,7 @@
 				INFOPLIST_FILE = StackTrayTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "StackTray/StackTray-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StackTray.app/Contents/MacOS/StackTray";
 			};
 			name = Release;
