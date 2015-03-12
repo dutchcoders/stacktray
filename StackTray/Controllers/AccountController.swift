@@ -350,7 +350,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
         "ec2.us-east-1.amazonaws.com" : AWSRegionType.USEast1,
         "ec2.us-west-2.amazonaws.com" : AWSRegionType.USWest2,
         "ec2.us-west-1.amazonaws.com" : AWSRegionType.USWest1,
-        "ec2.eu-west-1.amazonaws.com" : AWSRegionType.USWest1,
+        "ec2.eu-west-1.amazonaws.com" : AWSRegionType.EUWest1,
         "ec2.ap-southeast-1.amazonaws.com" : AWSRegionType.APSoutheast1,
         "ec2.ap-southeast-2.amazonaws.com" : AWSRegionType.APSoutheast2,
         "ec2.ap-northeast-1.amazonaws.com" : AWSRegionType.APNortheast1,
@@ -518,7 +518,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                             println("Found instance: \(instance.instanceId)")
                             
                             var name = instance.instanceId
-                            for tag in instance.tags as [AWSEC2Tag] {
+                            for tag in instance.tags? as [AWSEC2Tag] {
                                 if tag.key() == "Name" {
                                     name = tag.value()
                                 }
