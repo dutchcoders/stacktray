@@ -9,15 +9,17 @@
 import Cocoa
 
 public enum InstanceState : Int, Printable {
-    case Running
-    case Stopped
-    case Unknown
-    
+    case Unknown, Pending, Running, ShuttingDown, Terminated, Stopping, Stopped
+
     public var description: String {
         switch self{
-        case .Running: return "Running"
-        case .Stopped: return "Stopped"
         case .Unknown: return "Unknown"
+        case .Pending: return "Pending"
+        case .Running: return "Running"
+        case .ShuttingDown: return "ShuttingDown"
+        case .Terminated: return "Terminated"
+        case .Stopping: return "Stopping"
+        case .Stopped: return "Stopped"
         }
     }
 }

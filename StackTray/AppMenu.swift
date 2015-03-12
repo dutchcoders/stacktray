@@ -75,7 +75,7 @@ class InstanceMenuItem: NSMenuItem {
         /** Details */
         menu.addItemWithTitle("InstanceId: \(instance.instanceId)", action: nil, keyEquivalent: "")
         menu.addItemWithTitle("Type: \(instance.type)", action: nil, keyEquivalent: "")
-        menu.addItemWithTitle("State: \(instance.state.description)", action: nil, keyEquivalent: "")
+        menu.addItemWithTitle("State: \(instance.state)", action: nil, keyEquivalent: "")
         
         /** Separator */
         menu.addItem(NSMenuItem.separatorItem())

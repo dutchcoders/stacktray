@@ -7,3 +7,4 @@
 #import "DynamoDB.h"
 #import "SQS.h"
 #import "SNS.h"
+#import "AWSEC2.h"

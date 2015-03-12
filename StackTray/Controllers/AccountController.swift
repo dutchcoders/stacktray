@@ -20,6 +20,8 @@ public protocol AccountConnector {
     func createAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void)
     /** Updates an account based on a template account */
     func updateAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void)
+    /** Refresh an account */
+    func refreshAccount(account: Account, callback: (error: NSError?, account: Account?)->Void)
 }
 
 /** Is in charge of accounts */
@@ -70,11 +72,20 @@ public class AccountController: NSObject {
         if fileManager.fileExistsAtPath(accountsFile){
             if let accounts = NSKeyedUnarchiver.unarchiveObjectWithFile(accountsFile) as? [Account] {
                 self.accounts = accounts
+                self.refreshAccounts()
             } else {
                 accounts = []
             }
         } else {
             accounts = []
+        }
+    }
+    
+    public func refreshAccounts(){
+        for (index, account) in enumerate(accounts) {
+            self.updateAccountAtIndex(index, account: account, callback: { (error, account) -> Void in
+                
+            })
         }
     }
     
@@ -198,40 +209,152 @@ public class DummyAccountConnector: NSObject, AccountConnector {
             callback(error: nil, account: account)
         }
     }
-}
-
-/** AWS Account Controller for dev purposes only */
-public class AWSAccountConnector: NSObject, AccountConnector {
-    override init(){
-//        let cognitoAccountId = ""
-//        let cognitoIdentityPoolId = ""
-//        let cognitoUnauthRoleArn = ""
-//        let cognitoAuthRoleArn = ""
-//        let credentialsProvider = AWSCognitoCredentialsProvider.credentialsWithRegionType(
-//            AWSRegionType.USEast1,
-//            accountId: cognitoAccountId,
-//            identityPoolId: cognitoIdentityPoolId,
-//            unauthRoleArn: cognitoUnauthRoleArn,
-//            authRoleArn: cognitoAuthRoleArn)
-//        let defaultServiceConfiguration = AWSServiceConfiguration(
-//            region: AWSRegionType.USEast1,
-//            credentialsProvider: credentialsProvider)
-//        AWSServiceManager.defaultServiceManager().setDefaultServiceConfiguration(defaultServiceConfiguration)
-
-        super.init()
-    }
     
-    public func createAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void) {
+    public func refreshAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void) {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             sleep(1)
             callback(error: nil, account: account)
         }
     }
+}
+
+/** AWS Account Controller for dev purposes only */
+public class AWSAccountConnector: NSObject, AccountConnector {
     
+    /** Dictionary that maps region strings to AWSRegionType objects */
+    let regionStringToType : Dictionary<String, AWSRegionType> = [
+        "ec2.us-east-1.amazonaws.com" : AWSRegionType.USEast1,
+        "ec2.us-west-2.amazonaws.com" : AWSRegionType.USWest2,
+        "ec2.us-west-1.amazonaws.com" : AWSRegionType.USWest1,
+        "ec2.eu-west-1.amazonaws.com" : AWSRegionType.USWest1,
+        "ec2.ap-southeast-1.amazonaws.com" : AWSRegionType.APSoutheast1,
+        "ec2.ap-southeast-2.amazonaws.com" : AWSRegionType.APSoutheast2,
+        "ec2.ap-northeast-1.amazonaws.com" : AWSRegionType.APNortheast1,
+        "ec2.sa-east-1.amazonaws.com" : AWSRegionType.SAEast1
+        ]
+    
+    /** Dictionary that maps instance types to strings */
+    let instanceTypeToString : Dictionary<AWSEC2InstanceType, String> = [
+        .Unknown : "Unknown",
+        .T1_micro : "T1 micro",
+        .M1_small : "M1 small",
+        .M1_medium : "M1 medium",
+        .M1_large : "M1 large",
+        .M1_xlarge : "M1 xlarge",
+        .M3_medium : "M3 medium",
+        .M3_large : "M3 large",
+        .M3_xlarge : "M3 xlarge",
+        .M3_2xlarge : "M3 2xlarge",
+        .T2_micro : "T2 micro",
+        .T2_small : "T2 small",
+        .T2_medium : "T2 medium",
+        .M2_xlarge : "M2 xlarge",
+        .M2_2xlarge : "M2 2xlarge",
+        .M2_4xlarge : "M2 4xlarge",
+        .CR1_8xlarge : "CR1 8xlarge",
+        .I2_xlarge : "I2 xlarge",
+        .I2_2xlarge : "I2 2xlarge",
+        .I2_4xlarge : "I2 4xlarge",
+        .I2_8xlarge : "I2 8xlarge",
+        .HI1_4xlarge : "HI1 4xlarge",
+        .HS1_8xlarge : "HS1 8xlarge",
+        .C1_medium : "C1 medium",
+        .C1_xlarge : "C1 xlarge",
+        .C3_large : "C3 large",
+        .C3_xlarge : "C3 xlarge",
+        .C3_2xlarge : "C3 2xlarge",
+        .C3_4xlarge : "C3 4xlarge",
+        .C3_8xlarge : "C3 8xlarge",
+        .CC1_4xlarge : "CC1 4xlarge",
+        .CC2_8xlarge : "CC2 8xlarge",
+        .G2_2xlarge : "G2 2xlarge",
+        .CG1_4xlarge : "CG1 4xlarge",
+        .R3_large : "R3 large",
+        .R3_xlarge : "R3 xlarge",
+        .R3_2xlarge : "R3 2xlarge",
+        .R3_4xlarge : "R3 4xlarge",
+        .R3_8xlarge : "R3 8xlarge",
+    ]
+    
+
+    /** Create an AWS connection object */
+    func createAwsConnection(aws: AWSAccount) -> (NSError?, AWSEC2?) {
+        let region = regionStringToType[aws.region]
+        if region == nil {
+            let error = NSError(domain: "AWS", code: 0, userInfo: [NSLocalizedDescriptionKey: "Region is unknown"])
+            return (error, nil)
+        }
+        
+        let credentials = AWSStaticCredentialsProvider(accessKey: aws.accessKey, secretKey: aws.secretKey)
+        let awsConnection = AWSEC2(configuration: AWSServiceConfiguration(region: region!, credentialsProvider: credentials))
+        return (nil, awsConnection)
+    }
+    
+    /** Create an AWS Account */
+    public func createAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void) {
+        refreshAccount(account, callback: callback)
+    }
+
+    /** Update an AWS Account */
     public func updateAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void) {
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            sleep(1)
-            callback(error: nil, account: account)
+        refreshAccount(account, callback: callback)
+    }
+    
+    /* Refresh an AWS Account */
+    public func refreshAccount(account: Account, callback: (error: NSError?, account: Account?)->Void) {
+        let aws = account as AWSAccount
+        
+        let (error, awsConnection) = createAwsConnection(aws)
+        if error != nil {
+            callback(error: error, account : nil)
+        } else {
+            println("AWS Connection Established")
+            
+            let instancesRequest = AWSEC2DescribeInstancesRequest()
+            awsConnection!.describeInstances(instancesRequest).continueWithBlock { (task) -> AnyObject! in
+                
+                if task.error != nil {
+                    println("Error: \(task.error)")
+                    callback(error: task.error, account: nil)
+                } else {
+                    var instances : [Instance] = []
+                    let result = task.result as AWSEC2DescribeInstancesResult
+                    
+                    for reservation in result.reservations as [AWSEC2Reservation] {
+                        for instance in reservation.instances as [AWSEC2Instance]{
+                            println("Found instance: \(instance.instanceId)")
+                            
+                            var name = instance.instanceId
+                            for tag in instance.tags as [AWSEC2Tag] {
+                                if tag.key() == "Name" {
+                                    name = tag.value()
+                                }
+                            }
+                            
+                            let state = instance.state
+                            let instanceState = InstanceState(rawValue: instance.state.name.rawValue)
+                            let instanceId = instance.instanceId
+                            let instanceType = self.instanceTypeToString[instance.instanceType]!
+                            let publicDnsName = instance.publicDnsName
+                            let publicIpAddress = instance.publicIpAddress
+                            let privateDnsName = instance.privateDnsName
+                            let privateIpAddress = instance.privateIpAddress
+                            
+                            let instance = Instance(name: name, instanceId: instanceId, type: instanceType, publicDnsName: publicDnsName, publicIpAddress: publicIpAddress, privateDnsName: privateDnsName, privateIpAddress: privateIpAddress)
+                            instance.state = instanceState!
+                            
+                            instances.append(instance)
+                        }
+                    }
+                    if instances.count == 0 {
+                        callback(error: NSError(domain: "AWS", code: 0, userInfo: [NSLocalizedDescriptionKey: "No instances found"]), account: nil)
+                    } else {
+                        account.instances = instances
+                        callback(error: nil, account: account)
+                    }
+                }
+                return nil
+            }
         }
     }
 

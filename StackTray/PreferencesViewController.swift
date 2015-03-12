@@ -23,21 +23,27 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
     }
     
     func didAddAccountAtIndex(accountController: AccountController, index: Int) {
-        accountTableView.insertRowsAtIndexes(NSIndexSet(index: index), withAnimation: .SlideDown)
-        accountTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: true)
-        accountTableView.scrollRowToVisible(index)
-        accountDetailViewController.accountIndex = index
-        updateViewVisibility()
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.accountTableView.insertRowsAtIndexes(NSIndexSet(index: index), withAnimation: .SlideDown)
+            self.accountTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: true)
+            self.accountTableView.scrollRowToVisible(index)
+            self.accountDetailViewController.accountIndex = index
+            self.updateViewVisibility()
+        }
     }
     
     func didDeleteAccountAtIndex(accountController: AccountController, index: Int) {
-        accountTableView.removeRowsAtIndexes(NSIndexSet(index: index), withAnimation: .SlideDown)
-        updateViewVisibility()
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.accountTableView.removeRowsAtIndexes(NSIndexSet(index: index), withAnimation: .SlideDown)
+            self.updateViewVisibility()
+        }
     }
     
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int) {
-        accountTableView.reloadDataForRowIndexes(NSIndexSet(index: index), columnIndexes: NSIndexSet(index: 0))
-        accountDetailViewController.accountIndex = index
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.accountTableView.reloadDataForRowIndexes(NSIndexSet(index: index), columnIndexes: NSIndexSet(index: 0))
+            self.accountDetailViewController.accountIndex = index
+        }
     }
 
     /* Accounts TableView */
@@ -246,15 +252,31 @@ class AccountDetailViewController : NSViewController {
 class AccountCellView: NSTableCellView {
     @IBOutlet weak var thumbnailView: NSImageView!
     @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var instancesLabel: NSTextField!
     
     var account: Account? {
         didSet {
             if let a = account {
                 titleLabel.stringValue = a.name
                 thumbnailView.image = NSImage(named: a.accountType.imageName)
+
+                //Update the instances
+                let instancesString = a.instances.count == 1 ? "instance" : "instances"
+                instancesLabel.stringValue = "\(a.instances.count) \(instancesString)"
             }
         }
     }
+    
+    override var backgroundStyle: NSBackgroundStyle {
+        didSet {
+            println("Updated background Style: \(backgroundStyle.rawValue)")
+            if let row = self.superview as? NSTableRowView {
+                println("Is selected: \(row.selected)")
+                titleLabel.textColor = row.selected ? NSColor.whiteColor() : NSColor.blackColor()
+            }
+        }
+    }
+
 }
 
 //MARK - Add Account View
@@ -362,7 +384,9 @@ class AddAccountViewController : NSViewController {
     }
     
     @IBAction func closeSheet(sender: AnyObject) {
-        dismissViewController(self)
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.dismissViewController(self)
+        }
     }
     
 }
