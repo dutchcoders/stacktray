@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import StackTrayKit
 
 /** Class that controls the Preferences */
 class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, AccountControllerObserver {
@@ -48,17 +47,6 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
         }
     }
 
-    @IBOutlet weak var detailBackgroundView: BackgroundView!
-    
-    /** The detailview of the settings controller */
-    @IBOutlet weak var detailView: BackgroundView! {
-        didSet {
-            //227
-            let gray: CGFloat = 227/255
-            detailView.color = NSColor(red: gray, green: gray, blue: gray, alpha: 1)
-        }
-    }
-    
     /** Number of rows */
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         if accountController == nil {

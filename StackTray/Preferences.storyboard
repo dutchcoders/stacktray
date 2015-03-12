@@ -165,52 +165,75 @@
                                     <constraint firstItem="Gxo-EI-PRi" firstAttribute="leading" secondItem="PDk-K7-6NZ" secondAttribute="leading" id="w5E-LU-NEm"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="FU1-UG-03p" customClass="BackgroundView" customModule="StackTray" customModuleProvider="target">
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7x-cn-Fou">
                                 <rect key="frame" x="228" y="30" width="346" height="214"/>
-                                <subviews>
-                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="tXw-4o-d0y" userLabel="Add new account">
-                                        <rect key="frame" x="0.0" y="0.0" width="346" height="214"/>
-                                        <connections>
-                                            <segue destination="VEH-u4-2e8" kind="embed" identifier="addAccountsVC" id="e90-5O-ZrS"/>
-                                        </connections>
-                                    </containerView>
-                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="vri-I1-RTR" userLabel="Account detail">
-                                        <rect key="frame" x="0.0" y="0.0" width="346" height="214"/>
-                                        <connections>
-                                            <segue destination="it9-bQ-i1x" kind="embed" identifier="accountDetailVC" id="epY-Et-mqO"/>
-                                        </connections>
-                                    </containerView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="tXw-4o-d0y" firstAttribute="top" secondItem="FU1-UG-03p" secondAttribute="top" id="412-Vf-rSu"/>
-                                    <constraint firstAttribute="trailing" secondItem="vri-I1-RTR" secondAttribute="trailing" id="7Wd-sH-WsY"/>
-                                    <constraint firstAttribute="trailing" secondItem="tXw-4o-d0y" secondAttribute="trailing" id="Btt-rq-gaA"/>
-                                    <constraint firstAttribute="bottom" secondItem="vri-I1-RTR" secondAttribute="bottom" id="IcL-rk-C7z"/>
-                                    <constraint firstAttribute="bottom" secondItem="tXw-4o-d0y" secondAttribute="bottom" id="SUf-mO-bI6"/>
-                                    <constraint firstItem="tXw-4o-d0y" firstAttribute="leading" secondItem="FU1-UG-03p" secondAttribute="leading" id="To1-lZ-EPk"/>
-                                    <constraint firstItem="vri-I1-RTR" firstAttribute="top" secondItem="FU1-UG-03p" secondAttribute="top" id="o3G-sr-7Nv"/>
-                                    <constraint firstItem="vri-I1-RTR" firstAttribute="leading" secondItem="FU1-UG-03p" secondAttribute="leading" id="tUU-2C-SYt"/>
-                                </constraints>
-                            </customView>
+                                <clipView key="contentView" id="ysV-sp-svS">
+                                    <rect key="frame" x="1" y="1" width="181" height="94"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="bvJ-Zb-Uks">
+                                            <rect key="frame" x="0.0" y="0.0" width="344" height="212"/>
+                                            <subviews>
+                                                <containerView translatesAutoresizingMaskIntoConstraints="NO" id="tXw-4o-d0y" userLabel="Add new account">
+                                                    <rect key="frame" x="0.0" y="0.0" width="344" height="212"/>
+                                                    <connections>
+                                                        <segue destination="VEH-u4-2e8" kind="embed" identifier="addAccountsVC" id="e90-5O-ZrS"/>
+                                                    </connections>
+                                                </containerView>
+                                                <containerView translatesAutoresizingMaskIntoConstraints="NO" id="vri-I1-RTR" userLabel="Account detail">
+                                                    <rect key="frame" x="0.0" y="0.0" width="344" height="212"/>
+                                                    <connections>
+                                                        <segue destination="it9-bQ-i1x" kind="embed" identifier="accountDetailVC" id="epY-Et-mqO"/>
+                                                    </connections>
+                                                </containerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="vri-I1-RTR" secondAttribute="bottom" id="0fk-gI-bz3"/>
+                                                <constraint firstItem="vri-I1-RTR" firstAttribute="leading" secondItem="bvJ-Zb-Uks" secondAttribute="leading" id="2qP-fW-poQ"/>
+                                                <constraint firstItem="tXw-4o-d0y" firstAttribute="top" secondItem="bvJ-Zb-Uks" secondAttribute="top" id="Ecu-Nz-ZSM"/>
+                                                <constraint firstItem="vri-I1-RTR" firstAttribute="top" secondItem="bvJ-Zb-Uks" secondAttribute="top" id="Nl4-Pe-sMj"/>
+                                                <constraint firstAttribute="trailing" secondItem="vri-I1-RTR" secondAttribute="trailing" id="daV-vc-JFa"/>
+                                                <constraint firstItem="tXw-4o-d0y" firstAttribute="leading" secondItem="bvJ-Zb-Uks" secondAttribute="leading" id="hoy-i9-q1N"/>
+                                                <constraint firstAttribute="bottom" secondItem="tXw-4o-d0y" secondAttribute="bottom" id="mc3-al-hg1"/>
+                                                <constraint firstAttribute="trailing" secondItem="tXw-4o-d0y" secondAttribute="trailing" id="sfY-CF-Whp"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="bvJ-Zb-Uks" secondAttribute="trailing" id="Eoy-3w-Yh3"/>
+                                        <constraint firstItem="bvJ-Zb-Uks" firstAttribute="leading" secondItem="ysV-sp-svS" secondAttribute="leading" id="LQZ-qT-gSn"/>
+                                        <constraint firstItem="bvJ-Zb-Uks" firstAttribute="top" secondItem="ysV-sp-svS" secondAttribute="top" id="Pxl-Ik-O22"/>
+                                        <constraint firstAttribute="bottom" secondItem="bvJ-Zb-Uks" secondAttribute="bottom" id="jRC-h3-Dup"/>
+                                    </constraints>
+                                    <color key="backgroundColor" name="controlHighlightColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="Ef6-15-6rz">
+                                    <rect key="frame" x="1" y="79" width="181" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="23F-eu-clo">
+                                    <rect key="frame" x="166" y="1" width="16" height="94"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="bsX-Sc-U1x" firstAttribute="top" secondItem="udz-nm-QIP" secondAttribute="top" constant="10" id="0Mu-bf-Npe"/>
-                            <constraint firstAttribute="bottom" secondItem="FU1-UG-03p" secondAttribute="bottom" constant="30" id="36v-hQ-zlH"/>
                             <constraint firstAttribute="bottom" secondItem="PDk-K7-6NZ" secondAttribute="bottom" constant="10" id="72e-hi-qzh"/>
-                            <constraint firstAttribute="trailing" secondItem="FU1-UG-03p" secondAttribute="trailing" constant="20" id="7B5-Ew-tGO"/>
                             <constraint firstAttribute="trailing" secondItem="bsX-Sc-U1x" secondAttribute="trailing" constant="20" id="BZ3-sn-EKh"/>
                             <constraint firstItem="bsX-Sc-U1x" firstAttribute="leading" secondItem="udz-nm-QIP" secondAttribute="leading" constant="20" id="Crf-hy-07C"/>
+                            <constraint firstAttribute="bottom" secondItem="v7x-cn-Fou" secondAttribute="bottom" constant="30" id="IL2-fQ-9N8"/>
+                            <constraint firstAttribute="trailing" secondItem="v7x-cn-Fou" secondAttribute="trailing" constant="20" id="M0a-76-Iye"/>
+                            <constraint firstItem="v7x-cn-Fou" firstAttribute="top" secondItem="bsX-Sc-U1x" secondAttribute="bottom" constant="8" id="OSo-P4-Nx6"/>
                             <constraint firstItem="PDk-K7-6NZ" firstAttribute="top" secondItem="bsX-Sc-U1x" secondAttribute="bottom" constant="8" id="YkO-W7-2lI"/>
+                            <constraint firstItem="v7x-cn-Fou" firstAttribute="leading" secondItem="PDk-K7-6NZ" secondAttribute="trailing" constant="8" id="hkz-fX-mq1"/>
                             <constraint firstItem="PDk-K7-6NZ" firstAttribute="leading" secondItem="udz-nm-QIP" secondAttribute="leading" constant="20" id="oJ4-O7-EnP"/>
-                            <constraint firstItem="FU1-UG-03p" firstAttribute="leading" secondItem="PDk-K7-6NZ" secondAttribute="trailing" constant="8" id="sl3-vP-2xt"/>
-                            <constraint firstItem="FU1-UG-03p" firstAttribute="top" secondItem="bsX-Sc-U1x" secondAttribute="bottom" constant="8" id="zTD-hR-uUc"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="accountTableView" destination="qlP-cP-b76" id="wAq-Mj-Fbc"/>
                         <outlet property="addAccountButton" destination="lP7-nz-A3y" id="bYn-zj-ddh"/>
                         <outlet property="deleteAccountButton" destination="NIY-Oj-vvV" id="cQ4-Rz-vhV"/>
-                        <outlet property="detailView" destination="FU1-UG-03p" id="KZA-oW-ojW"/>
                     </connections>
                 </viewController>
                 <customObject id="6v7-pa-sTN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
