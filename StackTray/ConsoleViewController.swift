@@ -9,6 +9,7 @@
 import Cocoa
 
 class ConsoleViewController: NSViewController {
+    var accountController: AccountController!
     var account: Account!
     var instance: Instance!
 
@@ -20,8 +21,21 @@ class ConsoleViewController: NSViewController {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        
+        self.reloadForAccount()
+    }
+    
+    func reloadForAccount(){
         self.view.window?.title = "Console for \(account.name) (\(instance.name))"
+        
+        accountController.fetchConsoleOutput(account, instance: instance) { (error, output) -> Void in
+            if error != nil {
+                NSApplication.sharedApplication().presentError(error!)
+            } else {
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    self.textView.string = output
+                })
+            }
+        }
     }
     
 }

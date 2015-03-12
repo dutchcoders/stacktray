@@ -28,6 +28,9 @@ public protocol AccountConnector {
     func stopInstance(account: Account, instance: Instance, callback: (error: NSError?)->Void)
     /** Reboot instance */
     func rebootInstance(account: Account, instance: Instance, callback: (error: NSError?)->Void)
+    /** Fetch the output from a console */
+    func fetchConsoleOutput(account: Account, instance: Instance, callback: (error: NSError?, output: String?) -> Void)
+
 }
 
 /** Is in charge of accounts */
@@ -238,6 +241,18 @@ public class AccountController: NSObject {
             callback(error: createUnknownAccountTypeError(account))
         }
     }
+    
+    func fetchConsoleOutput(account: Account, instance: Instance, callback: (error: NSError?, output: String?) -> Void){
+        let index = find(accounts, account)
+        if let connector = connectors[account.accountType] {
+            requestQueue.addOperationWithBlock({ () -> Void in
+                connector.fetchConsoleOutput(account, instance: instance, callback: callback)
+            })
+        } else {
+            callback(error: createUnknownAccountTypeError(account), output: nil)
+        }
+
+    }
 
     /** Utility function for unknown account types */
     func createUnknownAccountTypeError(account: Account) -> NSError {
@@ -316,6 +331,13 @@ public class DummyAccountConnector: NSObject, AccountConnector {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             sleep(1)
             callback(error: nil)
+        }
+    }
+    
+    public func fetchConsoleOutput(account: Account, instance: Instance, callback: (error: NSError?, output: String?) -> Void) {
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            sleep(1)
+            callback(error: nil, output: "")
         }
     }
 }
@@ -435,6 +457,30 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                 return nil
             }
         }
+    }
+    
+    public func fetchConsoleOutput(account: Account, instance: Instance, callback: (error: NSError?, output: String?) -> Void){
+        let aws = account as AWSAccount
+        let (error, awsConnection) = createAwsConnection(aws)
+        if error != nil {
+            callback(error: error, output: nil)
+        } else {
+            let consoleRequest = AWSEC2GetConsoleOutputRequest()
+            consoleRequest.instanceId = instance.instanceId
+            awsConnection?.getConsoleOutput(consoleRequest).continueWithBlock { (task) -> AnyObject! in
+                if task.error != nil {
+                    callback(error: task.error, output: nil)
+                } else {
+                    let result = task.result as AWSEC2GetConsoleOutputResult
+                    println("Result: \(result.output)")
+                    let nsdata: NSData = NSData(base64EncodedString: result.output, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                    let base64Decoded: NSString = NSString(data: nsdata, encoding: NSUTF8StringEncoding)!
+                    callback(error: nil, output: base64Decoded)
+                }
+                return nil
+            }
+        }
+
     }
     
     /** Create an AWS Account */

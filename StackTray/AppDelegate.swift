@@ -215,8 +215,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         println("Show Console for \(menuItem.instance.instanceId)")
         
         if let consoleView = console.contentViewController as? ConsoleViewController {
+            consoleView.accountController = accountController
             consoleView.account = menuItem.account
             consoleView.instance = menuItem.instance
+            consoleView.reloadForAccount()
         }
         
         console.showWindow(self)
@@ -224,9 +226,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         //Focus on window
         NSApp.activateIgnoringOtherApps(true)
         console.window!.makeKeyAndOrderFront(nil)
-
         
-
+        
     }
     
     
