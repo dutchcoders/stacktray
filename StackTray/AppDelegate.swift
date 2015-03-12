@@ -40,6 +40,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         return window
         }()
     
+    //Preferences
+    lazy var console : NSWindowController = {
+        let window = NSStoryboard(name: "Console", bundle: nil)?.instantiateInitialController() as NSWindowController
+        return window
+        }()
+    
     /** App Menu */
     lazy var appMenu: AppMenu = {
         let menu = AppMenu()
@@ -196,11 +202,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     /** Reboot an instance */
     func reboot(menuItem: InstanceActionMenuItem){
         println("Reboot \(menuItem.instance.instanceId)")
+        
+        accountController.rebootInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
+            if error != nil {
+                NSApplication.sharedApplication().presentError(error!)
+            }
+        }
     }
     
     /** Show the console of an instance */
     func console(menuItem: InstanceActionMenuItem){
         println("Show Console for \(menuItem.instance.instanceId)")
+        
+        if let consoleView = console.contentViewController as? ConsoleViewController {
+            consoleView.account = menuItem.account
+            consoleView.instance = menuItem.instance
+        }
+        
+        console.showWindow(self)
+        
+        //Focus on window
+        NSApp.activateIgnoringOtherApps(true)
+        console.window!.makeKeyAndOrderFront(nil)
+
+        
+
     }
     
     

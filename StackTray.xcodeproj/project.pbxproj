@@ -26,6 +26,8 @@
 		45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68E1AAE160B0080DEEC /* Stack.swift */; };
 		45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68F1AAE160B0080DEEC /* StackTray.xcdatamodeld */; };
 		45D8B6991AAE64650080DEEC /* AddAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D8B6981AAE64650080DEEC /* AddAccountCell.xib */; };
+		45E403DE1AB1420100DF62CC /* ConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E403DD1AB1420100DF62CC /* ConsoleViewController.swift */; };
+		45E403E01AB1421000DF62CC /* Console.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45E403DF1AB1421000DF62CC /* Console.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +82,8 @@
 		45D8B6941AAE160B0080DEEC /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		45D8B6981AAE64650080DEEC /* AddAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddAccountCell.xib; sourceTree = "<group>"; };
 		45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StackTray-Bridging-Header.h"; sourceTree = "<group>"; };
+		45E403DD1AB1420100DF62CC /* ConsoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleViewController.swift; sourceTree = "<group>"; };
+		45E403DF1AB1421000DF62CC /* Console.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Console.storyboard; sourceTree = "<group>"; };
 		4C2617974971310283D2D4F4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7B4932D74C135E6DC54C2B5A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -131,6 +135,8 @@
 				450F83701AAE152300E49B38 /* AppDelegate.swift */,
 				450F83901AAE155E00E49B38 /* AppMenu.swift */,
 				450F838F1AAE155E00E49B38 /* BackgroundView.swift */,
+				45E403DF1AB1421000DF62CC /* Console.storyboard */,
+				45E403DD1AB1420100DF62CC /* ConsoleViewController.swift */,
 				459DC4031AB11FFC00B0C8B1 /* Controllers */,
 				450F83741AAE152300E49B38 /* Images.xcassets */,
 				45D8B68C1AAE160B0080DEEC /* Import */,
@@ -300,6 +306,7 @@
 			files = (
 				45D8B6991AAE64650080DEEC /* AddAccountCell.xib in Resources */,
 				450F83921AAE155E00E49B38 /* Preferences.storyboard in Resources */,
+				45E403E01AB1421000DF62CC /* Console.storyboard in Resources */,
 				450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */,
 				450F83751AAE152300E49B38 /* Images.xcassets in Resources */,
 				450F83781AAE152300E49B38 /* Main.storyboard in Resources */,
@@ -355,6 +362,7 @@
 			files = (
 				459DC40A1AB11FFC00B0C8B1 /* Instance.swift in Sources */,
 				450F83711AAE152300E49B38 /* AppDelegate.swift in Sources */,
+				45E403DE1AB1420100DF62CC /* ConsoleViewController.swift in Sources */,
 				45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */,
 				45D8B6951AAE160B0080DEEC /* ImportController.swift in Sources */,
 				459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */,
