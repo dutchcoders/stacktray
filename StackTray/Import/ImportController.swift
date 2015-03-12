@@ -8,7 +8,6 @@
 
 import Cocoa
 import CoreData
-import StackTrayKit
 
 public class ImportController: NSObject {
     ///Users/ruben/Library/Containers/io.dutchcoders.stacktray/Data/Documents/StackTray.sqlite

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import STKit
+import StackTray
 
 class ModelTests: XCTestCase {
 

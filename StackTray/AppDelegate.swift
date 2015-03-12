@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import StackTrayKit
 //import AWSiOSSDKv2
 
 @NSApplicationMain

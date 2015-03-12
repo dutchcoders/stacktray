@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import StackTrayKit
 
 /** DataSource for the app menu */
 protocol AppMenuDataSource {

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import STKit
+import StackTray
 
 
 class AccountControllerTests: XCTestCase {
@@ -164,9 +164,16 @@ class AccountControllerTests: XCTestCase {
         
         let dummy2 = accountController.accounts[0]
         dummy2.name = account2Name
-//        accountController.updateAccountAtIndex(0, account: dummy2)
         
+        let expectation2 = expectationWithDescription("Update Dummy Account")
+
+        accountController.updateAccountAtIndex(0, account: dummy2) { (error, account) -> Void in
+            expectation2.fulfill()
+        }
         
+        waitForExpectationsWithTimeout(5, handler: { (error) -> Void in
+        })
+
         //Reset account controller
         accountController = AccountController(rootURL: rootURL)
         XCTAssertEqual(1, accountController.accounts.count)

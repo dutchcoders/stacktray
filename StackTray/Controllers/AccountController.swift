@@ -202,6 +202,25 @@ public class DummyAccountConnector: NSObject, AccountConnector {
 
 /** AWS Account Controller for dev purposes only */
 public class AWSAccountConnector: NSObject, AccountConnector {
+    override init(){
+//        let cognitoAccountId = ""
+//        let cognitoIdentityPoolId = ""
+//        let cognitoUnauthRoleArn = ""
+//        let cognitoAuthRoleArn = ""
+//        let credentialsProvider = AWSCognitoCredentialsProvider.credentialsWithRegionType(
+//            AWSRegionType.USEast1,
+//            accountId: cognitoAccountId,
+//            identityPoolId: cognitoIdentityPoolId,
+//            unauthRoleArn: cognitoUnauthRoleArn,
+//            authRoleArn: cognitoAuthRoleArn)
+//        let defaultServiceConfiguration = AWSServiceConfiguration(
+//            region: AWSRegionType.USEast1,
+//            credentialsProvider: credentialsProvider)
+//        AWSServiceManager.defaultServiceManager().setDefaultServiceConfiguration(defaultServiceConfiguration)
+
+        super.init()
+    }
+    
     public func createAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void) {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             sleep(1)
