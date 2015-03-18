@@ -9,13 +9,13 @@
 import Cocoa
 
 /** Class that controls the Preferences */
-class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, AccountControllerObserver {
+class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate, AccountControllerObserver {
 
     /** Account Controller */
     var accountController: AccountController! {
         didSet {
             accountController.addAccountControllerObserver(self)
-            accountTableView.reloadData()
+            accountOutlineView.reloadData()
             
             addAccountsViewController.accountController = accountController
             accountDetailViewController.accountController = accountController
@@ -24,9 +24,7 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
     
     func didAddAccountAtIndex(accountController: AccountController, index: Int) {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.accountTableView.insertRowsAtIndexes(NSIndexSet(index: index), withAnimation: .SlideDown)
-            self.accountTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: true)
-            self.accountTableView.scrollRowToVisible(index)
+            self.accountOutlineView.reloadData()
             self.accountDetailViewController.accountIndex = index
             self.updateViewVisibility()
         }
@@ -34,14 +32,14 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
     
     func didDeleteAccountAtIndex(accountController: AccountController, index: Int) {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.accountTableView.removeRowsAtIndexes(NSIndexSet(index: index), withAnimation: .SlideDown)
+            self.accountOutlineView.reloadData()
             self.updateViewVisibility()
         }
     }
     
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int) {
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.accountTableView.reloadDataForRowIndexes(NSIndexSet(index: index), columnIndexes: NSIndexSet(index: 0))
+            self.accountOutlineView.reloadData()
             self.accountDetailViewController.accountIndex = index
         }
     }
@@ -53,6 +51,14 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
         }
     }
 
+    @IBOutlet weak var accountOutlineView: NSOutlineView! {
+        didSet {
+            accountOutlineView.registerNib(NSNib(nibNamed: "AccountCell", bundle: nil)!, forIdentifier: "account")
+            accountOutlineView.registerNib(NSNib(nibNamed: "InstanceCell", bundle: nil)!, forIdentifier: "instance")
+        }
+    }
+    
+    
     /** Number of rows */
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         if accountController == nil {
@@ -61,6 +67,22 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
         return accountController.accounts.count
     }
     
+    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView?
+    {
+        if let account = item as? Account {
+            if let view = outlineView.makeViewWithIdentifier("account", owner: self) as? AccountCellView {
+                view.account = account
+                return view
+            }
+        } else if let instance = item as? Instance {
+            if let view = outlineView.makeViewWithIdentifier("instance", owner: self) as? InstanceCellView {
+                view.instance = instance
+                return view
+            }
+        }
+        return nil
+    }
+        
     /** View for accounts table view */
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let view = tableView.makeViewWithIdentifier("account", owner: self) as? AccountCellView {
@@ -71,9 +93,66 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
         }
     }
     
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+        if accountController == nil {
+            return 0
+        }
+        
+        if let account = item as? Account {
+            return account.instances.count
+        } else {
+            return accountController.accounts.count
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject{
+        if let account = item as? Account {
+            return account.instances[index]
+        } else {
+            return accountController.accounts[index]
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+        if let account = item as? Account {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /* NOTE: this method is optional for the View Based OutlineView.
+    */
+    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item:
+        AnyObject?) -> AnyObject?{
+            if let account = item as? Account {
+                return account.name
+            } else if let instance = item as? Instance{
+                return instance.name
+            } else {
+                return nil
+            }
+    }
+    
+    func outlineViewSelectionDidChange(notification: NSNotification) {
+        if let outlineView = notification.object as? NSOutlineView {
+            if let account = outlineView.itemAtRow(outlineView.selectedRow) as? Account {
+                if let index = find(accountController.accounts, account){
+                    accountDetailViewController.accountIndex = index
+                }
+                accountDetailViewController.editAccountsViewController = addAccountsViewController
+            } else if let instance = outlineView.itemAtRow(outlineView.selectedRow) as? Instance {
+                
+            }
+        }
+        updateViewVisibility()
+
+    }
+    
     //MARK - Buttons
     let addAccountsVCSegue = "addAccountsVC" //The segue to the actual viewcontroller
     let accountDetailVCSegue = "accountDetailVC" //The segue to the detail viewcontroller
+    let instanceDetailVCSegue = "instanceDetailVC" //The segue to the instance detail
     
     private var addAccountsViewController: AddAccountsViewController! {
         didSet {
@@ -84,6 +163,12 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
     private var accountDetailViewController: AccountDetailViewController! {
         didSet {
             accountDetailViewController.accountController = accountController
+        }
+    }
+    
+    private var instanceDetailViewController: InstanceDetailViewController! {
+        didSet {
+            instanceDetailViewController.accountController = accountController
         }
     }
     
@@ -136,10 +221,21 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
         If not, show the add account controller
     */
     func updateViewVisibility(){
-        let rowSelected = accountTableView.selectedRow >= 0
+        let rowSelected = accountOutlineView.selectedRow >= 0
         
+        accountDetailViewController.view.hidden = true
+        instanceDetailViewController.view.hidden = true
+        
+        if rowSelected {
+            let object: AnyObject? = accountOutlineView.itemAtRow(accountOutlineView.selectedRow)
+            if let account = object as? Account {
+                accountDetailViewController.view.hidden = false
+            } else if let instance = object as? Instance {
+                instanceDetailViewController.view.hidden = false
+            }
+            
+        }
         addAccountsViewController.view.hidden = rowSelected
-        accountDetailViewController.view.hidden = !rowSelected
         addAccountButton.enabled = rowSelected
         deleteAccountButton.enabled = rowSelected
     }
@@ -150,6 +246,8 @@ class PreferencesViewController: NSViewController, NSTableViewDataSource, NSTabl
             addAccountsViewController = segue.destinationController as AddAccountsViewController
         } else if segue.identifier == accountDetailVCSegue {
             accountDetailViewController = segue.destinationController as AccountDetailViewController
+        } else if segue.identifier == instanceDetailVCSegue{
+            instanceDetailViewController = segue.destinationController as InstanceDetailViewController
         }
     }
 }
@@ -220,6 +318,12 @@ class AddAccountCellView: NSTableCellView {
     }
 }
 
+class InstanceDetailViewController : NSViewController {
+    var accountController: AccountController!
+    var accountIndex: Int?
+    var instanceIndex: Int?
+}
+
 /** Controller to view account details */
 class AccountDetailViewController : NSViewController {
     var accountController: AccountController!
@@ -259,24 +363,44 @@ class AccountCellView: NSTableCellView {
             if let a = account {
                 titleLabel.stringValue = a.name
                 thumbnailView.image = NSImage(named: a.accountType.imageName)
-
+                
                 //Update the instances
-                let instancesString = a.instances.count == 1 ? "instance" : "instances"
-                instancesLabel.stringValue = "\(a.instances.count) \(instancesString)"
+//                let instancesString = a.instances.count == 1 ? "instance" : "instances"
+//                instancesLabel.stringValue = "\(a.instances.count) \(instancesString)"
             }
         }
     }
     
     override var backgroundStyle: NSBackgroundStyle {
         didSet {
-            println("Updated background Style: \(backgroundStyle.rawValue)")
             if let row = self.superview as? NSTableRowView {
-                println("Is selected: \(row.selected)")
                 titleLabel.textColor = row.selected ? NSColor.whiteColor() : NSColor.blackColor()
             }
         }
     }
+    
+}
 
+/** Cell that represents an instance */
+class InstanceCellView: NSTableCellView {
+    @IBOutlet weak var titleLabel: NSTextField!
+    
+    var instance: Instance? {
+        didSet {
+            if let i = instance {
+                titleLabel.stringValue = i.name
+            }
+        }
+    }
+    
+    override var backgroundStyle: NSBackgroundStyle {
+        didSet {
+            if let row = self.superview as? NSTableRowView {
+                titleLabel.textColor = row.selected ? NSColor.whiteColor() : NSColor.blackColor()
+            }
+        }
+    }
+    
 }
 
 //MARK - Add Account View

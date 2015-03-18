@@ -17,6 +17,7 @@
 		450F83941AAE155E00E49B38 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F838F1AAE155E00E49B38 /* BackgroundView.swift */; };
 		450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F83901AAE155E00E49B38 /* AppMenu.swift */; };
 		450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450F83911AAE155E00E49B38 /* AccountCell.xib */; };
+		453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FCB6E1AB91239001AB85F /* InstanceCell.xib */; };
 		459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4041AB11FFC00B0C8B1 /* AccountController.swift */; };
 		459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4061AB11FFC00B0C8B1 /* Account.swift */; };
 		459DC40A1AB11FFC00B0C8B1 /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4071AB11FFC00B0C8B1 /* Instance.swift */; };
@@ -68,6 +69,7 @@
 		450F838F1AAE155E00E49B38 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		450F83901AAE155E00E49B38 /* AppMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		450F83911AAE155E00E49B38 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
+		453FCB6E1AB91239001AB85F /* InstanceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstanceCell.xib; sourceTree = "<group>"; };
 		459DC4041AB11FFC00B0C8B1 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountController.swift; sourceTree = "<group>"; };
 		459DC4061AB11FFC00B0C8B1 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		459DC4071AB11FFC00B0C8B1 /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				459DC4031AB11FFC00B0C8B1 /* Controllers */,
 				450F83741AAE152300E49B38 /* Images.xcassets */,
 				45D8B68C1AAE160B0080DEEC /* Import */,
+				453FCB6E1AB91239001AB85F /* InstanceCell.xib */,
 				450F83761AAE152300E49B38 /* Main.storyboard */,
 				459DC4051AB11FFC00B0C8B1 /* Models */,
 				450F838D1AAE155E00E49B38 /* Preferences.storyboard */,
@@ -308,6 +311,7 @@
 				450F83921AAE155E00E49B38 /* Preferences.storyboard in Resources */,
 				45E403E01AB1421000DF62CC /* Console.storyboard in Resources */,
 				450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */,
+				453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */,
 				450F83751AAE152300E49B38 /* Images.xcassets in Resources */,
 				450F83781AAE152300E49B38 /* Main.storyboard in Resources */,
 			);
