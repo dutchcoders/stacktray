@@ -61,4 +61,62 @@ class ModelTests: XCTestCase {
         XCTAssertEqual(AccountType.DUMMY, dummy2.accountType)
     }
     
+    func testArchiveAccountWithInstance(){
+        let aws = Account(name: account1Name, accountType: .DUMMY)
+        aws.instances = [Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)]
+        
+        let data = NSKeyedArchiver.archivedDataWithRootObject(aws)
+        
+        XCTAssertNotNil(data)
+        
+        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Account
+        XCTAssertEqual(account1Name, aws2.name)
+        XCTAssertEqual(AccountType.DUMMY, aws2.accountType)
+        XCTAssertEqual(1, aws2.instances.count)
+        let instance = aws2.instances[0]
+        XCTAssertEqual(instance1Name, instance.name)
+        XCTAssertEqual(instance1Id, instance.instanceId)
+        XCTAssertEqual(instance1Type, instance.type)
+        XCTAssertEqual(instance1PublicDnsName, instance.publicDnsName)
+        XCTAssertEqual(instance1PublicIpAddress, instance.publicIpAddress)
+        XCTAssertEqual(instance1PrivateDnsName, instance.privateDnsName)
+        XCTAssertEqual(instance1PrivateIpAddress, instance.privateIpAddress)
+    }
+    
+    func testArchiveAccountWithInstanceWithDate(){
+        let aws = Account(name: account1Name, accountType: .DUMMY)
+        aws.instances = [Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)]
+        let date = NSDate()
+        aws.instances[0].lastUpdate = date
+        
+        let data = NSKeyedArchiver.archivedDataWithRootObject(aws)
+        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Account
+        let instance = aws2.instances[0]
+        XCTAssertEqual(date, instance.lastUpdate!)
+    }
+    
+    func testInstanceEquality(){
+        let instance1 = Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)
+        let instance2 = Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)
+        XCTAssertEqual(instance1, instance2)
+    }
+    
+    func testInstanceWithUserId(){
+        let instance1 = Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)
+        instance1.userId = instance1UserId
+        let data = NSKeyedArchiver.archivedDataWithRootObject(instance1)
+        let instance2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Instance
+        
+        XCTAssertEqual(instance1UserId, instance2.userId!)
+    }
+    
+    func testInstanceWithPemlocation(){
+        let instance1 = Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)
+        instance1.pemLocation = instance1PemLocation
+        let data = NSKeyedArchiver.archivedDataWithRootObject(instance1)
+        let instance2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Instance
+        
+        XCTAssertEqual(instance1PemLocation, instance2.pemLocation!)
+    }
+    
 }

@@ -19,6 +19,7 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
             
             addAccountsViewController.accountController = accountController
             accountDetailViewController.accountController = accountController
+            instanceDetailViewController.accountController = accountController
         }
     }
     
@@ -42,6 +43,19 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
             self.accountOutlineView.reloadData()
             self.accountDetailViewController.accountIndex = index
         }
+    }
+    
+    //MARK - Instances
+    func didAddAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
+        
+    }
+    
+    func didUpdateAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
+        
+    }
+    
+    func didDeleteAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
+        
     }
 
     /* Accounts TableView */
@@ -183,10 +197,7 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
     @IBOutlet weak var deleteAccountButton: NSButton!
     @IBAction func deleteAccount(sender: AnyObject) {
         //Remove
-        let selectedRow = accountTableView.selectedRow
-        if selectedRow >= 0 {
-            let account = accountController.accounts[selectedRow]
-            
+        if let account = accountOutlineView.itemAtRow(accountOutlineView.selectedRow) as? Account {
             let alert = NSAlert()
             alert.addButtonWithTitle("Delete")
             alert.addButtonWithTitle("Cancel")
@@ -197,7 +208,7 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
             
             alert.beginSheetModalForWindow(view.window!, completionHandler: { (response) -> Void in
                 if response == NSAlertFirstButtonReturn {
-                    self.accountController.deleteAccountAtIndex(selectedRow)
+                    self.accountController.deleteAccountAtIndex(find(self.accountController.accounts, account)!)
                 }
             })
         }
@@ -231,6 +242,11 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
             if let account = object as? Account {
                 accountDetailViewController.view.hidden = false
             } else if let instance = object as? Instance {
+                let account = accountController.accountForInstance(instance)
+                
+                instanceDetailViewController.instanceIndex = find(account.instances, instance)!
+                instanceDetailViewController.accountIndex = find(accountController.accounts, account)!
+                
                 instanceDetailViewController.view.hidden = false
             }
             
@@ -320,8 +336,32 @@ class AddAccountCellView: NSTableCellView {
 
 class InstanceDetailViewController : NSViewController {
     var accountController: AccountController!
-    var accountIndex: Int?
-    var instanceIndex: Int?
+    var accountIndex: Int!
+    var instanceIndex: Int!
+    var instance: Instance {
+        return accountController.accounts[accountIndex].instances[instanceIndex!]
+    }
+    
+    @IBOutlet weak var pemLocation: NSTextField!
+    @IBOutlet weak var userId: NSTextField!
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        if instanceIndex != nil {
+            println("InstanceId: \(instance.name)")
+        }
+    }
+    
+    @IBAction func browse(sender: AnyObject) {
+    }
+    
+    @IBAction func stopInstance(sender: AnyObject) {
+    }
+    @IBAction func restartInstance(sender: AnyObject) {
+    }
+    
+    @IBAction func showConsole(sender: AnyObject) {
+    }
 }
 
 /** Controller to view account details */

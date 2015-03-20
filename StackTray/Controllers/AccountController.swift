@@ -12,6 +12,13 @@ import Cocoa
     func didAddAccountAtIndex(accountController: AccountController, index: Int)
     func didDeleteAccountAtIndex(accountController: AccountController, index: Int)
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int)
+    
+    func didAddAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int)
+    func didUpdateAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int)
+    func didDeleteAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int)
+    
+    optional func instanceDidStart(accountController: AccountController, index: Int, instanceIndex: Int)
+    optional func instanceDidStop(accountController: AccountController, index: Int, instanceIndex: Int)
 }
 
 /** Protocol to control accounts of different services (AWS, iCloud...) */
@@ -34,10 +41,19 @@ public protocol AccountConnector {
 }
 
 /** Is in charge of accounts */
-public class AccountController: NSObject {
-    
+public class AccountController: NSObject, AccountDelegate {
+    /** Queue used for refreshing accounts */
     let requestQueue = NSOperationQueue()
+
+    /** Update interval for fetching data once in a while */
+    let updateInterval: NSTimeInterval = 60 /* minutes */ * 60 /* seconds */
     
+    /** Interval for refreshing (e.g. start/stop instance) */
+    let refreshInterval: NSTimeInterval = 1 /* seconds */
+    var refreshingInstances : [String] = []
+    var refreshTimer: NSTimer?
+    
+
     /** Map of account types to the connector */
     public let connectors : Dictionary<AccountType, AccountConnector> = [
         AccountType.AWS : AWSAccountConnector(),
@@ -74,6 +90,10 @@ public class AccountController: NSObject {
         }
         
         readAccounts()
+        
+        //Refresh the list once in a while
+        var timer = NSTimer.scheduledTimerWithTimeInterval(updateInterval, target: self, selector: Selector("refreshAccounts"), userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
     }
     
     /** Read the accounts from disk */
@@ -101,11 +121,54 @@ public class AccountController: NSObject {
     
     public func refreshAccounts(){
         for (index, account) in enumerate(accounts) {
+            account.delegate = self
             self.updateAccountAtIndex(index, account: account, callback: { (error, account) -> Void in
                 
             })
         }
     }
+    
+    public func didAddAccountInstance(account: Account, instanceIndex: Int) {
+        println("Did add account instance!!!")
+        notifyObservers { (observer) -> Void in
+            observer.didAddAccountInstance(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
+        }
+    }
+    
+    public func didUpdateAccountInstance(account: Account, instanceIndex: Int) {
+        println("Did update account instance!!!")
+        notifyObservers { (observer) -> Void in
+            observer.didUpdateAccountInstance(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
+        }
+    }
+    
+    public func didDeleteAccountInstance(account: Account, instanceIndex: Int) {
+        println("Did delete account instance!!!")
+        notifyObservers { (observer) -> Void in
+            observer.didDeleteAccountInstance(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
+        }
+    }
+    
+    public func instanceDidStart(account: Account, instanceIndex: Int){
+        stopRefreshTimerForInstance(account.instances[instanceIndex])
+
+        notifyObservers { (observer) -> Void in
+            if observer.instanceDidStart != nil {
+                observer.instanceDidStart!(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
+            }
+        }
+    }
+    
+    public func instanceDidStop(account: Account, instanceIndex: Int){
+        stopRefreshTimerForInstance(account.instances[instanceIndex])
+
+        notifyObservers { (observer) -> Void in
+            if observer.instanceDidStop != nil {
+                observer.instanceDidStop!(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
+            }
+        }
+    }
+
     
     /** Creates an account based on a template account */
     public func createAccount(account: Account, callback: (error: NSError?, account: Account?) -> Void){
@@ -189,6 +252,8 @@ public class AccountController: NSObject {
             requestQueue.addOperationWithBlock({ () -> Void in
                 connector.startInstance(account, instance: instance, callback: { (error) -> Void in
                     if error == nil {
+                        self.startRefrehTimerForInstance(instance)
+
                         self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
                             callback(error : error)
                         })
@@ -209,6 +274,8 @@ public class AccountController: NSObject {
             requestQueue.addOperationWithBlock({ () -> Void in
                 connector.stopInstance(account, instance: instance, callback: { (error) -> Void in
                     if error == nil {
+                        self.startRefrehTimerForInstance(instance)
+                        
                         self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
                             callback(error : error)
                         })
@@ -259,6 +326,13 @@ public class AccountController: NSObject {
         return NSError(domain: "AccountController", code: 0, userInfo: [NSLocalizedDescriptionKey : "Unknown type: \(account.accountType.description)"])
     }
     
+    func accountForInstance(instance: Instance) -> Account {
+        var filter = accounts.filter { (account) -> Bool in
+            return contains(account.instances, instance)
+        }
+        return filter[0]
+    }
+    
 
     //MARK: Observers
     
@@ -286,6 +360,54 @@ public class AccountController: NSObject {
                 }
             }
         }
+    }
+    
+    //MARK - Timer
+    /**
+    Start the refresh timer if need be (if refreshing queue is not empty and the timer is nil)
+    */
+    func startRefreshTimerIfNeeded(){
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            if self.refreshingInstances.isEmpty {
+                //If the refreshing instances is empty, consider to stop the timer
+                self.stopRefreshTimerIfNeeded()
+                return
+            } else if self.refreshTimer == nil {
+                self.refreshTimer = NSTimer.scheduledTimerWithTimeInterval(self.refreshInterval, target: self, selector: Selector("refreshAccounts"), userInfo: nil, repeats: true)
+                NSRunLoop.mainRunLoop().addTimer(self.refreshTimer!, forMode: NSRunLoopCommonModes)
+            }
+        }
+    }
+    
+    /**
+    Stop the refresh timer if need be (if refreshing queue is empty and the timer is not nil)
+    */
+    func stopRefreshTimerIfNeeded(){
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            if self.refreshingInstances.isEmpty {
+                if self.refreshTimer != nil {
+                    self.refreshTimer!.invalidate()
+                    self.refreshTimer = nil
+                }
+            }
+        }
+    }
+    
+    /** Stop the timer for an instance */
+    func stopRefreshTimerForInstance(instance: Instance){
+        if let index = find(refreshingInstances, instance.instanceId){
+            refreshingInstances.removeAtIndex(index)
+        }
+        
+        stopRefreshTimerIfNeeded()
+    }
+    
+    /** Start the timer for an instance */
+    func startRefrehTimerForInstance(instance: Instance){
+        if !contains(self.refreshingInstances, instance.instanceId){
+            self.refreshingInstances.append(instance.instanceId)
+        }
+        self.startRefreshTimerIfNeeded()
     }
 
 }
@@ -471,11 +593,12 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                 if task.error != nil {
                     callback(error: task.error, output: nil)
                 } else {
-                    let result = task.result as AWSEC2GetConsoleOutputResult
-                    println("Result: \(result.output)")
-                    let nsdata: NSData = NSData(base64EncodedString: result.output, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                    let base64Decoded: NSString = NSString(data: nsdata, encoding: NSUTF8StringEncoding)!
-                    callback(error: nil, output: base64Decoded)
+                    if let output = (task.result as AWSEC2GetConsoleOutputResult).output {
+                        println("Result: \(output)")
+                        let nsdata: NSData = NSData(base64EncodedString: output, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                        let base64Decoded: NSString = NSString(data: nsdata, encoding: NSUTF8StringEncoding)!
+                        callback(error: nil, output: base64Decoded)
+                    }
                 }
                 return nil
             }
@@ -510,16 +633,20 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                     println("Error: \(task.error)")
                     callback(error: task.error, account: nil)
                 } else {
-                    var instances : [Instance] = []
                     let result = task.result as AWSEC2DescribeInstancesResult
                     
+                    var existingInstanceIds = account.instances.map{ $0.instanceId }
+                    
+                    var atLeastOneInstance = false
+
                     for reservation in result.reservations as [AWSEC2Reservation] {
                         for instance in reservation.instances as [AWSEC2Instance]{
                             println("Found instance: \(instance.instanceId)")
+                            atLeastOneInstance = true
                             
                             var name = instance.instanceId
                             for tag in instance.tags as [AWSEC2Tag] {
-                                if tag.key() == "Name" {
+                                if tag.key() == "Name" && !tag.value().isEmpty {
                                     name = tag.value()
                                 }
                             }
@@ -537,13 +664,21 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                             let instance = Instance(name: name, instanceId: instanceId, type: instanceType, publicDnsName: publicDnsName == nil ? "" : publicDnsName, publicIpAddress: publicIpAddress == nil ? "" : publicIpAddress, privateDnsName: privateDnsName == nil ? "" : privateDnsName, privateIpAddress: privateIpAddress==nil ? "" : privateIpAddress)
                             instance.state = instanceState!
                             
-                            instances.append(instance)
+                            if let index = find(existingInstanceIds, instanceId){
+                                account.updateInstanceAtIndex(index, instance: instance)
+                                existingInstanceIds.removeAtIndex(index)
+                            } else {
+                                account.addInstance(instance)
+                            }
                         }
                     }
-                    if instances.count == 0 {
+
+                    //Remove that were not found
+                    account.removeInstances(existingInstanceIds)
+
+                    if !atLeastOneInstance {
                         callback(error: NSError(domain: "AWS", code: 0, userInfo: [NSLocalizedDescriptionKey: "No instances found"]), account: nil)
                     } else {
-                        account.instances = instances
                         callback(error: nil, account: account)
                     }
                 }
