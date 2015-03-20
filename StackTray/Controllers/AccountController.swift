@@ -55,7 +55,7 @@ public class AccountController: NSObject, AccountDelegate {
     let updateInterval: NSTimeInterval = 60 /* minutes */ * 60 /* seconds */
     
     /** Interval for refreshing (e.g. start/stop instance) */
-    let refreshInterval: NSTimeInterval = 1 /* seconds */
+    let refreshInterval: NSTimeInterval = 5 /* seconds */
     var refreshingInstances : [String] = []
     var refreshTimer: NSTimer?
     
