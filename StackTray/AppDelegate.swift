@@ -183,7 +183,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         pasteBoard.clearContents()
         pasteBoard.writeObjects([menuItem.title])
         
-        NotificationManager.sharedManager().showNotification("Saved to clipboard", informativeText: menuItem.title)
+        NotificationManager.sharedManager().showNotification("Copy to clipboard", informativeText: menuItem.title)
     }
     
     /** Connect to an instance */

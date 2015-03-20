@@ -169,7 +169,7 @@ class InstanceMenuItem: NSMenuItem {
         /** Clipboard */
         let clipBoardSelector = Selector("saveToClipboard:")
 
-        menu.addItemWithTitle("Clipboard", action: nil, keyEquivalent: "")
+        menu.addItemWithTitle("Copy to clipboard", action: nil, keyEquivalent: "")
         
         privateDnsMenuItem = menu.addItemWithTitle("", action: clipBoardSelector, keyEquivalent: "")!
         privateIpMenuItem = menu.addItemWithTitle("", action: clipBoardSelector, keyEquivalent: "")!
