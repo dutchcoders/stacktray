@@ -916,9 +916,9 @@ Gw
                                             </textFieldCell>
                                         </textField>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="obc-Aa-KR8">
-                                            <rect key="frame" x="325" y="7" width="82" height="32"/>
+                                            <rect key="frame" x="295" y="7" width="112" height="32"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="70" id="bxe-cV-f77"/>
+                                                <constraint firstAttribute="width" constant="100" id="bxe-cV-f77"/>
                                                 <constraint firstAttribute="height" constant="21" id="oaD-D4-ikZ"/>
                                             </constraints>
                                             <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kVl-h5-eaC">
@@ -926,7 +926,17 @@ Gw
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="browse:" target="oRF-4g-ymE" id="KJR-Ui-SpT"/>
+                                                <action selector="save:" target="oRF-4g-ymE" id="Kp8-uX-vKj"/>
+                                            </connections>
+                                        </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nrx-ME-xTJ">
+                                            <rect key="frame" x="185" y="7" width="112" height="32"/>
+                                            <buttonCell key="cell" type="push" title="Browse..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pKl-wp-qqN">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="browse:" target="oRF-4g-ymE" id="8Le-rK-KUr"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -937,15 +947,19 @@ Gw
                                     <constraint firstItem="ayk-q3-kaU" firstAttribute="leading" secondItem="0H8-x1-VCB" secondAttribute="trailing" constant="10" id="91u-yc-RtT"/>
                                     <constraint firstItem="V0U-r9-7Y1" firstAttribute="centerY" secondItem="qge-kl-fT3" secondAttribute="centerY" id="D76-a3-3Jh"/>
                                     <constraint firstItem="0H8-x1-VCB" firstAttribute="centerY" secondItem="ayk-q3-kaU" secondAttribute="centerY" id="II2-LI-Kbg"/>
+                                    <constraint firstItem="Nrx-ME-xTJ" firstAttribute="centerY" secondItem="obc-Aa-KR8" secondAttribute="centerY" id="Iuk-rz-HWX"/>
                                     <constraint firstItem="V0U-r9-7Y1" firstAttribute="leading" secondItem="SOS-ur-Jhq" secondAttribute="leading" constant="10" id="JMp-fc-l2G"/>
                                     <constraint firstItem="ayk-q3-kaU" firstAttribute="trailing" secondItem="qge-kl-fT3" secondAttribute="trailing" id="Jtg-r1-GrE"/>
                                     <constraint firstItem="ayk-q3-kaU" firstAttribute="height" secondItem="qge-kl-fT3" secondAttribute="height" id="KLO-5t-TYL"/>
                                     <constraint firstItem="obc-Aa-KR8" firstAttribute="top" secondItem="ayk-q3-kaU" secondAttribute="bottom" constant="5" id="OS9-mU-DhK"/>
                                     <constraint firstItem="V0U-r9-7Y1" firstAttribute="top" secondItem="SOS-ur-Jhq" secondAttribute="top" constant="20" id="ZCq-X4-7Xi"/>
+                                    <constraint firstItem="Nrx-ME-xTJ" firstAttribute="height" secondItem="obc-Aa-KR8" secondAttribute="height" id="ZLG-jA-aKS"/>
                                     <constraint firstItem="obc-Aa-KR8" firstAttribute="trailing" secondItem="ayk-q3-kaU" secondAttribute="trailing" constant="-1" id="ixx-fE-D8i"/>
+                                    <constraint firstItem="obc-Aa-KR8" firstAttribute="leading" secondItem="Nrx-ME-xTJ" secondAttribute="trailing" constant="10" id="jw1-JJ-TBx"/>
                                     <constraint firstItem="0H8-x1-VCB" firstAttribute="leading" secondItem="V0U-r9-7Y1" secondAttribute="leading" id="kW0-Tw-cmw"/>
                                     <constraint firstItem="0H8-x1-VCB" firstAttribute="top" secondItem="V0U-r9-7Y1" secondAttribute="bottom" constant="16" id="rro-TL-B8h"/>
                                     <constraint firstAttribute="height" constant="110" id="u3a-wd-p0Y"/>
+                                    <constraint firstItem="Nrx-ME-xTJ" firstAttribute="width" secondItem="obc-Aa-KR8" secondAttribute="width" id="x4f-e7-Cyq"/>
                                     <constraint firstAttribute="trailing" secondItem="qge-kl-fT3" secondAttribute="trailing" constant="10" id="yQj-lD-oNy"/>
                                     <constraint firstItem="0H8-x1-VCB" firstAttribute="trailing" secondItem="V0U-r9-7Y1" secondAttribute="trailing" id="zmo-IU-pB3"/>
                                 </constraints>

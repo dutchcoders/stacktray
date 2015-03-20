@@ -63,9 +63,13 @@ public class AccountController: NSObject, AccountDelegate {
     /** Array of accounts */
     public private(set) var accounts : [Account] = [] {
         didSet{
-            if !NSKeyedArchiver.archiveRootObject(accounts, toFile: accountsFile){
-                println("Unable to archive to \(accountsFile)")
-            }
+            self.saveAccounts()
+        }
+    }
+    
+    public func saveAccounts(){
+        if !NSKeyedArchiver.archiveRootObject(accounts, toFile: accountsFile){
+            println("Unable to archive to \(accountsFile)")
         }
     }
     

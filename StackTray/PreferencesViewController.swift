@@ -348,19 +348,49 @@ class InstanceDetailViewController : NSViewController {
     override func viewDidAppear() {
         super.viewDidAppear()
         if instanceIndex != nil {
-            println("InstanceId: \(instance.name)")
+            pemLocation.stringValue = ""
+            if let pem = instance.pemLocation {
+                pemLocation.stringValue = pem
+            }
+            
+            userId.stringValue = ""
+            if let userId = instance.userId {
+                self.userId.stringValue = userId
+            }
         }
     }
     
     @IBAction func browse(sender: AnyObject) {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        
+        let clicked = panel.runModal()
+        if clicked == NSFileHandlingPanelOKButton {
+            if let url = panel.URL {
+                pemLocation.stringValue = url.absoluteString!
+            }
+        }
+    }
+    
+    @IBAction func save(sender: AnyObject) {
+        instance.pemLocation = pemLocation.stringValue
+        instance.userId = userId.stringValue
+        
+        accountController.saveAccounts()
     }
     
     @IBAction func stopInstance(sender: AnyObject) {
+        //Stub
     }
+    
     @IBAction func restartInstance(sender: AnyObject) {
+        //Stub
     }
     
     @IBAction func showConsole(sender: AnyObject) {
+        //Stub
     }
 }
 
