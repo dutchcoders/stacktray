@@ -10,7 +10,7 @@ import Cocoa
 //import AWSiOSSDKv2
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountControllerObserver, NSMenuDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountControllerObserver, NSMenuDelegate, NSUserNotificationCenterDelegate {
     let updateInterval: NSTimeInterval = 60 /* minutes */ * 60 /* seconds */
     
     //Main app directory for storing data
@@ -83,9 +83,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         appMenu.refreshMenu()
 
         //Open Preferences if there are no accounts configured
-        if accountController.accounts.count == 0 {
+//        if accountController.accounts.count == 0 {
             self.preferences(nil)
-        }
+//        }
         
         //Refresh the list once in a while
         NSTimer.scheduledTimerWithTimeInterval(updateInterval, target: self, selector: Selector("refresh"), userInfo: nil, repeats: true)
@@ -157,6 +157,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         let pasteBoard = NSPasteboard.generalPasteboard()
         pasteBoard.clearContents()
         pasteBoard.writeObjects([menuItem.title])
+        
+        NotificationManager.sharedManager().showNotification("Saved to clipboard", informativeText: menuItem.title)
     }
     
     /** Connect to an instance */
@@ -236,5 +238,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         //Refreh the list of accounts when the menu opens
         self.refresh()
     }
+    
+    
+
 }
+
+private let _NotificationManager = NotificationManager()
+class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
+    
+    class func sharedManager() -> NotificationManager {
+        return _NotificationManager
+    }
+    
+    func showNotification(title: String, informativeText: String){
+        var notification = NSUserNotification()
+        
+        notification.title = title
+        notification.informativeText = informativeText
+        notification.deliveryDate = NSDate()
+        
+        NSUserNotificationCenter.defaultUserNotificationCenter().delegate = self
+        
+        NSUserNotificationCenter.defaultUserNotificationCenter().scheduleNotification(notification)
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
+        return true
+    }
+}
+
+
 
