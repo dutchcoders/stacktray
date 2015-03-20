@@ -43,7 +43,13 @@ public protocol AccountConnector {
 /** Is in charge of accounts */
 public class AccountController: NSObject, AccountDelegate {
     /** Queue used for refreshing accounts */
-    let requestQueue = NSOperationQueue()
+    lazy var requestQueue : NSOperationQueue = {
+        let queue = NSOperationQueue()
+        
+        queue.maxConcurrentOperationCount = 1
+        
+        return queue
+        }()
 
     /** Update interval for fetching data once in a while */
     let updateInterval: NSTimeInterval = 60 /* minutes */ * 60 /* seconds */
@@ -127,27 +133,24 @@ public class AccountController: NSObject, AccountDelegate {
         for (index, account) in enumerate(accounts) {
             account.delegate = self
             self.updateAccountAtIndex(index, account: account, callback: { (error, account) -> Void in
-                
+                self.saveAccounts()
             })
         }
     }
     
     public func didAddAccountInstance(account: Account, instanceIndex: Int) {
-        println("Did add account instance!!!")
         notifyObservers { (observer) -> Void in
             observer.didAddAccountInstance(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
         }
     }
     
     public func didUpdateAccountInstance(account: Account, instanceIndex: Int) {
-        println("Did update account instance!!!")
         notifyObservers { (observer) -> Void in
             observer.didUpdateAccountInstance(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
         }
     }
     
     public func didDeleteAccountInstance(account: Account, instanceIndex: Int) {
-        println("Did delete account instance!!!")
         notifyObservers { (observer) -> Void in
             observer.didDeleteAccountInstance(self, index: find(self.accounts, account)!, instanceIndex: instanceIndex)
         }
@@ -645,7 +648,6 @@ public class AWSAccountConnector: NSObject, AccountConnector {
 
                     for reservation in result.reservations as [AWSEC2Reservation] {
                         for instance in reservation.instances as [AWSEC2Instance]{
-                            println("Found instance: \(instance.instanceId)")
                             atLeastOneInstance = true
                             
                             var name = instance.instanceId
