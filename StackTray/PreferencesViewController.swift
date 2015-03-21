@@ -58,53 +58,37 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
         
     }
 
-    /* Accounts TableView */
-    @IBOutlet weak var accountTableView: NSTableView! {
-        didSet {
-            accountTableView.registerNib(NSNib(nibNamed: "AccountCell", bundle: nil)!, forIdentifier: "account")
-        }
-    }
-
     @IBOutlet weak var accountOutlineView: NSOutlineView! {
         didSet {
-            accountOutlineView.registerNib(NSNib(nibNamed: "AccountCell", bundle: nil)!, forIdentifier: "account")
-            accountOutlineView.registerNib(NSNib(nibNamed: "InstanceCell", bundle: nil)!, forIdentifier: "instance")
+//            accountOutlineView.registerNib(NSNib(nibNamed: "AccountCell", bundle: nil)!, forIdentifier: "account")
+//            accountOutlineView.registerNib(NSNib(nibNamed: "InstanceCell", bundle: nil)!, forIdentifier: "instance")
+            accountOutlineView.expandItem(nil, expandChildren: true)
         }
     }
     
     
-    /** Number of rows */
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        if accountController == nil {
-            return 0
-        }
-        return accountController.accounts.count
+//    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView?
+//    {
+//        if let account = item as? Account {
+//            if let view = outlineView.makeViewWithIdentifier("account", owner: self) as? AccountCellView {
+//                view.account = account
+//                return view
+//            }
+//        } else if let instance = item as? Instance {
+//            if let view = outlineView.makeViewWithIdentifier("instance", owner: self) as? InstanceCellView {
+//                view.instance = instance
+//                return view
+//            }
+//        }
+//        return nil
+//    }
+    
+    func outlineView(outlineView: NSOutlineView, shouldShowOutlineCellForItem item: AnyObject) -> Bool {
+        return true
     }
     
-    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView?
-    {
-        if let account = item as? Account {
-            if let view = outlineView.makeViewWithIdentifier("account", owner: self) as? AccountCellView {
-                view.account = account
-                return view
-            }
-        } else if let instance = item as? Instance {
-            if let view = outlineView.makeViewWithIdentifier("instance", owner: self) as? InstanceCellView {
-                view.instance = instance
-                return view
-            }
-        }
-        return nil
-    }
-        
-    /** View for accounts table view */
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        if let view = tableView.makeViewWithIdentifier("account", owner: self) as? AccountCellView {
-            view.account = accountController.accounts[row]
-            return view
-        } else {
-            return nil
-        }
+    func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
+        return true
     }
     
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
@@ -154,6 +138,7 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
                 if let index = find(accountController.accounts, account){
                     accountDetailViewController.accountIndex = index
                 }
+                outlineView.expandItem(account)
                 accountDetailViewController.editAccountsViewController = addAccountsViewController
             } else if let instance = outlineView.itemAtRow(outlineView.selectedRow) as? Instance {
                 
@@ -190,7 +175,7 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
     @IBOutlet weak var addAccountButton: NSButton!
     @IBAction func addAccount(sender: AnyObject) {
         //Add
-        accountTableView.deselectAll(sender)
+        accountOutlineView.deselectAll(sender)
         updateViewVisibility()
     }
     
