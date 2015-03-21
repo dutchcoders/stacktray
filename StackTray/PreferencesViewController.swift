@@ -60,28 +60,9 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
 
     @IBOutlet weak var accountOutlineView: NSOutlineView! {
         didSet {
-//            accountOutlineView.registerNib(NSNib(nibNamed: "AccountCell", bundle: nil)!, forIdentifier: "account")
-//            accountOutlineView.registerNib(NSNib(nibNamed: "InstanceCell", bundle: nil)!, forIdentifier: "instance")
             accountOutlineView.expandItem(nil, expandChildren: true)
         }
     }
-    
-    
-//    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView?
-//    {
-//        if let account = item as? Account {
-//            if let view = outlineView.makeViewWithIdentifier("account", owner: self) as? AccountCellView {
-//                view.account = account
-//                return view
-//            }
-//        } else if let instance = item as? Instance {
-//            if let view = outlineView.makeViewWithIdentifier("instance", owner: self) as? InstanceCellView {
-//                view.instance = instance
-//                return view
-//            }
-//        }
-//        return nil
-//    }
     
     func outlineView(outlineView: NSOutlineView, shouldShowOutlineCellForItem item: AnyObject) -> Bool {
         return true
@@ -124,9 +105,9 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
     func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item:
         AnyObject?) -> AnyObject?{
             if let account = item as? Account {
-                return account.name
+                return "\(account.name) (\(account.instances.count))"
             } else if let instance = item as? Instance{
-                return instance.name
+                return "\(instance.name)"
             } else {
                 return nil
             }
@@ -153,6 +134,11 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
     let accountDetailVCSegue = "accountDetailVC" //The segue to the detail viewcontroller
     let instanceDetailVCSegue = "instanceDetailVC" //The segue to the instance detail
     
+    @IBOutlet weak var addAccountsView: NSView!
+    @IBOutlet weak var accountDetailView: NSView!
+    @IBOutlet weak var instanceDetailView: NSView!
+    
+    
     private var addAccountsViewController: AddAccountsViewController! {
         didSet {
             addAccountsViewController.accountController = accountController
@@ -175,8 +161,9 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
     @IBOutlet weak var addAccountButton: NSButton!
     @IBAction func addAccount(sender: AnyObject) {
         //Add
-        accountOutlineView.deselectAll(sender)
-        updateViewVisibility()
+//        accountOutlineView.deselectAll(sender)
+//        updateViewVisibility()
+        editOrAddAccount(self, accountController, accountIndex: nil, AccountType.AWS)
     }
     
     @IBOutlet weak var deleteAccountButton: NSButton!
@@ -219,26 +206,27 @@ class PreferencesViewController: NSViewController, NSOutlineViewDataSource, NSOu
     func updateViewVisibility(){
         let rowSelected = accountOutlineView.selectedRow >= 0
         
-        accountDetailViewController.view.hidden = true
-        instanceDetailViewController.view.hidden = true
+        accountDetailView.hidden = true
+        instanceDetailView.hidden = true
         
+        deleteAccountButton.enabled = false
+
         if rowSelected {
             let object: AnyObject? = accountOutlineView.itemAtRow(accountOutlineView.selectedRow)
             if let account = object as? Account {
-                accountDetailViewController.view.hidden = false
+                accountDetailView.hidden = false
+                deleteAccountButton.enabled = true
             } else if let instance = object as? Instance {
                 let account = accountController.accountForInstance(instance)
                 
                 instanceDetailViewController.instanceIndex = find(account.instances, instance)!
                 instanceDetailViewController.accountIndex = find(accountController.accounts, account)!
                 
-                instanceDetailViewController.view.hidden = false
+                instanceDetailView.hidden = false
             }
             
         }
-        addAccountsViewController.view.hidden = rowSelected
-        addAccountButton.enabled = rowSelected
-        deleteAccountButton.enabled = rowSelected
+        addAccountsView.hidden = rowSelected
     }
     
     //MARK - Segue
