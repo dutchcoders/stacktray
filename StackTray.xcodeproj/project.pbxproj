@@ -18,6 +18,8 @@
 		450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F83901AAE155E00E49B38 /* AppMenu.swift */; };
 		450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450F83911AAE155E00E49B38 /* AccountCell.xib */; };
 		453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FCB6E1AB91239001AB85F /* InstanceCell.xib */; };
+		4547BE221AC639ED00975A1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4547BE211AC639ED00975A1A /* MainViewController.swift */; };
+		456D150C1AC670DB00FC854E /* ModernLookOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 456D150B1AC670D000FC854E /* ModernLookOSX.framework */; };
 		459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4041AB11FFC00B0C8B1 /* AccountController.swift */; };
 		459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4061AB11FFC00B0C8B1 /* Account.swift */; };
 		459DC40A1AB11FFC00B0C8B1 /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4071AB11FFC00B0C8B1 /* Instance.swift */; };
@@ -38,6 +40,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 450F836A1AAE152200E49B38;
 			remoteInfo = StackTray;
+		};
+		456D150A1AC670D000FC854E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 456D15061AC670CF00FC854E /* ModernLookOSX.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B39FBC9E1A9A1E57000C4BB2;
+			remoteInfo = ModernLookOSX;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -70,6 +79,8 @@
 		450F83901AAE155E00E49B38 /* AppMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		450F83911AAE155E00E49B38 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		453FCB6E1AB91239001AB85F /* InstanceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstanceCell.xib; sourceTree = "<group>"; };
+		4547BE211AC639ED00975A1A /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		456D15061AC670CF00FC854E /* ModernLookOSX.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ModernLookOSX.xcodeproj; path = "ModernLook-OSX-master/ModernLookOSX/ModernLookOSX.xcodeproj"; sourceTree = "<group>"; };
 		459DC4041AB11FFC00B0C8B1 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountController.swift; sourceTree = "<group>"; };
 		459DC4061AB11FFC00B0C8B1 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		459DC4071AB11FFC00B0C8B1 /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
@@ -95,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				456D150C1AC670DB00FC854E /* ModernLookOSX.framework in Frameworks */,
 				42975E4AC934F173019B16F9 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,6 +124,7 @@
 		450F83621AAE152200E49B38 = {
 			isa = PBXGroup;
 			children = (
+				456D15061AC670CF00FC854E /* ModernLookOSX.xcodeproj */,
 				450F836D1AAE152200E49B38 /* StackTray */,
 				450F83801AAE152300E49B38 /* StackTrayTests */,
 				450F836C1AAE152200E49B38 /* Products */,
@@ -149,6 +162,7 @@
 				450F838E1AAE155E00E49B38 /* PreferencesViewController.swift */,
 				45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */,
 				450F836E1AAE152300E49B38 /* Supporting Files */,
+				4547BE211AC639ED00975A1A /* MainViewController.swift */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -178,6 +192,14 @@
 				450F83821AAE152300E49B38 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		456D15071AC670CF00FC854E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				456D150B1AC670D000FC854E /* ModernLookOSX.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		459DC4031AB11FFC00B0C8B1 /* Controllers */ = {
@@ -294,6 +316,12 @@
 			mainGroup = 450F83621AAE152200E49B38;
 			productRefGroup = 450F836C1AAE152200E49B38 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 456D15071AC670CF00FC854E /* Products */;
+					ProjectRef = 456D15061AC670CF00FC854E /* ModernLookOSX.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				450F836A1AAE152200E49B38 /* StackTray */,
@@ -301,6 +329,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		456D150B1AC670D000FC854E /* ModernLookOSX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ModernLookOSX.framework;
+			remoteRef = 456D150A1AC670D000FC854E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		450F83691AAE152200E49B38 /* Resources */ = {
@@ -374,6 +412,7 @@
 				459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */,
 				450F83941AAE155E00E49B38 /* BackgroundView.swift in Sources */,
 				450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */,
+				4547BE221AC639ED00975A1A /* MainViewController.swift in Sources */,
 				450F83931AAE155E00E49B38 /* PreferencesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

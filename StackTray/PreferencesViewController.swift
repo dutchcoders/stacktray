@@ -431,7 +431,7 @@ class InstanceCellView: NSTableCellView {
     var instance: Instance? {
         didSet {
             if let i = instance {
-                titleLabel.stringValue = i.name
+                titleLabel.stringValue = "\(i.name) (\(i.state.description))"
             }
         }
     }
@@ -444,6 +444,24 @@ class InstanceCellView: NSTableCellView {
         }
     }
     
+    lazy var fakFactory: NIKFontAwesomeIconFactory = NIKFontAwesomeIconFactory()
+    
+    @IBOutlet weak var consoleButton: NSButton! {
+        didSet {
+            consoleButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconTerminal)
+        }
+    }
+    @IBOutlet weak var rebootButton: NSButton! {
+        didSet {
+            rebootButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconRocket)
+        }
+    }
+    
+    @IBOutlet weak var pemButton: NSButton! {
+        didSet {
+            pemButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconFolderOpenO)
+        }
+    }
 }
 
 //MARK - Add Account View
