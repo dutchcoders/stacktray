@@ -601,7 +601,6 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                     callback(error: task.error, output: nil)
                 } else {
                     if let output = (task.result as AWSEC2GetConsoleOutputResult).output {
-                        println("Result: \(output)")
                         let nsdata: NSData = NSData(base64EncodedString: output, options: NSDataBase64DecodingOptions(rawValue: 0))!
                         let base64Decoded: NSString = NSString(data: nsdata, encoding: NSUTF8StringEncoding)!
                         callback(error: nil, output: base64Decoded)

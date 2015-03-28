@@ -32,9 +32,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     lazy var preferences : NSWindowController = {
         let window = NSStoryboard(name: "Preferences", bundle: nil)?.instantiateInitialController() as NSWindowController
         
-        if let content = window.contentViewController as? PreferencesViewController {
-            content.accountController = self.accountController
-        } else if let content = window.contentViewController as? MainViewController {
+//        if let content = window.contentViewController as? PreferencesViewController {
+//            content.accountController = self.accountController
+//        } else
+            if let content = window.contentViewController as? MainViewController {
             content.accountController = self.accountController
         }
 
