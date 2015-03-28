@@ -10,8 +10,7 @@ import Cocoa
 //import AWSiOSSDKv2
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountControllerObserver, NSMenuDelegate {
-    let updateInterval: NSTimeInterval = 60 /* minutes */ * 60 /* seconds */
+class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountControllerObserver, NSMenuDelegate, NSUserNotificationCenterDelegate {
     
     //Main app directory for storing data
     lazy var appDirectory : String = {
@@ -70,7 +69,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         let importKey = "STACKTRAY_LEGACY_IMPORT_FINISHED"
         let defaults = NSUserDefaults.standardUserDefaults()
         if !defaults.boolForKey(importKey) {
-            println("NEED TO IMPORT LEGACY DATA")
             let i = ImportController()
             if i.importLegacyData(accountController) {
                 defaults.setBool(true, forKey: importKey)
@@ -80,15 +78,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         accountController.addAccountControllerObserver(self)
                 
         //Refreh the menu
-        appMenu.refreshMenu()
+        appMenu.initMenu()
 
         //Open Preferences if there are no accounts configured
-        if accountController.accounts.count == 0 {
+//        if accountController.accounts.count == 0 {
             self.preferences(nil)
-        }
-        
-        //Refresh the list once in a while
-        NSTimer.scheduledTimerWithTimeInterval(updateInterval, target: self, selector: Selector("refresh"), userInfo: nil, repeats: true)
+//        }        
     }
     
     func refresh(){
@@ -96,15 +91,45 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     }
     
     func didAddAccountAtIndex(accountController: AccountController, index: Int) {
-        appMenu.refreshMenu()
+        appMenu.insertAccount(index, account: accountController.accounts[index])
     }
     
     func didDeleteAccountAtIndex(accountController: AccountController, index: Int) {
-        appMenu.refreshMenu()
+        appMenu.deleteAccount(index)
     }
     
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int) {
-        appMenu.refreshMenu()
+        appMenu.updateAccount(index, account: accountController.accounts[index])
+    }
+    
+    //MARK - Instances
+    func didAddAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
+        let instance = accountController.accounts[index].instances[instanceIndex]
+        appMenu.addAccountInstance(index, instanceIndex: instanceIndex, instance:instance)
+    }
+    
+    func didUpdateAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
+        let instance = accountController.accounts[index].instances[instanceIndex]
+        appMenu.updateAccountInstance(index, instanceIndex: instanceIndex, instance: instance)
+    }
+    
+    func didDeleteAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
+        let instance = accountController.accounts[index].instances[instanceIndex]
+        appMenu.deleteAccountInstance(index, instanceIndex: instanceIndex)
+    }
+    
+    func instanceDidStart(accountController: AccountController, index: Int, instanceIndex: Int) {
+        let account = accountController.accounts[index]
+        let instance = account.instances[instanceIndex];
+        
+        NotificationManager.sharedManager().showNotification("Instance \"\(instance.name)\" is started", informativeText: "for account \"\(account.name)\"")        
+    }
+    
+    func instanceDidStop(accountController: AccountController, index: Int, instanceIndex: Int) {
+        let account = accountController.accounts[index]
+        let instance = account.instances[instanceIndex];
+        
+        NotificationManager.sharedManager().showNotification("Instance \"\(instance.name)\" is stopped", informativeText: "for account \"\(account.name)\"")        
     }
     
     //Menu DataSource
@@ -157,6 +182,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         let pasteBoard = NSPasteboard.generalPasteboard()
         pasteBoard.clearContents()
         pasteBoard.writeObjects([menuItem.title])
+        
+        NotificationManager.sharedManager().showNotification("Copy to clipboard", informativeText: menuItem.title)
     }
     
     /** Connect to an instance */
@@ -181,8 +208,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     /** Stop an instance */
     func stopInstance(menuItem: InstanceActionMenuItem){
-        println("Stop \(menuItem.instance.instanceId)")
-        accountController.stopInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
+        let instance = menuItem.instance
+        println("Stop \(instance.instanceId)")
+        accountController.stopInstance(menuItem.account, instance: instance) { (error) -> Void in
             if error != nil {
                 NSApplication.sharedApplication().presentError(error!)
             }
@@ -191,8 +219,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     /** Start an instance */
     func startInstance(menuItem: InstanceActionMenuItem){
-        println("Start \(menuItem.instance.instanceId)")
-        accountController.startInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
+        let instance = menuItem.instance
+        println("Start \(instance.instanceId)")
+        accountController.startInstance(menuItem.account, instance: instance) { (error) -> Void in
             if error != nil {
                 NSApplication.sharedApplication().presentError(error!)
             }
@@ -236,5 +265,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         //Refreh the list of accounts when the menu opens
         self.refresh()
     }
+    
+    
+
 }
+
+private let _NotificationManager = NotificationManager()
+class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
+    
+    class func sharedManager() -> NotificationManager {
+        return _NotificationManager
+    }
+    
+    func showNotification(title: String, informativeText: String){
+        var notification = NSUserNotification()
+        
+        notification.title = title
+        notification.informativeText = informativeText
+        notification.deliveryDate = NSDate()
+        
+        NSUserNotificationCenter.defaultUserNotificationCenter().delegate = self
+        
+        NSUserNotificationCenter.defaultUserNotificationCenter().scheduleNotification(notification)
+    }
+    
+    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
+        return true
+    }
+}
+
+
 

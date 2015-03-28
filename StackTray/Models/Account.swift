@@ -30,6 +30,14 @@ public enum AccountType : Int, Printable {
     }
 }
 
+public protocol AccountDelegate {
+    func didAddAccountInstance(account: Account, instanceIndex: Int)
+    func didUpdateAccountInstance(account: Account, instanceIndex: Int)
+    func didDeleteAccountInstance(account: Account, instanceIndex: Int)
+    func instanceDidStart(account: Account, instanceIndex: Int)
+    func instanceDidStop(account: Account, instanceIndex: Int)
+}
+
 /**
 An account object represents the connection to a web service
 */
@@ -40,8 +48,28 @@ public class Account : NSObject, NSCoding {
     /** Account Type */
     public var accountType: AccountType = .Unknown
     
+    /** Delegate */
+    public var delegate : AccountDelegate?
+    
     /** Instances */
-    public var instances : [Instance] = []
+    public var instances : [Instance] = [] {
+        didSet{
+            if let d = delegate {
+                let oldInstanceIds = oldValue.map{ $0.instanceId }
+                let newInstanceIds = instances.map{ $0.instanceId }
+                
+                for instance in instances {
+                    if contains(oldInstanceIds, instance.instanceId) && contains(newInstanceIds, instance.instanceId) {
+                        d.didUpdateAccountInstance(self, instanceIndex: find(instances, instance)!)
+                    } else if contains(oldInstanceIds, instance.instanceId){
+                        d.didDeleteAccountInstance(self, instanceIndex: find(instances, instance)!)
+                    } else if contains(newInstanceIds, instance.instanceId){
+                        d.didAddAccountInstance(self, instanceIndex: find(instances, instance)!)
+                    }
+                }
+            }
+        }
+    }
     
     /** Init an Account Object */
     public init(name: String, accountType: AccountType){
@@ -62,12 +90,60 @@ public class Account : NSObject, NSCoding {
             }
         }
         
+        if let data = aDecoder.decodeObjectForKey("instances") as? NSData {
+            if let instances = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [Instance] {
+                self.instances = instances
+            }
+        }
+        
         super.init()
     }
     
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(name, forKey: "name")
         aCoder.encodeObject(NSNumber(integer: accountType.rawValue), forKey: "accountType")
+        aCoder.encodeObject(NSKeyedArchiver.archivedDataWithRootObject(instances), forKey: "instances")
+    }
+    
+    public func addInstance(instance: Instance){
+        instances.append(instance)
+        if let d = delegate {
+            d.didAddAccountInstance(self, instanceIndex: find(instances, instance)!)
+        }
+    }
+    
+    public func updateInstanceAtIndex(index: Int, instance: Instance){
+        let existingInstance = instances[index]
+        
+        let beforeState = existingInstance.state
+        existingInstance.mergeInstance(instance)
+        
+        if let d = delegate {
+            d.didUpdateAccountInstance(self, instanceIndex: index)
+            
+            if instance.state != beforeState {
+                if instance.state == .Running {
+                    d.instanceDidStart(self, instanceIndex: index)
+                } else if instance.state == .Stopped {
+                    d.instanceDidStop(self, instanceIndex: index)
+                }
+            }
+        }
+    }
+    
+    public func removeInstances(instanceIds: [String]){
+        var toRemove = instances.filter { (instance) -> Bool in
+            return contains(instanceIds, instance.instanceId)
+        }
+        
+        for instance in toRemove {
+            if let index = find(instances, instance){
+                instances.removeAtIndex(index)
+                if let d = delegate {
+                    d.didDeleteAccountInstance(self, instanceIndex: index)
+                }
+            }
+        }
     }
 }
 

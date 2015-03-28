@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -21,37 +20,23 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="bCO-21-Mrf"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AVR-O7-JWE">
-                    <rect key="frame" x="47" y="22" width="135" height="17"/>
+                    <rect key="frame" x="47" y="14" width="135" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="AWS Name" id="Ssx-hu-8Gl">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qoa-do-fx2">
-                    <rect key="frame" x="47" y="7" width="135" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="# instances" id="XE1-Fx-OrX">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="AVR-O7-JWE" firstAttribute="trailing" secondItem="Qoa-do-fx2" secondAttribute="trailing" id="6UZ-tB-dMF"/>
-                <constraint firstItem="Qoa-do-fx2" firstAttribute="top" secondItem="AVR-O7-JWE" secondAttribute="bottom" constant="-2" id="8c3-mw-IFH"/>
-                <constraint firstItem="AVR-O7-JWE" firstAttribute="top" secondItem="bQz-Wv-3Y6" secondAttribute="top" id="9Ac-cF-uMS"/>
-                <constraint firstItem="AVR-O7-JWE" firstAttribute="leading" secondItem="Qoa-do-fx2" secondAttribute="leading" id="IiP-Wh-UUD"/>
-                <constraint firstItem="AVR-O7-JWE" firstAttribute="bottom" secondItem="bQz-Wv-3Y6" secondAttribute="centerY" id="NvG-Kg-MaO"/>
+                <constraint firstItem="AVR-O7-JWE" firstAttribute="leading" secondItem="bQz-Wv-3Y6" secondAttribute="trailing" constant="10" id="6eF-wq-Ilc"/>
                 <constraint firstItem="bQz-Wv-3Y6" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="5" id="WMQ-Ii-56n"/>
-                <constraint firstAttribute="trailing" secondItem="AVR-O7-JWE" secondAttribute="trailing" constant="20" id="Y9c-QE-WHD"/>
-                <constraint firstItem="AVR-O7-JWE" firstAttribute="leading" secondItem="bQz-Wv-3Y6" secondAttribute="trailing" constant="10" id="e1m-Ta-Gk7"/>
                 <constraint firstItem="bQz-Wv-3Y6" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="5" id="ene-kI-sqV"/>
-                <constraint firstItem="AVR-O7-JWE" firstAttribute="height" secondItem="Qoa-do-fx2" secondAttribute="height" id="his-m4-kOV"/>
+                <constraint firstAttribute="trailing" secondItem="AVR-O7-JWE" secondAttribute="trailing" constant="20" id="nBp-ku-Id8"/>
                 <constraint firstAttribute="bottom" secondItem="bQz-Wv-3Y6" secondAttribute="bottom" constant="5" id="xaA-IA-0N6"/>
+                <constraint firstItem="bQz-Wv-3Y6" firstAttribute="centerY" secondItem="AVR-O7-JWE" secondAttribute="centerY" id="yHW-8N-gZ6"/>
             </constraints>
             <connections>
-                <outlet property="instancesLabel" destination="Qoa-do-fx2" id="hGB-UG-i9k"/>
                 <outlet property="thumbnailView" destination="bQz-Wv-3Y6" id="akw-Ki-dG4"/>
                 <outlet property="titleLabel" destination="AVR-O7-JWE" id="5I4-7S-GV6"/>
             </connections>

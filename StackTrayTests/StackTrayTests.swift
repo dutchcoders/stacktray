@@ -14,30 +14,19 @@ let account1AccessKey = "Test access key 1"
 let account1SecretKey = "Test secret key 1"
 let account1Region = "ec2.us-west-2.amazonaws.com-1"
 
+let instance1Name = "Test instance 1"
+let instance1Id = "Test instance id 1"
+let instance1Type = "Test instance type"
+let instance1PublicDnsName = "Test instance public dns name"
+let instance1PublicIpAddress = "Test instance public ip address"
+let instance1PrivateDnsName = "Test instanc private dns name"
+let instance1PrivateIpAddress = "Test instance private ip address"
+let instance1UserId = "Test instance user id"
+let instance1PemLocation = "Test instance pemlocation"
+
 let account2Name = "Test account 2"
 
 class StackTrayTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
-    }
     
 }
