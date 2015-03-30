@@ -94,10 +94,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         appMenu.initMenu()
 
         //Open Preferences if there are no accounts configured
-//        if accountController.accounts.count == 0 {
-//            self.preferences(nil)
-        self.instances(nil)
-//        }        
+        if accountController.accounts.count == 0 {
+            self.preferences(nil)
+        }        
     }
     
     func refresh(){
