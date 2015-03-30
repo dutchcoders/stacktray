@@ -510,6 +510,14 @@ class InstanceDetailTabViewController : InstanceTabViewController {
         externalIPButton.hidden = instance.publicDnsName.isEmpty
         externalDNSTextField.hidden = instance.publicIpAddress.isEmpty
         externalDNSButton.hidden = instance.publicDnsName.isEmpty
+        
+        if let pem = instance.pemLocation {
+            pemKeyField.stringValue = pem
+        }
+        
+        if let userId = instance.userId{
+            userIDField.stringValue = userId
+        }
     }
 
 
