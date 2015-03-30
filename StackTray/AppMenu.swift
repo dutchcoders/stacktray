@@ -25,6 +25,8 @@ protocol AppMenuDataSource {
     func accountAtIndex(menu: AppMenu, index: Int) -> Account
     /** Get the selector for showing preferences */
     func selectorForPreferences(menu: AppMenu) -> Selector
+    /** Get the selector for showing instances */
+    func selectorForInstances(menu: AppMenu) -> Selector
 }
 
 /** Class that represents the app menu */
@@ -45,6 +47,7 @@ class AppMenu: NSMenu {
         
         self.addItem(NSMenuItem.separatorItem())
         self.addItem(NSMenuItem(title: "Manage Accounts...", action: dataSource.selectorForPreferences(self), keyEquivalent: ""))
+        self.addItem(NSMenuItem(title: "Manage Instances...", action: dataSource.selectorForInstances(self), keyEquivalent: ""))
         self.addItem(NSMenuItem(title: "Quit", action: Selector("quit:"), keyEquivalent: ""))
     }
     

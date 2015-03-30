@@ -19,12 +19,14 @@
 		450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450F83911AAE155E00E49B38 /* AccountCell.xib */; };
 		453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FCB6E1AB91239001AB85F /* InstanceCell.xib */; };
 		4547BE221AC639ED00975A1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4547BE211AC639ED00975A1A /* MainViewController.swift */; };
+		456194071AC84E4400E37901 /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456194061AC84E4400E37901 /* AccountsViewController.swift */; };
 		456D150C1AC670DB00FC854E /* ModernLookOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 456D150B1AC670D000FC854E /* ModernLookOSX.framework */; };
 		459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4041AB11FFC00B0C8B1 /* AccountController.swift */; };
 		459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4061AB11FFC00B0C8B1 /* Account.swift */; };
 		459DC40A1AB11FFC00B0C8B1 /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4071AB11FFC00B0C8B1 /* Instance.swift */; };
 		459DC40D1AB1203B00B0C8B1 /* AccountControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC40B1AB1203B00B0C8B1 /* AccountControllerTests.swift */; };
 		459DC40E1AB1203B00B0C8B1 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC40C1AB1203B00B0C8B1 /* ModelTests.swift */; };
+		45A980D71AC84DC9002D050F /* Accounts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45A980D61AC84DC9002D050F /* Accounts.storyboard */; };
 		45D8B6951AAE160B0080DEEC /* ImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68D1AAE160B0080DEEC /* ImportController.swift */; };
 		45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68E1AAE160B0080DEEC /* Stack.swift */; };
 		45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68F1AAE160B0080DEEC /* StackTray.xcdatamodeld */; };
@@ -80,12 +82,14 @@
 		450F83911AAE155E00E49B38 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		453FCB6E1AB91239001AB85F /* InstanceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstanceCell.xib; sourceTree = "<group>"; };
 		4547BE211AC639ED00975A1A /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		456194061AC84E4400E37901 /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		456D15061AC670CF00FC854E /* ModernLookOSX.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ModernLookOSX.xcodeproj; path = "ModernLook-OSX-master/ModernLookOSX/ModernLookOSX.xcodeproj"; sourceTree = "<group>"; };
 		459DC4041AB11FFC00B0C8B1 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountController.swift; sourceTree = "<group>"; };
 		459DC4061AB11FFC00B0C8B1 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		459DC4071AB11FFC00B0C8B1 /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
 		459DC40B1AB1203B00B0C8B1 /* AccountControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountControllerTests.swift; sourceTree = "<group>"; };
 		459DC40C1AB1203B00B0C8B1 /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		45A980D61AC84DC9002D050F /* Accounts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Accounts.storyboard; sourceTree = "<group>"; };
 		45D8B68D1AAE160B0080DEEC /* ImportController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportController.swift; sourceTree = "<group>"; };
 		45D8B68E1AAE160B0080DEEC /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		45D8B6901AAE160B0080DEEC /* StackTray 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 				45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */,
 				450F836E1AAE152300E49B38 /* Supporting Files */,
 				4547BE211AC639ED00975A1A /* MainViewController.swift */,
+				45A980D61AC84DC9002D050F /* Accounts.storyboard */,
+				456194061AC84E4400E37901 /* AccountsViewController.swift */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -348,6 +354,7 @@
 				45D8B6991AAE64650080DEEC /* AddAccountCell.xib in Resources */,
 				450F83921AAE155E00E49B38 /* Preferences.storyboard in Resources */,
 				45E403E01AB1421000DF62CC /* Console.storyboard in Resources */,
+				45A980D71AC84DC9002D050F /* Accounts.storyboard in Resources */,
 				450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */,
 				453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */,
 				450F83751AAE152300E49B38 /* Images.xcassets in Resources */,
@@ -410,6 +417,7 @@
 				459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */,
 				45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */,
 				459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */,
+				456194071AC84E4400E37901 /* AccountsViewController.swift in Sources */,
 				450F83941AAE155E00E49B38 /* BackgroundView.swift in Sources */,
 				450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */,
 				4547BE221AC639ED00975A1A /* MainViewController.swift in Sources */,

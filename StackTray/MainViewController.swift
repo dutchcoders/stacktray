@@ -18,15 +18,25 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
+    var accountIndexes: [Int] = []
+    var instanceIndexes: [Int] = []
+    
     func reloadInstances(){
-        instances.removeAll(keepCapacity: false)
         
+        accountIndexes.removeAll(keepCapacity: false)
+        instanceIndexes.removeAll(keepCapacity: false)
+        
+        var currentIndex = 0
         for account in accountController.accounts {
+            accountIndexes.append(currentIndex++)
+            
             for instance in account.instances {
-                instances.append(instance)
+                instanceIndexes.append(currentIndex++)
             }
         }
         
+        println("Account indexes: \(accountIndexes)")
+        println("Instance indexes: \(instanceIndexes)")
         
         accountsTableView.reloadData()
         selectInstance(-1)
@@ -54,8 +64,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int){
     }
     
-
-    
     //MARK - Instances
     func didAddAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
         reloadInstances()
@@ -68,6 +76,10 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         if detailInstanceViewController.instance != nil && detailInstanceViewController.instance == instance {
             detailInstanceViewController.instance = instance
         }
+        
+        
+        let row = accountIndexes[index] + instanceIndex + 1
+        accountsTableView.reloadDataForRowIndexes(NSIndexSet(index: row), columnIndexes: NSIndexSet(index: 0))        
     }
     
     func didDeleteAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
@@ -93,9 +105,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
 
-    
-    private var instances : [Instance] = []
-
     @IBOutlet weak var accountsTableView: NSTableView!
     @IBOutlet weak var deselectedContentView: NSView!
     @IBOutlet weak var detailContentView: NSView!
@@ -103,18 +112,86 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBOutlet var groupView: MLRadioGroupManager!
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return instances.count
+        return instanceIndexes.count + accountIndexes.count
+    }
+    
+    func accountIndexForIndex(index: Int) -> Int{
+        var accountIndex = index-1
+        while find(accountIndexes, accountIndex) == nil {
+            accountIndex--
+        }
+        return accountIndex
+    }
+    
+    func objectForRow(row : Int)-> AnyObject?{
+        if let index = find(accountIndexes, row) {
+            return accountController.accounts[index]
+        } else if let index = find(instanceIndexes, row) {
+            let accountIndex = accountIndexForIndex(row)
+            let instanceIndex = row - accountIndex - 1
+            let account = accountController.accounts[find(accountIndexes,accountIndex)!]
+            return account.instances[instanceIndex]
+        } else {
+            return nil
+        }
     }
     
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-        return instances[row].name
+        let object : AnyObject? = objectForRow(row)
+        if let account = object as? Account {
+            return account.name
+        } else if let instance = object as? Instance {
+            return instance.name
+        } else {
+            return nil
+        }
+    }
+    
+    func tableView(tableView: NSTableView, isGroupRow row: Int) -> Bool {
+        if let account = objectForRow(row) as? Account {
+            return true
+        } else {
+            return false
+        }
     }
     
     /** Change the selection of the row */
     func tableView(tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        selectInstance(row)
-        
-        return true
+        if let account = objectForRow(row) as? Instance {
+            selectInstance(row)
+            
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let object : AnyObject? = objectForRow(row)
+        if let account = object as? Account {
+            let view = tableView.makeViewWithIdentifier("accountCell", owner: self) as NSTableCellView
+            
+            view.textField?.stringValue = account.name
+            
+            return view
+        } else if let instance = object as? Instance {
+            let view = tableView.makeViewWithIdentifier("instanceCell", owner: self) as NSTableCellView
+            
+            switch instance.state {
+            case .Running:
+                view.imageView?.image = NSImage(named: "started")
+            case .Stopped:
+                view.imageView?.image = NSImage(named: "stopped")
+            default:
+                view.imageView?.image = NSImage(named: "unknown")
+            }
+            view.textField?.stringValue = instance.name
+            
+            return view
+        } else {
+            println("NO VIEW")
+            return nil
+        }
     }
     
     /** User selected a row in the table */
@@ -130,10 +207,10 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             detailContentView.hidden = false
             deselectedContentView.hidden = true
             
-            let instance = instances[row]
-            
-            if instance != detailInstanceViewController.instance {
-                detailInstanceViewController.instance = instance
+            if let instance = objectForRow(row) as? Instance {
+                if instance != detailInstanceViewController.instance {
+                    detailInstanceViewController.instance = instance
+                }
             }
         }
     }
@@ -224,11 +301,45 @@ class DetailAccountViewController: NSViewController, NSTableViewDataSource, NSTa
 
 class DetailInstanceViewController : NSViewController {
     @IBOutlet weak var detailsButton: NSButton!
-    @IBOutlet weak var accountButton: NSButton!
     @IBOutlet weak var consoleButton: NSButton!
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var statusLabel: NSTextField!
+    
+    lazy var fakFactory: NIKFontAwesomeIconFactory = NIKFontAwesomeIconFactory()
+
+    /** Start Stop */
+    @IBOutlet weak var startStopButton: NSButton!
+    @IBOutlet weak var startStopLabel: NSTextField!
+    @IBAction func startOrStop(sender: NSButton) {
+        switch instance.state {
+        case .Running:
+            sender.enabled = false
+            accountController.stopInstance(accountController.accountForInstance(instance), instance: instance, callback: { (error) -> Void in
+                
+            })
+        case .Stopped:
+            sender.enabled = false
+            accountController.startInstance(accountController.accountForInstance(instance), instance: instance, callback: { (error) -> Void in
+                
+            })
+        default:
+            break;
+        }
+        
+    }
+    
+    @IBOutlet weak var rebootButton: NSButton! {
+        didSet {
+            rebootButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconRefresh)
+        }
+    }
+    @IBAction func rebootInstance(sender: NSButton) {
+        sender.enabled = false
+        accountController.rebootInstance(accountController.accountForInstance(instance), instance: instance, callback: { (error) -> Void in
+            
+        })
+    }
     
     var instance: Instance! {
         didSet {
@@ -251,23 +362,33 @@ class DetailInstanceViewController : NSViewController {
     }
     
     func updateStateLabel(){
+        
+        
         statusLabel.stringValue = instance.state.description
         switch instance.state {
-        case .Running : statusLabel.textColor = NSColor.greenColor()
-        case .Stopped : statusLabel.textColor = NSColor.redColor()
-        default : statusLabel.textColor = NSColor.blackColor()
-            
+        case .Running :
+            statusLabel.textColor = NSColor.greenColor()
+            startStopButton.enabled = true
+            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconStop)
+            startStopLabel.stringValue = "Stop"
+        case .Stopped :
+            statusLabel.textColor = NSColor.redColor()
+            startStopButton.enabled = true
+            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconPlay)
+            startStopLabel.stringValue = "Start"
+        default :
+            statusLabel.textColor = NSColor.blackColor()
+            startStopButton.enabled = false
+            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconPlay)
+            startStopLabel.stringValue = "Start"
         }
-        
     }
     
     @IBAction func buttonClicked(sender: NSButton) {
         if sender == detailsButton {
             tabViewController.selectedTabViewItemIndex = 0
-        } else if sender == accountButton {
-            tabViewController.selectedTabViewItemIndex = 1
         } else if sender == consoleButton {
-            tabViewController.selectedTabViewItemIndex = 2
+            tabViewController.selectedTabViewItemIndex = 1
         }
         updateCurrentIndex()
     }
@@ -280,8 +401,7 @@ class DetailInstanceViewController : NSViewController {
     
     func updateCurrentIndex(){
         detailsButton.state = tabViewController.selectedTabViewItemIndex == 0 ? NSOnState : NSOffState
-        accountButton.state = tabViewController.selectedTabViewItemIndex == 1 ? NSOnState : NSOffState
-        consoleButton.state = tabViewController.selectedTabViewItemIndex == 2 ? NSOnState : NSOffState
+        consoleButton.state = tabViewController.selectedTabViewItemIndex == 1 ? NSOnState : NSOffState
     }
     
     override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
@@ -331,6 +451,68 @@ class InstanceTabViewController: NSViewController {
 }
 
 class InstanceDetailTabViewController : InstanceTabViewController {
+    @IBOutlet weak var pemKeyField: MLComboField!
+    @IBOutlet weak var userIDField: MLComboField!
+    
+    @IBAction func saveInstance(sender: AnyObject) {
+        instance.pemLocation = pemKeyField.stringValue
+        instance.userId = userIDField.stringValue
+        
+        accountController.saveAccounts()
+    }
+    
+    @IBOutlet weak var internalIPTextField: NSTextField!
+    @IBOutlet weak var internalDNSTextField: NSTextField!
+    @IBOutlet weak var externalIPTextField: NSTextField!
+    @IBOutlet weak var externalDNSTextField: NSTextField!
+    
+    @IBOutlet weak var internalIPButton: NSButton!
+    @IBOutlet weak var internalDNSButton: NSButton!
+    @IBOutlet weak var externalIPButton: NSButton!
+    @IBOutlet weak var externalDNSButton: NSButton!
+    
+    @IBAction func copyLink(sender: NSButton) {
+        var link: String?
+        
+        switch sender {
+        case internalIPButton:
+            link = internalIPTextField.stringValue
+        case internalDNSButton:
+            link = internalDNSTextField.stringValue
+        case externalIPButton:
+            link = externalIPTextField.stringValue
+        case externalDNSButton:
+            link = externalDNSTextField.stringValue
+        default:
+            break
+        }
+        
+        if link != nil && !link!.isEmpty {
+            NotificationManager.sharedManager().saveToClipBoard(link!)
+        }
+    }
+    
+    override var instance: Instance! {
+        didSet {
+            if active {
+                reloadLinksForInstance()
+            }
+        }
+    }
+    
+    func reloadLinksForInstance(){
+        internalIPTextField.stringValue = instance.privateIpAddress
+        internalDNSTextField.stringValue = instance.privateDnsName
+        
+        externalIPTextField.stringValue = instance.publicDnsName
+        externalDNSTextField.stringValue = instance.publicIpAddress
+        externalIPTextField.hidden = instance.publicDnsName.isEmpty
+        externalIPButton.hidden = instance.publicDnsName.isEmpty
+        externalDNSTextField.hidden = instance.publicIpAddress.isEmpty
+        externalDNSButton.hidden = instance.publicDnsName.isEmpty
+    }
+
+
 }
 
 class InstanceConsoleViewController : InstanceTabViewController {

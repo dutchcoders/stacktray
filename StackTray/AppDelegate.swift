@@ -30,15 +30,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     //Preferences
     lazy var preferences : NSWindowController = {
-        let window = NSStoryboard(name: "Preferences", bundle: nil)?.instantiateInitialController() as NSWindowController
+        let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as NSWindowController
         
-//        if let content = window.contentViewController as? PreferencesViewController {
-//            content.accountController = self.accountController
-//        } else
-            if let content = window.contentViewController as? MainViewController {
+        if let content = window.contentViewController as? AccountsViewController {
             content.accountController = self.accountController
         }
-
+        
+        
+        return window
+        }()
+    
+    //Preferences
+    lazy var instances : NSWindowController = {
+        let window = NSStoryboard(name: "Preferences", bundle: nil)?.instantiateInitialController() as NSWindowController
+        
+        if let content = window.contentViewController as? MainViewController {
+            content.accountController = self.accountController
+        }
+        
         
         return window
         }()
@@ -86,7 +95,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
 
         //Open Preferences if there are no accounts configured
 //        if accountController.accounts.count == 0 {
-            self.preferences(nil)
+//            self.preferences(nil)
+        self.instances(nil)
 //        }        
     }
     
@@ -149,6 +159,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         return Selector("preferences:")
     }
     
+    func selectorForInstances(menu: AppMenu)->Selector{
+        return Selector("instances:")
+    }
+    
     //Dummy Poll instances
     func pollInstances(timer: NSTimer){
     }
@@ -174,6 +188,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         preferences.window!.makeKeyAndOrderFront(nil)
     }
     
+    func instances(sender: AnyObject?) {
+        instances.showWindow(self)
+
+        //Focus on window
+        NSApp.activateIgnoringOtherApps(true)
+        instances.window!.makeKeyAndOrderFront(nil)
+}
+    
     /** Quit the application */
     func quit(sender: AnyObject) {
         NSApplication.sharedApplication().terminate(nil)
@@ -183,11 +205,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     func saveToClipboard(menuItem: NSMenuItem){
         println("Save to clipboard: \(menuItem.title)")
         
-        let pasteBoard = NSPasteboard.generalPasteboard()
-        pasteBoard.clearContents()
-        pasteBoard.writeObjects([menuItem.title])
         
-        NotificationManager.sharedManager().showNotification("Copy to clipboard", informativeText: menuItem.title)
+        NotificationManager.sharedManager().saveToClipBoard(menuItem.title)
     }
     
     /** Connect to an instance */
@@ -295,6 +314,14 @@ class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
     
     func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
         return true
+    }
+    
+    func saveToClipBoard(string: String){
+        let pasteBoard = NSPasteboard.generalPasteboard()
+        pasteBoard.clearContents()
+        pasteBoard.writeObjects([string])
+        
+        showNotification("Copy to clipboard", informativeText: string)
     }
 }
 
