@@ -125,7 +125,7 @@ public class Account : NSObject, NSCoding {
         if let d = delegate {
             d.didUpdateAccountInstance(self, instanceIndex: index)
             
-            if instance.state != beforeState {
+            if instance.lastUpdate != nil && instance.state != beforeState {
                 if instance.state == .Running {
                     d.instanceDidStart(self, instanceIndex: index)
                 } else if instance.state == .Stopped {
