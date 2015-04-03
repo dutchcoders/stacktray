@@ -114,11 +114,7 @@ public class Account : NSObject, NSCoding {
     
     public func updateInstanceAtIndex(index: Int, instance: Instance){
         let existingInstance = instances[index]
-        
-        if existingInstance == instance {
-            return
-        }
-        
+                
         let beforeState = existingInstance.state
         existingInstance.mergeInstance(instance)
         
