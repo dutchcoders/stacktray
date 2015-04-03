@@ -479,7 +479,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
         "ec2.us-east-1.amazonaws.com" : AWSRegionType.USEast1,
         "ec2.us-west-2.amazonaws.com" : AWSRegionType.USWest2,
         "ec2.us-west-1.amazonaws.com" : AWSRegionType.USWest1,
-        "ec2.eu-west-1.amazonaws.com" : AWSRegionType.USWest1,
+        "ec2.eu-west-1.amazonaws.com" : AWSRegionType.EUWest1,
         "ec2.ap-southeast-1.amazonaws.com" : AWSRegionType.APSoutheast1,
         "ec2.ap-southeast-2.amazonaws.com" : AWSRegionType.APSoutheast2,
         "ec2.ap-northeast-1.amazonaws.com" : AWSRegionType.APNortheast1,
@@ -642,15 +642,19 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                     let result = task.result as AWSEC2DescribeInstancesResult
                     
                     var existingInstanceIds = account.instances.map{ $0.instanceId }
+//                    println("Existing IDS: \(existingInstanceIds)")
+//                    println("Instances: \(account.instances.count)")
+//                    println("Existing IDS: \(existingInstanceIds.count)")
                     
                     var atLeastOneInstance = false
 
                     for reservation in result.reservations as [AWSEC2Reservation] {
                         for instance in reservation.instances as [AWSEC2Instance]{
+                            
                             atLeastOneInstance = true
                             
                             var name = instance.instanceId
-                            for tag in instance.tags as [AWSEC2Tag] {
+                            for tag in instance.tags? as [AWSEC2Tag] {
                                 if tag.key() == "Name" && !tag.value().isEmpty {
                                     name = tag.value()
                                 }
@@ -668,12 +672,20 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                             
                             let instance = Instance(name: name, instanceId: instanceId, type: instanceType, publicDnsName: publicDnsName == nil ? "" : publicDnsName, publicIpAddress: publicIpAddress == nil ? "" : publicIpAddress, privateDnsName: privateDnsName == nil ? "" : privateDnsName, privateIpAddress: privateIpAddress==nil ? "" : privateIpAddress)
                             instance.state = instanceState!
+
+                            var filtered = account.instances.filter({ (i) -> Bool in
+                                return i.instanceId == instanceId
+                            })
                             
-                            if let index = find(existingInstanceIds, instanceId){
-                                account.updateInstanceAtIndex(index, instance: instance)
-                                existingInstanceIds.removeAtIndex(index)
+                            if filtered.count == 1 {
+                                let existingInstance = filtered[0]
+                                account.updateInstanceAtIndex(find(account.instances, existingInstance)!, instance: instance)
                             } else {
                                 account.addInstance(instance)
+                            }
+                            
+                            if let index = find(existingInstanceIds, instanceId){
+                                existingInstanceIds.removeAtIndex(index)
                             }
                         }
                     }
