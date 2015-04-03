@@ -285,7 +285,7 @@ class DetailInstanceViewController : NSViewController {
     }
     
     func selectTab(index: Int){
-        tabViewController.selectedTabViewItemIndex = index
+        self.buttonClicked(index == 0 ? detailsButton : consoleButton)
     }
     
     var instance: Instance! {
