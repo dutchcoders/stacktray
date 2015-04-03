@@ -12,13 +12,9 @@
 		450F83751AAE152300E49B38 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 450F83741AAE152300E49B38 /* Images.xcassets */; };
 		450F83781AAE152300E49B38 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450F83761AAE152300E49B38 /* Main.storyboard */; };
 		450F83841AAE152300E49B38 /* StackTrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F83831AAE152300E49B38 /* StackTrayTests.swift */; };
-		450F83921AAE155E00E49B38 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450F838D1AAE155E00E49B38 /* Preferences.storyboard */; };
-		450F83931AAE155E00E49B38 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F838E1AAE155E00E49B38 /* PreferencesViewController.swift */; };
-		450F83941AAE155E00E49B38 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F838F1AAE155E00E49B38 /* BackgroundView.swift */; };
 		450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F83901AAE155E00E49B38 /* AppMenu.swift */; };
-		450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450F83911AAE155E00E49B38 /* AccountCell.xib */; };
-		453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453FCB6E1AB91239001AB85F /* InstanceCell.xib */; };
-		4547BE221AC639ED00975A1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4547BE211AC639ED00975A1A /* MainViewController.swift */; };
+		45371ACB1ACE41AE00AFDC4D /* InstancesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45371ACA1ACE41AE00AFDC4D /* InstancesViewController.swift */; };
+		45371ACD1ACE41EB00AFDC4D /* Instances.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45371ACC1ACE41EB00AFDC4D /* Instances.storyboard */; };
 		456194071AC84E4400E37901 /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456194061AC84E4400E37901 /* AccountsViewController.swift */; };
 		456D150C1AC670DB00FC854E /* ModernLookOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 456D150B1AC670D000FC854E /* ModernLookOSX.framework */; };
 		459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC4041AB11FFC00B0C8B1 /* AccountController.swift */; };
@@ -30,9 +26,6 @@
 		45D8B6951AAE160B0080DEEC /* ImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68D1AAE160B0080DEEC /* ImportController.swift */; };
 		45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68E1AAE160B0080DEEC /* Stack.swift */; };
 		45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68F1AAE160B0080DEEC /* StackTray.xcdatamodeld */; };
-		45D8B6991AAE64650080DEEC /* AddAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D8B6981AAE64650080DEEC /* AddAccountCell.xib */; };
-		45E403DE1AB1420100DF62CC /* ConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E403DD1AB1420100DF62CC /* ConsoleViewController.swift */; };
-		45E403E01AB1421000DF62CC /* Console.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45E403DF1AB1421000DF62CC /* Console.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,13 +68,9 @@
 		450F837D1AAE152300E49B38 /* StackTrayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StackTrayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		450F83821AAE152300E49B38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		450F83831AAE152300E49B38 /* StackTrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackTrayTests.swift; sourceTree = "<group>"; };
-		450F838D1AAE155E00E49B38 /* Preferences.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
-		450F838E1AAE155E00E49B38 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
-		450F838F1AAE155E00E49B38 /* BackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		450F83901AAE155E00E49B38 /* AppMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
-		450F83911AAE155E00E49B38 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
-		453FCB6E1AB91239001AB85F /* InstanceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstanceCell.xib; sourceTree = "<group>"; };
-		4547BE211AC639ED00975A1A /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		45371ACA1ACE41AE00AFDC4D /* InstancesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstancesViewController.swift; sourceTree = "<group>"; };
+		45371ACC1ACE41EB00AFDC4D /* Instances.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Instances.storyboard; sourceTree = "<group>"; };
 		456194061AC84E4400E37901 /* AccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		456D15061AC670CF00FC854E /* ModernLookOSX.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ModernLookOSX.xcodeproj; path = "ModernLook-OSX-master/ModernLookOSX/ModernLookOSX.xcodeproj"; sourceTree = "<group>"; };
 		459DC4041AB11FFC00B0C8B1 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountController.swift; sourceTree = "<group>"; };
@@ -97,10 +86,7 @@
 		45D8B6921AAE160B0080DEEC /* StackTray 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 4.xcdatamodel"; sourceTree = "<group>"; };
 		45D8B6931AAE160B0080DEEC /* StackTray 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 5.xcdatamodel"; sourceTree = "<group>"; };
 		45D8B6941AAE160B0080DEEC /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
-		45D8B6981AAE64650080DEEC /* AddAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddAccountCell.xib; sourceTree = "<group>"; };
 		45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StackTray-Bridging-Header.h"; sourceTree = "<group>"; };
-		45E403DD1AB1420100DF62CC /* ConsoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleViewController.swift; sourceTree = "<group>"; };
-		45E403DF1AB1421000DF62CC /* Console.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Console.storyboard; sourceTree = "<group>"; };
 		4C2617974971310283D2D4F4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7B4932D74C135E6DC54C2B5A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -149,26 +135,19 @@
 		450F836D1AAE152200E49B38 /* StackTray */ = {
 			isa = PBXGroup;
 			children = (
-				450F83911AAE155E00E49B38 /* AccountCell.xib */,
-				45D8B6981AAE64650080DEEC /* AddAccountCell.xib */,
+				45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */,
+				45A980D61AC84DC9002D050F /* Accounts.storyboard */,
+				45371ACC1ACE41EB00AFDC4D /* Instances.storyboard */,
+				456194061AC84E4400E37901 /* AccountsViewController.swift */,
 				450F83701AAE152300E49B38 /* AppDelegate.swift */,
 				450F83901AAE155E00E49B38 /* AppMenu.swift */,
-				450F838F1AAE155E00E49B38 /* BackgroundView.swift */,
-				45E403DF1AB1421000DF62CC /* Console.storyboard */,
-				45E403DD1AB1420100DF62CC /* ConsoleViewController.swift */,
-				459DC4031AB11FFC00B0C8B1 /* Controllers */,
+				45371ACA1ACE41AE00AFDC4D /* InstancesViewController.swift */,
 				450F83741AAE152300E49B38 /* Images.xcassets */,
+				459DC4031AB11FFC00B0C8B1 /* Controllers */,
 				45D8B68C1AAE160B0080DEEC /* Import */,
-				453FCB6E1AB91239001AB85F /* InstanceCell.xib */,
 				450F83761AAE152300E49B38 /* Main.storyboard */,
 				459DC4051AB11FFC00B0C8B1 /* Models */,
-				450F838D1AAE155E00E49B38 /* Preferences.storyboard */,
-				450F838E1AAE155E00E49B38 /* PreferencesViewController.swift */,
-				45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */,
 				450F836E1AAE152300E49B38 /* Supporting Files */,
-				4547BE211AC639ED00975A1A /* MainViewController.swift */,
-				45A980D61AC84DC9002D050F /* Accounts.storyboard */,
-				456194061AC84E4400E37901 /* AccountsViewController.swift */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -351,12 +330,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45D8B6991AAE64650080DEEC /* AddAccountCell.xib in Resources */,
-				450F83921AAE155E00E49B38 /* Preferences.storyboard in Resources */,
-				45E403E01AB1421000DF62CC /* Console.storyboard in Resources */,
 				45A980D71AC84DC9002D050F /* Accounts.storyboard in Resources */,
-				450F83961AAE155E00E49B38 /* AccountCell.xib in Resources */,
-				453FCB6F1AB91239001AB85F /* InstanceCell.xib in Resources */,
+				45371ACD1ACE41EB00AFDC4D /* Instances.storyboard in Resources */,
 				450F83751AAE152300E49B38 /* Images.xcassets in Resources */,
 				450F83781AAE152300E49B38 /* Main.storyboard in Resources */,
 			);
@@ -411,17 +386,14 @@
 			files = (
 				459DC40A1AB11FFC00B0C8B1 /* Instance.swift in Sources */,
 				450F83711AAE152300E49B38 /* AppDelegate.swift in Sources */,
-				45E403DE1AB1420100DF62CC /* ConsoleViewController.swift in Sources */,
 				45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */,
 				45D8B6951AAE160B0080DEEC /* ImportController.swift in Sources */,
 				459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */,
 				45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */,
 				459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */,
 				456194071AC84E4400E37901 /* AccountsViewController.swift in Sources */,
-				450F83941AAE155E00E49B38 /* BackgroundView.swift in Sources */,
 				450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */,
-				4547BE221AC639ED00975A1A /* MainViewController.swift in Sources */,
-				450F83931AAE155E00E49B38 /* PreferencesViewController.swift in Sources */,
+				45371ACB1ACE41AE00AFDC4D /* InstancesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

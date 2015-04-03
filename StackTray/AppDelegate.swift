@@ -28,35 +28,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     //Account Controller
     lazy var accountController: AccountController = AccountController(rootURL: self.dataDirectory)
     
-    //Preferences
-    lazy var preferences : NSWindowController = {
+    //Accounts
+    lazy var accounts : NSWindowController = {
         let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as NSWindowController
         
         if let content = window.contentViewController as? AccountsViewController {
             content.accountController = self.accountController
         }
         
-        
         return window
         }()
     
-    //Preferences
+    //Instances
     lazy var instances : NSWindowController = {
-        let window = NSStoryboard(name: "Preferences", bundle: nil)?.instantiateInitialController() as NSWindowController
+        let window = NSStoryboard(name: "Instances", bundle: nil)?.instantiateInitialController() as NSWindowController
         
-        if let content = window.contentViewController as? MainViewController {
+        if let content = window.contentViewController as? InstancesViewController {
             content.accountController = self.accountController
         }
         
-        
         return window
-        }()
-    
-    //Preferences
-    lazy var console : NSWindowController = {
-        let window = NSStoryboard(name: "Console", bundle: nil)?.instantiateInitialController() as NSWindowController
-        return window
-        }()
+    }()
     
     /** App Menu */
     lazy var appMenu: AppMenu = {
@@ -68,8 +60,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         return menu
         }()
     
+    
+    /** Status item that represents the cloud icon in the status bar */
     var statusItem: NSStatusItem!
     
+    /** Main application launching function */
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
         //Setup status bar item
@@ -82,35 +77,46 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         let importKey = "STACKTRAY_LEGACY_IMPORT_FINISHED"
         let defaults = NSUserDefaults.standardUserDefaults()
         if !defaults.boolForKey(importKey) {
+            //Only import legacy data once
             let i = ImportController()
             if i.importLegacyData(accountController) {
                 defaults.setBool(true, forKey: importKey)
             }
         }
         
+        /** Add an account observer (to refresh the menu) */
         accountController.addAccountControllerObserver(self)
                 
         //Refreh the menu
         appMenu.initMenu()
+        
+        appMenu.addItem(NSMenuItem.separatorItem())
+        appMenu.addItem(NSMenuItem(title: "Manage Accounts...", action: Selector("showAccounts:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Manage Instances...", action: Selector("showInstances:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Quit", action: Selector("quit:"), keyEquivalent: ""))
 
         //Open Preferences if there are no accounts configured
         if accountController.accounts.count == 0 {
-            self.preferences(nil)
+            self.showAccounts(nil)
         }        
     }
     
+    /** Refresh the accounts */
     func refresh(){
         accountController.refreshAccounts()
     }
     
+    /** Update the menu that an account was added */
     func didAddAccountAtIndex(accountController: AccountController, index: Int) {
         appMenu.insertAccount(index, account: accountController.accounts[index])
     }
     
+    /** Update the menu that an account was deleted */
     func didDeleteAccountAtIndex(accountController: AccountController, index: Int) {
         appMenu.deleteAccount(index)
     }
     
+    /** Update the menu that an account was updated */
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int) {
         appMenu.updateAccount(index, account: accountController.accounts[index])
     }
@@ -131,6 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         appMenu.deleteAccountInstance(index, instanceIndex: instanceIndex)
     }
     
+    /** Add a notification when an instance was started */
     func instanceDidStart(accountController: AccountController, index: Int, instanceIndex: Int) {
         let account = accountController.accounts[index]
         let instance = account.instances[instanceIndex];
@@ -138,6 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         NotificationManager.sharedManager().showNotification("Instance \"\(instance.name)\" is started", informativeText: "for account \"\(account.name)\"")        
     }
     
+    /** Add a notification when an instance was stopped */
     func instanceDidStop(accountController: AccountController, index: Int, instanceIndex: Int) {
         let account = accountController.accounts[index]
         let instance = account.instances[instanceIndex];
@@ -154,22 +162,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         return accountController.accounts[index]
     }
     
-    func selectorForPreferences(menu: AppMenu)->Selector{
-        return Selector("preferences:")
-    }
-    
-    func selectorForInstances(menu: AppMenu)->Selector{
-        return Selector("instances:")
-    }
-    
-    //Dummy Poll instances
-    func pollInstances(timer: NSTimer){
-    }
-    
-//    func numberOfInstances() -> Int{
-//        return instances
-//    }
-    
     func titleForInstanceAtIndex(index: Int) -> String {
         return "Instance \(index + 1)"
     }
@@ -178,22 +170,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         println("About")
     }
     
-    /** Open the preferences */
-    func preferences(sender: AnyObject?) {
-        preferences.showWindow(self)
+    /** Show the accounts */
+    func showAccounts(sender: AnyObject?) {
+        accounts.showWindow(self)
         
         //Focus on window
         NSApp.activateIgnoringOtherApps(true)
-        preferences.window!.makeKeyAndOrderFront(nil)
+        accounts.window!.makeKeyAndOrderFront(nil)
     }
     
-    func instances(sender: AnyObject?) {
+    /** Show the instance */
+    func showInstances(sender: AnyObject?) {
         instances.showWindow(self)
 
         //Focus on window
         NSApp.activateIgnoringOtherApps(true)
         instances.window!.makeKeyAndOrderFront(nil)
-}
+    }
     
     /** Quit the application */
     func quit(sender: AnyObject) {
@@ -202,9 +195,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     /** Save a value to the clipboard */
     func saveToClipboard(menuItem: NSMenuItem){
-        println("Save to clipboard: \(menuItem.title)")
-        
-        
         NotificationManager.sharedManager().saveToClipBoard(menuItem.title)
     }
     
@@ -215,8 +205,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     /** Browse to an instance */
     func browse(menuItem: InstanceActionMenuItem){
-        println("Browse to \(menuItem.instance.instanceId)")
-        
         var dns = menuItem.instance.publicDnsName
         if dns.isEmpty {
             dns = menuItem.instance.privateDnsName
@@ -231,68 +219,64 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     /** Stop an instance */
     func stopInstance(menuItem: InstanceActionMenuItem){
         let instance = menuItem.instance
-        println("Stop \(instance.instanceId)")
+        
         accountController.stopInstance(menuItem.account, instance: instance) { (error) -> Void in
-            if error != nil {
-                NSApplication.sharedApplication().presentError(error!)
-            }
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                if error != nil {
+                    NSApplication.sharedApplication().presentError(error!)
+                }
+            })
         }
     }
     
     /** Start an instance */
     func startInstance(menuItem: InstanceActionMenuItem){
         let instance = menuItem.instance
-        println("Start \(instance.instanceId)")
         accountController.startInstance(menuItem.account, instance: instance) { (error) -> Void in
-            if error != nil {
-                NSApplication.sharedApplication().presentError(error!)
-            }
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                if error != nil {
+                    NSApplication.sharedApplication().presentError(error!)
+                }
+            })
         }
     }
     
     /** Reboot an instance */
     func reboot(menuItem: InstanceActionMenuItem){
-        println("Reboot \(menuItem.instance.instanceId)")
-        
         accountController.rebootInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
-            if error != nil {
-                NSApplication.sharedApplication().presentError(error!)
-            }
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                if error != nil {
+                    NSApplication.sharedApplication().presentError(error!)
+                }
+            })
         }
     }
     
     /** Show the console of an instance */
     func console(menuItem: InstanceActionMenuItem){
-        println("Show Console for \(menuItem.instance.instanceId)")
-        
-        if let consoleView = console.contentViewController as? ConsoleViewController {
-            consoleView.accountController = accountController
-            consoleView.account = menuItem.account
-            consoleView.instance = menuItem.instance
-            consoleView.reloadForAccount()
+        if let instanceView = instances.contentViewController as? InstancesViewController {
+            instanceView.showInstanceConsole(find(accountController.accounts, menuItem.account)!, instanceIndex: find(menuItem.account.instances, menuItem.instance)!)
         }
-        
-        console.showWindow(self)
+
+        instances.showWindow(self)
         
         //Focus on window
         NSApp.activateIgnoringOtherApps(true)
-        console.window!.makeKeyAndOrderFront(nil)
-        
-        
+        instances.window!.makeKeyAndOrderFront(nil)
     }
-    
     
     //MARK - Menu Delegate
     func menuWillOpen(menu: NSMenu){
         //Refreh the list of accounts when the menu opens
         self.refresh()
     }
-    
-    
-
 }
 
+//MARK: Notification Manager
+
 private let _NotificationManager = NotificationManager()
+
+/** The NotificationManager is responsible to show notifications on OS level */
 class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
     
     class func sharedManager() -> NotificationManager {
@@ -315,6 +299,7 @@ class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
         return true
     }
     
+    /** Save to the clipboard and show notification */
     func saveToClipBoard(string: String){
         let pasteBoard = NSPasteboard.generalPasteboard()
         pasteBoard.clearContents()
@@ -323,6 +308,4 @@ class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
         showNotification("Copy to clipboard", informativeText: string)
     }
 }
-
-
 

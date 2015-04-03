@@ -1,15 +1,15 @@
 //
-//  TestViewController.swift
+//  InstancesViewController.swift
 //  StackTray
 //
-//  Created by Ruben Cagnie on 3/27/15.
+//  Created by Ruben Cagnie on 3/30/15.
 //  Copyright (c) 2015 dutchcoders. All rights reserved.
 //
 
 import Cocoa
 
-class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, AccountControllerObserver {
-
+class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, AccountControllerObserver {
+    
     /** Account Controller */
     var accountController: AccountController! {
         didSet {
@@ -18,15 +18,21 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
+    /** Array that keeps track of the indexes for accounts */
     var accountIndexes: [Int] = []
+    /** Array that keeps track of the indexes for instances */
     var instanceIndexes: [Int] = []
     
+    /** Reload the instances (calculate the indexes etc) */
     func reloadInstances(){
         
+        //Clear the indexes
         accountIndexes.removeAll(keepCapacity: false)
         instanceIndexes.removeAll(keepCapacity: false)
         
+        //Set the current index to 0
         var currentIndex = 0
+        
         for account in accountController.accounts {
             accountIndexes.append(currentIndex++)
             
@@ -34,19 +40,19 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 instanceIndexes.append(currentIndex++)
             }
         }
-        
-        println("Account indexes: \(accountIndexes)")
-        println("Instance indexes: \(instanceIndexes)")
-        
+
+        //Reload the table
         accountsTableView.reloadData()
         selectInstance(-1)
     }
     
+    /** View Will Appear */
     override func viewWillAppear() {
         super.viewWillAppear()
         accountController.addAccountControllerObserver(self)
     }
     
+    /** View Will Disappear */
     override func viewWillDisappear() {
         super.viewWillDisappear()
         accountController.removeAccountControllerObserver(self)
@@ -56,12 +62,14 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     func didAddAccountAtIndex(accountController: AccountController, index: Int){
         reloadInstances()
     }
-
+    
     func didDeleteAccountAtIndex(accountController: AccountController, index: Int){
         reloadInstances()
     }
     
     func didUpdateAccountAtIndex(accountController: AccountController, index: Int){
+        let accountIndex = accountIndexes[index]
+        accountsTableView.reloadDataForRowIndexes(NSIndexSet(index: accountIndex), columnIndexes: NSIndexSet(index: 0))
     }
     
     //MARK - Instances
@@ -79,8 +87,19 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         
         let row = accountIndexes[index] + instanceIndex + 1
-        accountsTableView.reloadDataForRowIndexes(NSIndexSet(index: row), columnIndexes: NSIndexSet(index: 0))        
+        accountsTableView.reloadDataForRowIndexes(NSIndexSet(index: row), columnIndexes: NSIndexSet(index: 0))
     }
+    
+    //MARK: Show instance console
+    func showInstanceConsole(accountIndex: Int, instanceIndex: Int){
+        let row: Int = accountIndexes[accountIndex] + instanceIndex + 1
+        
+        accountsTableView.selectRowIndexes(NSIndexSet(index: row), byExtendingSelection: false)
+        accountsTableView.scrollRowToVisible(row)
+        selectInstance(row)
+        detailInstanceViewController.selectTab(1)
+    }
+
     
     func didDeleteAccountInstance(accountController: AccountController, index: Int, instanceIndex: Int) {
         reloadInstances()
@@ -90,7 +109,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     func instanceDidStart(accountController: AccountController, index: Int, instanceIndex: Int) {
         let account = accountController.accounts[index]
         let instance = account.instances[instanceIndex];
-
+        
         if detailInstanceViewController.instance != nil && detailInstanceViewController.instance == instance {
             detailInstanceViewController.instance = instance
         }
@@ -104,7 +123,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             detailInstanceViewController.instance = instance
         }
     }
-
+    
     @IBOutlet weak var accountsTableView: NSTableView!
     @IBOutlet weak var deselectedContentView: NSView!
     @IBOutlet weak var detailContentView: NSView!
@@ -215,87 +234,11 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
-    @IBAction func addAccount(sender: AnyObject) {
-        editOrAddAccount(self, accountController, accountIndex: nil, .AWS)
-    }
-    
-    var detailAccountViewController : DetailAccountViewController!
     var detailInstanceViewController : DetailInstanceViewController!
     override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
-        if let detail = segue.destinationController as? DetailAccountViewController {
-            detailAccountViewController = detail
-        } else if let detail = segue.destinationController as? DetailInstanceViewController {
+        if let detail = segue.destinationController as? DetailInstanceViewController {
             detailInstanceViewController = detail
         }
-    }
-}
-
-class DetailAccountViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
-    
-    var account: AWSAccount! {
-        didSet{
-            accountNameField.stringValue = account.name
-            accessKeyField.stringValue = account.accessKey
-            secretKeyField.stringValue = account.secretKey
-            regionSelector.stringValue = account.region
-            
-            instancesTableView.reloadData()
-        }
-    }
-    @IBOutlet weak var accountNameField: MLComboField!
-    @IBOutlet weak var accessKeyField: MLComboField!
-    @IBOutlet weak var secretKeyField: MLComboField!
-    
-    /** List of regions */
-    let awsRegions  = [
-        "ec2.us-east-1.amazonaws.com",
-        "ec2.us-west-2.amazonaws.com",
-        "ec2.us-west-1.amazonaws.com",
-        "ec2.eu-west-1.amazonaws.com",
-        "ec2.ap-southeast-1.amazonaws.com",
-        "ec2.ap-southeast-2.amazonaws.com",
-        "ec2.ap-northeast-1.amazonaws.com",
-        "ec2.sa-east-1.amazonaws.com"
-    ]
-    
-    @IBOutlet weak var regionSelector: NSPopUpButton! {
-        didSet{
-            for region in awsRegions {
-                regionSelector.menu!.addItemWithTitle(region, action: nil, keyEquivalent: "")
-            }
-        }
-    }
-    
-    @IBOutlet weak var instancesTableView: NSTableView! {
-        didSet {
-            instancesTableView.registerNib(NSNib(nibNamed: "InstanceCell", bundle: nil)!, forIdentifier: "InstanceCell")
-        }
-    }
-    
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        if account == nil {
-            return 0
-        }
-        return account.instances.count
-    }
-    
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-        return account.instances[row].name
-    }
-    
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let instance = account.instances[row]
-        
-//        if let instanceCell = tableView.makeViewWithIdentifier("InstanceCell", owner: self) as? InstanceCellView {
-//            instanceCell.instance = instance
-//            return instanceCell
-//        } else {
-            return nil
-//        }
-    }
-    
-    func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
-        return false
     }
 }
 
@@ -307,7 +250,7 @@ class DetailInstanceViewController : NSViewController {
     @IBOutlet weak var statusLabel: NSTextField!
     
     lazy var fakFactory: NIKFontAwesomeIconFactory = NIKFontAwesomeIconFactory()
-
+    
     /** Start Stop */
     @IBOutlet weak var startStopButton: NSButton!
     @IBOutlet weak var startStopLabel: NSTextField!
@@ -341,6 +284,10 @@ class DetailInstanceViewController : NSViewController {
         })
     }
     
+    func selectTab(index: Int){
+        tabViewController.selectedTabViewItemIndex = index
+    }
+    
     var instance: Instance! {
         didSet {
             tabViewController.instance = instance
@@ -354,7 +301,7 @@ class DetailInstanceViewController : NSViewController {
             tabViewController.accountController = accountController
         }
     }
-
+    
     var tabViewController : InstanceTabbarController! {
         didSet {
             tabViewController.accountController = accountController
@@ -519,8 +466,8 @@ class InstanceDetailTabViewController : InstanceTabViewController {
             userIDField.stringValue = userId
         }
     }
-
-
+    
+    
 }
 
 class InstanceConsoleViewController : InstanceTabViewController {
@@ -544,104 +491,20 @@ class InstanceConsoleViewController : InstanceTabViewController {
     func reloadConsoleForAccount(){
         self.textView.string = ""
         self.accountController.fetchConsoleOutput(account, instance: instance) { (error, output) -> Void in
-            if error != nil {
-                NSApplication.sharedApplication().presentError(error!)
-            } else {
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                if error != nil {
+                    NSApplication.sharedApplication().presentError(error!)
+                } else {
                     self.textView.string = output
-                })
-            }
+                }
+            })
+
         }
     }
     
     @IBAction func refreshConsole(sender: AnyObject) {
         self.reloadConsoleForAccount()
     }
-
-}
-
-class InstanceAccountViewController : InstanceTabViewController {
-    @IBOutlet weak var accountNameField: MLComboField!
-    @IBOutlet weak var accessKeyField: MLComboField!
-    @IBOutlet weak var secretKeyField: MLComboField!
-    
-    override var account: Account! {
-        didSet {
-            if active {
-                updateAccountFields()
-            }
-        }
-    }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        updateAccountFields()
-    }
-    
-    func updateAccountFields(){
-        accountNameField.stringValue = account.name
-        if let aws = account as? AWSAccount {
-            accessKeyField.stringValue = aws.accessKey
-            secretKeyField.stringValue = aws.secretKey
-            regionSelector.selectItemWithTitle(aws.region)
-        }
-    }
-
-    
-    /** List of regions */
-    let awsRegions  = [
-        "ec2.us-east-1.amazonaws.com",
-        "ec2.us-west-2.amazonaws.com",
-        "ec2.us-west-1.amazonaws.com",
-        "ec2.eu-west-1.amazonaws.com",
-        "ec2.ap-southeast-1.amazonaws.com",
-        "ec2.ap-southeast-2.amazonaws.com",
-        "ec2.ap-northeast-1.amazonaws.com",
-        "ec2.sa-east-1.amazonaws.com"
-    ]
-    
-    @IBOutlet weak var regionSelector: NSPopUpButton! {
-        didSet{
-            for region in awsRegions {
-                regionSelector.menu!.addItemWithTitle(region, action: nil, keyEquivalent: "")
-            }
-        }
-    }
-    
-    @IBAction func deleteAccount(sender: AnyObject) {
-        //Remove
-        let alert = NSAlert()
-        alert.addButtonWithTitle("Delete")
-        alert.addButtonWithTitle("Cancel")
-        alert.messageText = "Are you sure you want to delete \"\(account.name)\"?"
-        alert.informativeText = "Deleting this account will remove it from the StackTray menu bar"
-        
-        alert.alertStyle = .WarningAlertStyle
-        
-        alert.beginSheetModalForWindow(view.window!, completionHandler: { (response) -> Void in
-            if response == NSAlertFirstButtonReturn {
-                self.accountController.deleteAccountAtIndex(find(self.accountController.accounts, self.account)!)
-            }
-        })
-    }
-    
-    @IBAction func saveAccount(sender: AnyObject) {
-        if let index = find(self.accountController.accounts, account){
-            if let a = self.account as? AWSAccount {
-                a.name = accountNameField.stringValue
-                a.accessKey = accessKeyField.stringValue
-                a.secretKey = secretKeyField.stringValue
-                a.region = regionSelector.stringValue
-                
-                
-                accountController.updateAccountAtIndex(index, account: a, callback: { (error, account) -> Void in
-                    if error != nil {
-                        NSApplication.sharedApplication().presentError(error!)
-                    }
-                })
-            }
-        }
-
-    }
     
 }
+

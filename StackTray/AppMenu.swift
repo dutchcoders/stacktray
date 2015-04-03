@@ -23,10 +23,6 @@ protocol AppMenuDataSource {
     func numberOfAccounts(menu: AppMenu) -> Int
     /** Get the account at an index */
     func accountAtIndex(menu: AppMenu, index: Int) -> Account
-    /** Get the selector for showing preferences */
-    func selectorForPreferences(menu: AppMenu) -> Selector
-    /** Get the selector for showing instances */
-    func selectorForInstances(menu: AppMenu) -> Selector
 }
 
 /** Class that represents the app menu */
@@ -43,12 +39,7 @@ class AppMenu: NSMenu {
         for var i=0; i<dataSource.numberOfAccounts(self);i++ {
             let account = dataSource.accountAtIndex(self, index: i)
             insertAccount(i, account: account)
-        }
-        
-        self.addItem(NSMenuItem.separatorItem())
-        self.addItem(NSMenuItem(title: "Manage Accounts...", action: dataSource.selectorForPreferences(self), keyEquivalent: ""))
-        self.addItem(NSMenuItem(title: "Manage Instances...", action: dataSource.selectorForInstances(self), keyEquivalent: ""))
-        self.addItem(NSMenuItem(title: "Quit", action: Selector("quit:"), keyEquivalent: ""))
+        }        
     }
     
     /** Insert an account */
@@ -254,38 +245,6 @@ class InstanceMenuItem: NSMenuItem {
         consoleMenuItem.instance = instance
         rebootMenuItem.instance = instance
         startStopMenuItem.instance = instance
-        
-//        /** Clipboard */
-//        let clipBoardSelector = Selector("saveToClipboard:")
-//        
-//        menu.addItemWithTitle("Clipboard", action: nil, keyEquivalent: "")
-//        
-//        menu.addItemWithTitle(instance.privateDnsName, action: clipBoardSelector, keyEquivalent: "")
-//        menu.addItemWithTitle(instance.privateIpAddress, action: clipBoardSelector, keyEquivalent: "")
-//        menu.addItemWithTitle(instance.publicDnsName, action: clipBoardSelector, keyEquivalent: "")
-//        menu.addItemWithTitle(instance.publicIpAddress, action: clipBoardSelector, keyEquivalent: "")
-//        
-//        /** Separator */
-//        menu.addItem(NSMenuItem.separatorItem())
-//        
-//        /** Actions */
-//        menu.addItemWithTitle("Actions", action: nil, keyEquivalent: "")
-//        
-//        //Connect to the account : RUBEN: Do not know what this is
-//        //        menu.addItem(InstanceActionMenuItem(title: "Connect", instance: instance, account: account, action: Selector("connect:")))
-//        
-//        //Browse to the account
-//        menu.addItem(InstanceActionMenuItem(title: "Browse", instance: instance, account: account, action: Selector("browse:")))
-//        
-//        //State (to start, stop)
-//        if instance.state == .Stopped {
-//            menu.addItem(InstanceActionMenuItem(title: "Start", instance: instance, account: account, action: Selector("startInstance:")))
-//        } else if instance.state == .Running {
-//            menu.addItem(InstanceActionMenuItem(title: "Stop", instance: instance, account: account, action: Selector("stopInstance:")))
-//        } else {
-//            menu.addItem(InstanceActionMenuItem(title: instance.state.description, instance: instance, account: account, action: nil))
-//        }
-//        
     }
 }
 

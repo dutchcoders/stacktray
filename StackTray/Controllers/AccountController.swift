@@ -633,19 +633,15 @@ public class AWSAccountConnector: NSObject, AccountConnector {
             println("AWS Connection Established")
             
             let instancesRequest = AWSEC2DescribeInstancesRequest()
-            awsConnection!.describeInstances(instancesRequest).continueWithBlock { (task) -> AnyObject! in
+            awsConnection!.describeInstances(instancesRequest).continueWithBlock { (task) -> BFTask! in
                 
-                if task.error != nil {
+                if task.faulted {
                     println("Error: \(task.error)")
                     callback(error: task.error, account: nil)
                 } else {
                     let result = task.result as AWSEC2DescribeInstancesResult
                     
                     var existingInstanceIds = account.instances.map{ $0.instanceId }
-//                    println("Existing IDS: \(existingInstanceIds)")
-//                    println("Instances: \(account.instances.count)")
-//                    println("Existing IDS: \(existingInstanceIds.count)")
-                    
                     var atLeastOneInstance = false
 
                     for reservation in result.reservations as [AWSEC2Reservation] {
