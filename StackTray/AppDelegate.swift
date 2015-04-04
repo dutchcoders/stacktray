@@ -200,22 +200,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     /** Connect to an instance */
     func connect(menuItem: InstanceActionMenuItem){
-        println("Connect to \(menuItem.instance.instanceId)")
+        connectToInstance(menuItem.instance)
     }
     
     /** Browse to an instance */
     func browse(menuItem: InstanceActionMenuItem){
-        var dns = menuItem.instance.publicDnsName
-        if dns.isEmpty {
-            dns = menuItem.instance.privateDnsName
-        }
-        
-        
-        if let url = NSURL(string: "http://\(dns)") {
-            NSWorkspace.sharedWorkspace().openURL(url)
-        }
+        browseToInstance(menuItem.instance)
     }
-    
+
     /** Stop an instance */
     func stopInstance(menuItem: InstanceActionMenuItem){
         let instance = menuItem.instance
@@ -318,5 +310,28 @@ func presentAWSError(error: NSError){
             NSApplication.sharedApplication().presentError(error)
         }
     })
+}
+
+
+/** Open an instance in the browser */
+func browseToInstance(instance: Instance){
+    var dns = instance.publicDnsName
+    if dns.isEmpty {
+        dns = instance.privateDnsName
+    }
+    
+    if let url = NSURL(string: "http://\(dns)") {
+        NSWorkspace.sharedWorkspace().openURL(url)
+    }
+
+}
+
+/** Connect to an instance */
+func connectToInstance(instance: Instance){
+    if let pemKey = instance.pemLocation {
+        println("Connect to instance with pemkey: \(pemKey)")
+    } else {
+        println("Connect to instance without pemkey")
+    }
 }
 

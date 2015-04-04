@@ -133,6 +133,7 @@ class InstanceMenuItem: NSMenuItem {
     var startStopMenuItem : InstanceActionMenuItem
     
     var browseMenuItem : InstanceActionMenuItem
+    var connectMenuItem : InstanceActionMenuItem
     var rebootMenuItem : InstanceActionMenuItem
     var consoleMenuItem : InstanceActionMenuItem
     
@@ -171,6 +172,7 @@ class InstanceMenuItem: NSMenuItem {
         publicIpMenuItem = menu.addItemWithTitle("", action: clipBoardSelector, keyEquivalent: "")!
         
         browseMenuItem = InstanceActionMenuItem(title: "Browse", account: account, action: Selector("browse:"))
+        connectMenuItem = InstanceActionMenuItem(title: "Connect", account: account, action: Selector("connect:"))
         rebootMenuItem = InstanceActionMenuItem(title: "Reboot", account: account, action: Selector("reboot:"))
         consoleMenuItem = InstanceActionMenuItem(title: "Console Output", account: account, action: Selector("console:"))
         startStopMenuItem = InstanceActionMenuItem(title: "---", account: account, action: nil)
@@ -183,6 +185,9 @@ class InstanceMenuItem: NSMenuItem {
         
         //Browse to the account
         menu.addItem(browseMenuItem)
+        
+        //Connect to the account
+        menu.addItem(connectMenuItem)
         
         //State (to start, stop)
         menu.addItem(startStopMenuItem)
@@ -242,6 +247,7 @@ class InstanceMenuItem: NSMenuItem {
 
         
         browseMenuItem.instance = instance
+        connectMenuItem.instance = instance
         consoleMenuItem.instance = instance
         rebootMenuItem.instance = instance
         startStopMenuItem.instance = instance

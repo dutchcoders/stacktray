@@ -279,16 +279,39 @@ class DetailInstanceViewController : NSViewController {
         
     }
     
+    //MARK: Reboot
     @IBOutlet weak var rebootButton: NSButton! {
         didSet {
             rebootButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconRefresh)
         }
     }
+    
     @IBAction func rebootInstance(sender: NSButton) {
         sender.enabled = false
         accountController.rebootInstance(accountController.accountForInstance(instance), instance: instance, callback: { (error) -> Void in
             
         })
+    }
+    
+    //MARK: Browse
+    @IBOutlet weak var browseButton: NSButton! {
+        didSet {
+            browseButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconCloudUpload)
+        }
+    }
+    @IBAction func browseInstance(sender: NSButton) {
+        browseToInstance(instance)
+    }
+    
+    //MARK: Connect
+    @IBOutlet weak var connectButton: NSButton! {
+        didSet {
+            connectButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconChainBroken)
+        }
+    }
+    
+    @IBAction func connect(sender: NSButton) {
+        connectToInstance(instance)
     }
     
     func selectTab(index: Int){
@@ -408,6 +431,22 @@ class InstanceDetailTabViewController : InstanceTabViewController {
     @IBOutlet weak var pemKeyField: MLComboField!
     @IBOutlet weak var userIDField: MLComboField!
     
+    /** Browse for the pem key */
+    @IBAction func browseForPemKey(sender: NSButton) {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        
+        let clicked = panel.runModal()
+        if clicked == NSFileHandlingPanelOKButton {
+            if let url = panel.URL {
+                pemKeyField.stringValue = url.absoluteString!
+            }
+        }
+
+    }
+    
     @IBAction func saveInstance(sender: AnyObject) {
         instance.pemLocation = pemKeyField.stringValue
         instance.userId = userIDField.stringValue
@@ -467,14 +506,16 @@ class InstanceDetailTabViewController : InstanceTabViewController {
         
         if let pem = instance.pemLocation {
             pemKeyField.stringValue = pem
+        } else {
+            pemKeyField.stringValue = ""
         }
         
         if let userId = instance.userId{
             userIDField.stringValue = userId
+        } else {
+            userIDField.stringValue = ""
         }
     }
-    
-    
 }
 
 class InstanceConsoleViewController : InstanceTabViewController {
