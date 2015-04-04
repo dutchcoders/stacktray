@@ -223,7 +223,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         accountController.stopInstance(menuItem.account, instance: instance) { (error) -> Void in
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 if error != nil {
-                    NSApplication.sharedApplication().presentError(error!)
+                    presentAWSError(error!)
                 }
             })
         }
@@ -235,7 +235,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         accountController.startInstance(menuItem.account, instance: instance) { (error) -> Void in
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 if error != nil {
-                    NSApplication.sharedApplication().presentError(error!)
+                    presentAWSError(error!)
                 }
             })
         }
@@ -246,7 +246,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         accountController.rebootInstance(menuItem.account, instance: menuItem.instance) { (error) -> Void in
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 if error != nil {
-                    NSApplication.sharedApplication().presentError(error!)
+                    presentAWSError(error!)
                 }
             })
         }
@@ -307,5 +307,16 @@ class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
         
         showNotification("Copy to clipboard", informativeText: string)
     }
+}
+
+/** Present AWS Error */
+func presentAWSError(error: NSError){
+    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        if let message = error.userInfo?["Message"]? as? String {
+            NSApplication.sharedApplication().presentError(NSError(domain: error.domain, code: error.code, userInfo: [ NSLocalizedDescriptionKey : message ]))
+        } else {
+            NSApplication.sharedApplication().presentError(error)
+        }
+    })
 }
 

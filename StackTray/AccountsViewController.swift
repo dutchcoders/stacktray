@@ -245,7 +245,7 @@ class AccountsDetailViewController : NSViewController {
                 
                 accountController.updateAccountAtIndex(index, account: a, callback: { (error, account) -> Void in
                     if error != nil {
-                        NSApplication.sharedApplication().presentError(error!)
+                        presentAWSError(error!)
                     }
                 })
             }
@@ -307,7 +307,7 @@ class AddAccountViewController : NSViewController {
             
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 if error != nil {
-                    NSApplication.sharedApplication().presentError(error!)
+                    presentAWSError(error!)
                 } else {
                     self.closeSheet(sender)
                 }

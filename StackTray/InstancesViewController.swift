@@ -208,7 +208,6 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
             
             return view
         } else {
-            println("NO VIEW")
             return nil
         }
     }
@@ -259,12 +258,20 @@ class DetailInstanceViewController : NSViewController {
         case .Running:
             sender.enabled = false
             accountController.stopInstance(accountController.accountForInstance(instance), instance: instance, callback: { (error) -> Void in
+                if error != nil {
+                    presentAWSError(error!)
+                }
                 
+                self.updateStateLabel()
             })
         case .Stopped:
             sender.enabled = false
             accountController.startInstance(accountController.accountForInstance(instance), instance: instance, callback: { (error) -> Void in
+                if error != nil {
+                    presentAWSError(error!)
+                }
                 
+                self.updateStateLabel()
             })
         default:
             break;
@@ -493,7 +500,7 @@ class InstanceConsoleViewController : InstanceTabViewController {
         self.accountController.fetchConsoleOutput(account, instance: instance) { (error, output) -> Void in
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 if error != nil {
-                    NSApplication.sharedApplication().presentError(error!)
+                    presentAWSError(error!)
                 } else {
                     self.textView.string = output
                 }
