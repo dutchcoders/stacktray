@@ -41,6 +41,18 @@ public class Instance : NSObject, NSCoding, Equatable {
     public var pemLocation : String?
     
     public var lastUpdate: NSDate?
+    
+    /** Extra meta data */
+    public var availabilityZone: String?
+    public var architecture: String?
+    public var imageId: String?
+    public var instanceGroup: String?
+    public var keyName: String?
+    public var launchTime: NSDate?
+    public var placementGroup: String?
+    public var platform: String?
+    public var vpcId: String?
+    
 
     /** Default constructor for an Instance object */
     public init(name: String, instanceId: String, type: String, publicDnsName : String, publicIpAddress : String, privateDnsName : String, privateIpAddress : String){
@@ -113,6 +125,16 @@ public class Instance : NSObject, NSCoding, Equatable {
         self.state = instance.state
         
         self.lastUpdate = NSDate()
+        
+        self.availabilityZone = instance.availabilityZone
+        self.architecture = instance.architecture
+        self.imageId = instance.imageId
+        self.instanceGroup = instance.instanceGroup
+        self.keyName = instance.keyName
+        self.launchTime = instance.launchTime
+        self.placementGroup = instance.placementGroup
+        self.platform = instance.platform
+        self.vpcId = instance.vpcId
     }
 }
 

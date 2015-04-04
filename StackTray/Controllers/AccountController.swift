@@ -645,30 +645,52 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                     var atLeastOneInstance = false
 
                     for reservation in result.reservations as [AWSEC2Reservation] {
-                        for instance in reservation.instances as [AWSEC2Instance]{
+                        for awsInstance in reservation.instances as [AWSEC2Instance]{
                             
                             atLeastOneInstance = true
                             
-                            var name = instance.instanceId
-                            for tag in instance.tags? as [AWSEC2Tag] {
+                            var name = awsInstance.instanceId
+                            for tag in awsInstance.tags? as [AWSEC2Tag] {
                                 if tag.key() == "Name" && !tag.value().isEmpty {
                                     name = tag.value()
                                 }
                             }
                             
-                            let state = instance.state
-                            let instanceState = InstanceState(rawValue: instance.state.name.rawValue)
-                            let instanceId = instance.instanceId
-                            let instanceType = self.instanceTypeToString[instance.instanceType]!
+                            let state = awsInstance.state
+                            let instanceState = InstanceState(rawValue: awsInstance.state.name.rawValue)
+                            let instanceId = awsInstance.instanceId
+                            let instanceType = self.instanceTypeToString[awsInstance.instanceType]!
                             
-                            let publicDnsName = instance.publicDnsName
-                            let publicIpAddress = instance.publicIpAddress
-                            let privateDnsName = instance.privateDnsName
-                            let privateIpAddress = instance.privateIpAddress
+                            let publicDnsName = awsInstance.publicDnsName
+                            let publicIpAddress = awsInstance.publicIpAddress
+                            let privateDnsName = awsInstance.privateDnsName
+                            let privateIpAddress = awsInstance.privateIpAddress
                             
                             let instance = Instance(name: name, instanceId: instanceId, type: instanceType, publicDnsName: publicDnsName == nil ? "" : publicDnsName, publicIpAddress: publicIpAddress == nil ? "" : publicIpAddress, privateDnsName: privateDnsName == nil ? "" : privateDnsName, privateIpAddress: privateIpAddress==nil ? "" : privateIpAddress)
                             instance.state = instanceState!
-
+                            
+                            /** More meta data */
+                            instance.keyName = awsInstance.keyName
+                            instance.launchTime = awsInstance.launchTime
+                            instance.vpcId = awsInstance.vpcId
+                            instance.placementGroup = awsInstance.placement.groupName
+                            instance.availabilityZone = awsInstance.placement.availabilityZone
+                            
+                            switch awsInstance.architecture {
+                            case .Unknown: instance.architecture = "Unknown"
+                            case .I386: instance.architecture = "i386"
+                            case .X86_64: instance.architecture = "x86_64"
+                            }
+                            
+                            switch awsInstance.platform {
+                            case .Unknown: instance.platform = "Unknown"
+                            case .Windows: instance.platform = "Windows"
+                            }
+                            
+                            instance.imageId = awsInstance.imageId
+                            
+                            
+                            /* Check if the instance exists */
                             var filtered = account.instances.filter({ (i) -> Bool in
                                 return i.instanceId == instanceId
                             })

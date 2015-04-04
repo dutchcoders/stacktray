@@ -97,7 +97,7 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
         accountsTableView.selectRowIndexes(NSIndexSet(index: row), byExtendingSelection: false)
         accountsTableView.scrollRowToVisible(row)
         selectInstance(row)
-        detailInstanceViewController.selectTab(1)
+        detailInstanceViewController.showConsole()
     }
 
     
@@ -244,6 +244,7 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
 class DetailInstanceViewController : NSViewController {
     @IBOutlet weak var detailsButton: NSButton!
     @IBOutlet weak var consoleButton: NSButton!
+    @IBOutlet weak var configButton: NSButton!
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var statusLabel: NSTextField!
@@ -314,8 +315,8 @@ class DetailInstanceViewController : NSViewController {
         connectToInstance(instance)
     }
     
-    func selectTab(index: Int){
-        self.buttonClicked(index == 0 ? detailsButton : consoleButton)
+    func showConsole(){
+        self.buttonClicked(consoleButton)
     }
     
     var instance: Instance! {
@@ -362,11 +363,14 @@ class DetailInstanceViewController : NSViewController {
     }
     
     @IBAction func buttonClicked(sender: NSButton) {
-        if sender == detailsButton {
+        if sender == configButton {
             tabViewController.selectedTabViewItemIndex = 0
-        } else if sender == consoleButton {
+        } else if sender == detailsButton {
             tabViewController.selectedTabViewItemIndex = 1
+        } else if sender == consoleButton {
+            tabViewController.selectedTabViewItemIndex = 2
         }
+        
         updateCurrentIndex()
     }
     
@@ -377,8 +381,9 @@ class DetailInstanceViewController : NSViewController {
     }
     
     func updateCurrentIndex(){
-        detailsButton.state = tabViewController.selectedTabViewItemIndex == 0 ? NSOnState : NSOffState
-        consoleButton.state = tabViewController.selectedTabViewItemIndex == 1 ? NSOnState : NSOffState
+        configButton.state = tabViewController.selectedTabViewItemIndex == 0 ? NSOnState : NSOffState
+        detailsButton.state = tabViewController.selectedTabViewItemIndex == 1 ? NSOnState : NSOffState
+        consoleButton.state = tabViewController.selectedTabViewItemIndex == 2 ? NSOnState : NSOffState
     }
     
     override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
@@ -427,7 +432,7 @@ class InstanceTabViewController: NSViewController {
     }
 }
 
-class InstanceDetailTabViewController : InstanceTabViewController {
+class InstanceSetupTabViewController : InstanceTabViewController {
     @IBOutlet weak var pemKeyField: MLComboField!
     @IBOutlet weak var userIDField: MLComboField!
     
@@ -554,5 +559,54 @@ class InstanceConsoleViewController : InstanceTabViewController {
         self.reloadConsoleForAccount()
     }
     
+}
+
+
+class InstanceDetailsTabViewController : InstanceTabViewController {
+    @IBOutlet weak var instanceIdLabel: NSTextField!
+    @IBOutlet weak var availabilityZoneLabel: NSTextField!
+    @IBOutlet weak var imageIdLabel: NSTextField!
+    @IBOutlet weak var instanceGroupLabel: NSTextField!
+    @IBOutlet weak var keyNameLabel: NSTextField!
+    @IBOutlet weak var launchTimeLabel: NSTextField!
+    @IBOutlet weak var placementGroupLabel: NSTextField!
+    @IBOutlet weak var platformLabel: NSTextField!
+    @IBOutlet weak var vpcIdLabel: NSTextField!
+    @IBOutlet weak var architectureLabel: NSTextField!
+        
+    lazy var dateTimeFormatter: NSDateFormatter = {
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = .MediumStyle
+        formatter.timeStyle = .MediumStyle
+        return formatter
+    }()
+    
+    override var instance: Instance! {
+        didSet {
+            if active {
+                reload()
+            }
+        }
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        reload()
+    }
+    
+    func reload(){
+        instanceIdLabel.placeholderString = instance.instanceId
+        availabilityZoneLabel.placeholderString = instance.availabilityZone == nil ? "" : instance.availabilityZone!
+        imageIdLabel.placeholderString = instance.imageId == nil ? "" : instance.imageId!
+        instanceGroupLabel.placeholderString = instance.instanceGroup == nil ? "" : instance.instanceGroup!
+        keyNameLabel.placeholderString = instance.keyName == nil ? "" : instance.keyName!
+        launchTimeLabel.placeholderString = instance.launchTime == nil ? "" : dateFormatter.stringFromDate(instance.launchTime!)
+        placementGroupLabel.placeholderString = instance.placementGroup == nil ? "" : instance.placementGroup!
+        platformLabel.placeholderString = instance.platform == nil ? "" : instance.platform!
+        vpcIdLabel.placeholderString = instance.vpcId == nil ? "" : instance.vpcId!
+        architectureLabel.placeholderString = instance.architecture == nil ? "" : instance.architecture!
+    }
+
 }
 
