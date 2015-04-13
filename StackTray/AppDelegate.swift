@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     //Main app directory for storing data
     lazy var appDirectory : String = {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportFile = (urls[urls.count - 1] as NSURL).path!
+        let appSupportFile = (urls[urls.count - 1] as! NSURL).path!
         
         return appSupportFile.stringByAppendingPathComponent("io.dutchcoders.stacktray")
         }()
@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     //Accounts
     lazy var accounts : NSWindowController = {
-        let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as NSWindowController
+        let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as! NSWindowController
         
         if let content = window.contentViewController as? AccountsViewController {
             content.accountController = self.accountController
@@ -41,7 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     //Instances
     lazy var instances : NSWindowController = {
-        let window = NSStoryboard(name: "Instances", bundle: nil)?.instantiateInitialController() as NSWindowController
+        let window = NSStoryboard(name: "Instances", bundle: nil)?.instantiateInitialController() as! NSWindowController
         
         if let content = window.contentViewController as? InstancesViewController {
             content.accountController = self.accountController
@@ -306,7 +306,7 @@ class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
 /** Present AWS Error */
 func presentAWSError(error: NSError){
     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-        if let message = error.userInfo?["Message"]? as? String {
+        if let message = error.userInfo?["Message"] as? String {
             NSApplication.sharedApplication().presentError(NSError(domain: error.domain, code: error.code, userInfo: [ NSLocalizedDescriptionKey : message ]))
         } else {
             NSApplication.sharedApplication().presentError(error)

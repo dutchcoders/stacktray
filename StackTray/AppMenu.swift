@@ -86,7 +86,7 @@ class AppMenu: NSMenu {
 /** Menu item for one account */
 class AccountMenuItem: NSMenuItem {
     var account: Account {
-        return self.representedObject as Account
+        return self.representedObject as! Account
     }
 
     init(account: Account, action: Selector){
@@ -139,7 +139,7 @@ class InstanceMenuItem: NSMenuItem {
     
     var instance: Instance {
         get{
-            return representedObject as Instance
+            return representedObject as! Instance
         }
         set {
             representedObject = newValue
@@ -257,7 +257,7 @@ class InstanceMenuItem: NSMenuItem {
 class InstanceActionMenuItem: NSMenuItem {
     var instance: Instance {
         get {
-            return self.representedObject as Instance
+            return self.representedObject as! Instance
         }
         set {
             representedObject = newValue

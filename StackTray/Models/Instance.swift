@@ -68,13 +68,13 @@ public class Instance : NSObject, NSCoding, Equatable {
     }
     
     public required init(coder aDecoder: NSCoder) {
-        self.name = aDecoder.decodeObjectForKey("name") as String
-        self.instanceId = aDecoder.decodeObjectForKey("instanceId") as String
-        self.type = aDecoder.decodeObjectForKey("type") as String
-        self.publicDnsName = aDecoder.decodeObjectForKey("publicDnsName") as String
-        self.publicIpAddress = aDecoder.decodeObjectForKey("publicIpAddress") as String
-        self.privateDnsName = aDecoder.decodeObjectForKey("privateDnsName") as String
-        self.privateIpAddress = aDecoder.decodeObjectForKey("privateIpAddress") as String
+        self.name = aDecoder.decodeObjectForKey("name") as! String
+        self.instanceId = aDecoder.decodeObjectForKey("instanceId") as! String
+        self.type = aDecoder.decodeObjectForKey("type") as! String
+        self.publicDnsName = aDecoder.decodeObjectForKey("publicDnsName") as! String
+        self.publicIpAddress = aDecoder.decodeObjectForKey("publicIpAddress") as! String
+        self.privateDnsName = aDecoder.decodeObjectForKey("privateDnsName") as! String
+        self.privateIpAddress = aDecoder.decodeObjectForKey("privateIpAddress") as! String
         
         if let lastUpdate = aDecoder.decodeObjectForKey("lastUpdate") as? NSDate {
             self.lastUpdate = lastUpdate

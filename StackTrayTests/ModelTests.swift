@@ -19,7 +19,7 @@ class ModelTests: XCTestCase {
         
         XCTAssertNotNil(data)
         
-        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as AWSAccount
+        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! AWSAccount
         XCTAssertEqual(account1Name, aws2.name)
         XCTAssertEqual(account1AccessKey, aws2.accessKey)
         XCTAssertEqual(account1SecretKey, aws2.secretKey)
@@ -32,7 +32,7 @@ class ModelTests: XCTestCase {
         
         XCTAssertNotNil(data)
         
-        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Account
+        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Account
         XCTAssertEqual(account1Name, aws2.name)
         XCTAssertEqual(AccountType.DUMMY, aws2.accountType)
     }
@@ -47,10 +47,10 @@ class ModelTests: XCTestCase {
         
         XCTAssertNotNil(data)
         
-        let accounts2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as [Account]
+        let accounts2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [Account]
         XCTAssertEqual(2, accounts2.count)
         
-        let aws2 = accounts2.first! as AWSAccount
+        let aws2 = accounts2.first! as! AWSAccount
         XCTAssertEqual(account1Name, aws2.name)
         XCTAssertEqual(account1AccessKey, aws2.accessKey)
         XCTAssertEqual(account1SecretKey, aws2.secretKey)
@@ -69,7 +69,7 @@ class ModelTests: XCTestCase {
         
         XCTAssertNotNil(data)
         
-        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Account
+        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Account
         XCTAssertEqual(account1Name, aws2.name)
         XCTAssertEqual(AccountType.DUMMY, aws2.accountType)
         XCTAssertEqual(1, aws2.instances.count)
@@ -90,7 +90,7 @@ class ModelTests: XCTestCase {
         aws.instances[0].lastUpdate = date
         
         let data = NSKeyedArchiver.archivedDataWithRootObject(aws)
-        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Account
+        let aws2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Account
         let instance = aws2.instances[0]
         XCTAssertEqual(date, instance.lastUpdate!)
     }
@@ -105,7 +105,7 @@ class ModelTests: XCTestCase {
         let instance1 = Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)
         instance1.userId = instance1UserId
         let data = NSKeyedArchiver.archivedDataWithRootObject(instance1)
-        let instance2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Instance
+        let instance2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Instance
         
         XCTAssertEqual(instance1UserId, instance2.userId!)
     }
@@ -114,7 +114,7 @@ class ModelTests: XCTestCase {
         let instance1 = Instance(name: instance1Name, instanceId: instance1Id, type: instance1Type, publicDnsName: instance1PublicDnsName, publicIpAddress: instance1PublicIpAddress, privateDnsName: instance1PrivateDnsName, privateIpAddress: instance1PrivateIpAddress)
         instance1.pemLocation = instance1PemLocation
         let data = NSKeyedArchiver.archivedDataWithRootObject(instance1)
-        let instance2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Instance
+        let instance2 = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Instance
         
         XCTAssertEqual(instance1PemLocation, instance2.pemLocation!)
     }

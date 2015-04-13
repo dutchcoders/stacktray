@@ -91,7 +91,7 @@ class AccountsViewController: NSViewController, NSTableViewDataSource, NSTableVi
     
     /** Called when the user clicks on the add account button */
     @IBAction func addAccount(sender: AnyObject) {
-        let edit = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateControllerWithIdentifier("addAccount") as AddAccountViewController
+        let edit = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateControllerWithIdentifier("addAccount") as! AddAccountViewController
         
         edit.accountController = accountController
         

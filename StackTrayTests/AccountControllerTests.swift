@@ -13,7 +13,7 @@ import StackTray
 class AccountControllerTests: XCTestCase {
     lazy var rootURL : String = {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportFile = (urls[urls.count - 1] as NSURL).path!
+        let appSupportFile = (urls[urls.count - 1] as! NSURL).path!
         
         return appSupportFile.stringByAppendingPathComponent("io.dutchcoders.stacktray/test-data")
         }()

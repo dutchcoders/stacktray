@@ -17,7 +17,7 @@ public class ImportController: NSObject {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "io.dutchcoders.stacktray" in the user's Application Support directory.
 
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportURL = urls[urls.count - 1] as NSURL
+        let appSupportURL = urls[urls.count - 1] as! NSURL
         return appSupportURL.URLByAppendingPathComponent("io.dutchcoders.stacktray")
         }()
     
@@ -95,7 +95,7 @@ public class ImportController: NSObject {
             if error != nil {
                 dict[NSUnderlyingErrorKey] = error
             }
-            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
+            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict as [NSObject : AnyObject])
             println("Error: \(error)")
             return nil
         } else {
