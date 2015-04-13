@@ -1,0 +1,164 @@
+PODS:
+  - AWSiOSSDKv2 (2.0.8):
+    - AWSiOSSDKv2/AutoScaling (= 2.0.8)
+    - AWSiOSSDKv2/AWSCore (= 2.0.8)
+    - AWSiOSSDKv2/CloudWatch (= 2.0.8)
+    - AWSiOSSDKv2/DynamoDB (= 2.0.8)
+    - AWSiOSSDKv2/EC2 (= 2.0.8)
+    - AWSiOSSDKv2/ElasticLoadBalancing (= 2.0.8)
+    - AWSiOSSDKv2/Kinesis (= 2.0.8)
+    - AWSiOSSDKv2/S3 (= 2.0.8)
+    - AWSiOSSDKv2/SES (= 2.0.8)
+    - AWSiOSSDKv2/SimpleDB (= 2.0.8)
+    - AWSiOSSDKv2/SNS (= 2.0.8)
+    - AWSiOSSDKv2/SQS (= 2.0.8)
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/AutoScaling (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/AWSCore (2.0.8):
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/CloudWatch (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/DynamoDB (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/EC2 (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/ElasticLoadBalancing (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/Kinesis (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/S3 (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/SES (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/SimpleDB (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/SNS (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - AWSiOSSDKv2/SQS (2.0.8):
+    - AWSiOSSDKv2/AWSCore
+    - Bolts (~> 1.1.0)
+    - GZIP (~> 1.0.3)
+    - Mantle (~> 1.4.1)
+    - Reachability (~> 3.1.1)
+    - TMCache (~> 1.2.1)
+    - UICKeyChainStore (~> 1.0.5)
+    - XMLDictionary (~> 1.4.0)
+  - Bolts (1.1.4)
+  - FontAwesomeIconFactory (1.4)
+  - GZIP (1.0.3)
+  - Mantle (1.4.1):
+    - Mantle/extobjc (= 1.4.1)
+  - Mantle/extobjc (1.4.1)
+  - Reachability (3.1.1)
+  - TMCache (1.2.3)
+  - UICKeyChainStore (1.0.5)
+  - XMLDictionary (1.4)
+
+DEPENDENCIES:
+  - AWSiOSSDKv2 (from `https://github.com/soumis/aws-sdk-osx.git`)
+  - FontAwesomeIconFactory
+
+EXTERNAL SOURCES:
+  AWSiOSSDKv2:
+    :git: https://github.com/soumis/aws-sdk-osx.git
+
+CHECKOUT OPTIONS:
+  AWSiOSSDKv2:
+    :commit: 319acfec661d41c8e7726d255ba47a7fc7f4aadb
+    :git: https://github.com/soumis/aws-sdk-osx.git
+
+SPEC CHECKSUMS:
+  AWSiOSSDKv2: c6c8d39b2cb254f6c315a2e7ea27b98d3ef028a1
+  Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
+  FontAwesomeIconFactory: 6ef139e879d779e8e4561980ca170ea0981f5f9e
+  GZIP: f27c434ffee5e9a9b34f4e9c19e91350fa8bbde1
+  Mantle: 1ca9c0fa84d3d3fc98524e7229f30489b6dd44e5
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+  TMCache: 11589ef8c40909114a5e60132711c9a559e01d97
+  UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35
+  XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
+
+COCOAPODS: 0.35.0

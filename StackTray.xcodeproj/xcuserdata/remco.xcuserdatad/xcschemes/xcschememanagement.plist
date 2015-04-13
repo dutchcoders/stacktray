@@ -9,15 +9,30 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>StackTrayKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>406383F5190D38E50027AA38</key>
+		<key>450F836A1AAE152200E49B38</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>40638416190D38E50027AA38</key>
+		<key>450F837C1AAE152300E49B38</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>450F839B1AAE15A600E49B38</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>450F83A51AAE15A600E49B38</key>
 		<dict>
 			<key>primary</key>
 			<true/>
