@@ -544,7 +544,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
     }
     
     public func startInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
-        let aws = account as AWSAccount
+        let aws = account as! AWSAccount
         let (error, awsConnection) = createAwsConnection(aws)
         if error != nil {
             callback(error: error)
@@ -559,7 +559,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
     }
     
     public func stopInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
-        let aws = account as AWSAccount
+        let aws = account as! AWSAccount
         let (error, awsConnection) = createAwsConnection(aws)
         if error != nil {
             callback(error: error)
@@ -574,7 +574,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
     }
     
     public func rebootInstance(account: Account, instance: Instance, callback: (error: NSError?) -> Void) {
-        let aws = account as AWSAccount
+        let aws = account as! AWSAccount
         let (error, awsConnection) = createAwsConnection(aws)
         if error != nil {
             callback(error: error)
@@ -589,7 +589,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
     }
     
     public func fetchConsoleOutput(account: Account, instance: Instance, callback: (error: NSError?, output: String?) -> Void){
-        let aws = account as AWSAccount
+        let aws = account as! AWSAccount
         let (error, awsConnection) = createAwsConnection(aws)
         if error != nil {
             callback(error: error, output: nil)
@@ -600,10 +600,10 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                 if task.error != nil {
                     callback(error: task.error, output: nil)
                 } else {
-                    if let output = (task.result as AWSEC2GetConsoleOutputResult).output {
+                    if let output = (task.result as! AWSEC2GetConsoleOutputResult).output {
                         let nsdata: NSData = NSData(base64EncodedString: output, options: NSDataBase64DecodingOptions(rawValue: 0))!
                         let base64Decoded: NSString = NSString(data: nsdata, encoding: NSUTF8StringEncoding)!
-                        callback(error: nil, output: base64Decoded)
+                        callback(error: nil, output: base64Decoded as String)
                     }
                 }
                 return nil
@@ -624,7 +624,7 @@ public class AWSAccountConnector: NSObject, AccountConnector {
     
     /* Refresh an AWS Account */
     public func refreshAccount(account: Account, callback: (error: NSError?, account: Account?)->Void) {
-        let aws = account as AWSAccount
+        let aws = account as! AWSAccount
         
         let (error, awsConnection) = createAwsConnection(aws)
         if error != nil {
@@ -639,23 +639,24 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                     println("Error: \(task.error)")
                     callback(error: task.error, account: nil)
                 } else {
-                    let result = task.result as AWSEC2DescribeInstancesResult
+                    let result = task.result as! AWSEC2DescribeInstancesResult
                     
                     var existingInstanceIds = account.instances.map{ $0.instanceId }
                     var atLeastOneInstance = false
 
-                    for reservation in result.reservations as [AWSEC2Reservation] {
-                        for awsInstance in reservation.instances as [AWSEC2Instance]{
+                    for reservation in result.reservations as! [AWSEC2Reservation] {
+                        for awsInstance in reservation.instances as! [AWSEC2Instance]{
                             
                             atLeastOneInstance = true
                             
                             var name = awsInstance.instanceId
-                            for tag in awsInstance.tags? as [AWSEC2Tag] {
+                            for tag in awsInstance.tags as! [AWSEC2Tag] {
                                 if tag.key() == "Name" && !tag.value().isEmpty {
                                     name = tag.value()
                                 }
                             }
-                            
+                          
+                          
                             let state = awsInstance.state
                             let instanceState = InstanceState(rawValue: awsInstance.state.name.rawValue)
                             let instanceId = awsInstance.instanceId

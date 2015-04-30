@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4022B7891AF23783009ED357 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 4022B7881AF23783009ED357 /* scripts */; };
+		4022B78C1AF2511D009ED357 /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4022B78B1AF2511D009ED357 /* About.storyboard */; };
+		4022B78E1AF252B3009ED357 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B78D1AF252B3009ED357 /* AboutViewController.swift */; };
+		4022B7901AF254BF009ED357 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4022B78F1AF254BF009ED357 /* logo.png */; };
+		4022B7921AF2647D009ED357 /* ClickableTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B7911AF2647D009ED357 /* ClickableTextfield.swift */; };
+		4022B7941AF26712009ED357 /* StackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B7931AF26712009ED357 /* StackButton.swift */; };
 		42975E4AC934F173019B16F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4932D74C135E6DC54C2B5A /* libPods.a */; };
 		450F83711AAE152300E49B38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450F83701AAE152300E49B38 /* AppDelegate.swift */; };
 		450F83751AAE152300E49B38 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 450F83741AAE152300E49B38 /* Images.xcassets */; };
@@ -60,6 +66,12 @@
 
 /* Begin PBXFileReference section */
 		100900AF11EE8C0909DEFA51 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		4022B7881AF23783009ED357 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../../StackTray/StackTray/scripts; sourceTree = "<group>"; };
+		4022B78B1AF2511D009ED357 /* About.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
+		4022B78D1AF252B3009ED357 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		4022B78F1AF254BF009ED357 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		4022B7911AF2647D009ED357 /* ClickableTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClickableTextfield.swift; sourceTree = "<group>"; };
+		4022B7931AF26712009ED357 /* StackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackButton.swift; sourceTree = "<group>"; };
 		450F836B1AAE152200E49B38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		450F836F1AAE152300E49B38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		450F83701AAE152300E49B38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,19 +147,24 @@
 		450F836D1AAE152200E49B38 /* StackTray */ = {
 			isa = PBXGroup;
 			children = (
+				4022B7881AF23783009ED357 /* scripts */,
 				45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */,
 				45A980D61AC84DC9002D050F /* Accounts.storyboard */,
 				45371ACC1ACE41EB00AFDC4D /* Instances.storyboard */,
+				4022B78B1AF2511D009ED357 /* About.storyboard */,
 				456194061AC84E4400E37901 /* AccountsViewController.swift */,
+				45371ACA1ACE41AE00AFDC4D /* InstancesViewController.swift */,
+				4022B78D1AF252B3009ED357 /* AboutViewController.swift */,
 				450F83701AAE152300E49B38 /* AppDelegate.swift */,
 				450F83901AAE155E00E49B38 /* AppMenu.swift */,
-				45371ACA1ACE41AE00AFDC4D /* InstancesViewController.swift */,
 				450F83741AAE152300E49B38 /* Images.xcassets */,
 				459DC4031AB11FFC00B0C8B1 /* Controllers */,
 				45D8B68C1AAE160B0080DEEC /* Import */,
 				450F83761AAE152300E49B38 /* Main.storyboard */,
 				459DC4051AB11FFC00B0C8B1 /* Models */,
 				450F836E1AAE152300E49B38 /* Supporting Files */,
+				4022B7911AF2647D009ED357 /* ClickableTextfield.swift */,
+				4022B7931AF26712009ED357 /* StackButton.swift */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -155,6 +172,7 @@
 		450F836E1AAE152300E49B38 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4022B78F1AF254BF009ED357 /* logo.png */,
 				450F836F1AAE152300E49B38 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -332,7 +350,10 @@
 			files = (
 				45A980D71AC84DC9002D050F /* Accounts.storyboard in Resources */,
 				45371ACD1ACE41EB00AFDC4D /* Instances.storyboard in Resources */,
+				4022B78C1AF2511D009ED357 /* About.storyboard in Resources */,
 				450F83751AAE152300E49B38 /* Images.xcassets in Resources */,
+				4022B7901AF254BF009ED357 /* logo.png in Resources */,
+				4022B7891AF23783009ED357 /* scripts in Resources */,
 				450F83781AAE152300E49B38 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,11 +405,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4022B7941AF26712009ED357 /* StackButton.swift in Sources */,
 				459DC40A1AB11FFC00B0C8B1 /* Instance.swift in Sources */,
 				450F83711AAE152300E49B38 /* AppDelegate.swift in Sources */,
+				4022B78E1AF252B3009ED357 /* AboutViewController.swift in Sources */,
 				45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */,
 				45D8B6951AAE160B0080DEEC /* ImportController.swift in Sources */,
 				459DC4081AB11FFC00B0C8B1 /* AccountController.swift in Sources */,
+				4022B7921AF2647D009ED357 /* ClickableTextfield.swift in Sources */,
 				45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */,
 				459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */,
 				456194071AC84E4400E37901 /* AccountsViewController.swift in Sources */,

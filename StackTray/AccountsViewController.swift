@@ -91,7 +91,7 @@ class AccountsViewController: NSViewController, NSTableViewDataSource, NSTableVi
     
     /** Called when the user clicks on the add account button */
     @IBAction func addAccount(sender: AnyObject) {
-        let edit = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateControllerWithIdentifier("addAccount") as AddAccountViewController
+        let edit = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateControllerWithIdentifier("addAccount") as! AddAccountViewController
         
         edit.accountController = accountController
         
@@ -174,7 +174,7 @@ class AccountsDetailViewController : NSViewController {
     /** Access Key */
     @IBOutlet weak var accessKeyField: MLComboField!
     /** Secret Key */
-    @IBOutlet weak var secretKeyField: MLComboField!
+    @IBOutlet weak var secretKeyField: NSSecureTextField!
     
     /** Region Selector */
     @IBOutlet weak var regionSelector: NSPopUpButton! {
@@ -221,7 +221,7 @@ class AccountsDetailViewController : NSViewController {
         alert.addButtonWithTitle("Delete")
         alert.addButtonWithTitle("Cancel")
         alert.messageText = "Are you sure you want to delete \"\(account.name)\"?"
-        alert.informativeText = "Deleting this account will remove it from the StackTray menu bar"
+        alert.informativeText = "Deleting this account will remove it from the StackTray menu bar."
         
         alert.alertStyle = .WarningAlertStyle
         

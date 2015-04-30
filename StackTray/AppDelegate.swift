@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     //Main app directory for storing data
     lazy var appDirectory : String = {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportFile = (urls[urls.count - 1] as NSURL).path!
+        let appSupportFile = (urls[urls.count - 1] as! NSURL).path!
         
         return appSupportFile.stringByAppendingPathComponent("io.dutchcoders.stacktray")
         }()
@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     //Accounts
     lazy var accounts : NSWindowController = {
-        let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as NSWindowController
+        let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as! NSWindowController
         
         if let content = window.contentViewController as? AccountsViewController {
             content.accountController = self.accountController
@@ -41,7 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     //Instances
     lazy var instances : NSWindowController = {
-        let window = NSStoryboard(name: "Instances", bundle: nil)?.instantiateInitialController() as NSWindowController
+        let window = NSStoryboard(name: "Instances", bundle: nil)?.instantiateInitialController() as! NSWindowController
         
         if let content = window.contentViewController as? InstancesViewController {
             content.accountController = self.accountController
@@ -49,7 +49,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         
         return window
     }()
-    
+  
+    //About
+    lazy var about : NSWindowController = {
+        let window = NSStoryboard(name: "About", bundle: nil)?.instantiateInitialController() as! NSWindowController
+        return window
+    }()
+  
     /** App Menu */
     lazy var appMenu: AppMenu = {
         let menu = AppMenu()
@@ -91,9 +97,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         appMenu.initMenu()
         
         appMenu.addItem(NSMenuItem.separatorItem())
-        appMenu.addItem(NSMenuItem(title: "Manage Accounts...", action: Selector("showAccounts:"), keyEquivalent: ""))
-        appMenu.addItem(NSMenuItem(title: "Manage Instances...", action: Selector("showInstances:"), keyEquivalent: ""))
-        appMenu.addItem(NSMenuItem(title: "Quit", action: Selector("quit:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Accounts...", action: Selector("showAccounts:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Instances...", action: Selector("showInstances:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem.separatorItem())
+        appMenu.addItem(NSMenuItem(title: "About", action: Selector("showAbout:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Quit StackTray", action: Selector("quit:"), keyEquivalent: ""))
 
         //Open Preferences if there are no accounts configured
         if accountController.accounts.count == 0 {
@@ -166,8 +174,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         return "Instance \(index + 1)"
     }
     
-    @IBAction func about(sender: AnyObject) {
-        println("About")
+    @IBAction func showAbout(sender: AnyObject) {
+        about.showWindow(self)
+  
+        //Focus on window
+        NSApp.activateIgnoringOtherApps(true)
+        about.window!.makeKeyAndOrderFront(nil)
+      
     }
     
     /** Show the accounts */
@@ -304,7 +317,7 @@ class NotificationManager : NSObject, NSUserNotificationCenterDelegate {
 /** Present AWS Error */
 func presentAWSError(error: NSError){
     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-        if let message = error.userInfo?["Message"]? as? String {
+        if let message = error.userInfo?["Message"] as? String {
             NSApplication.sharedApplication().presentError(NSError(domain: error.domain, code: error.code, userInfo: [ NSLocalizedDescriptionKey : message ]))
         } else {
             NSApplication.sharedApplication().presentError(error)
@@ -315,23 +328,72 @@ func presentAWSError(error: NSError){
 
 /** Open an instance in the browser */
 func browseToInstance(instance: Instance){
-    var dns = instance.publicDnsName
-    if dns.isEmpty {
-        dns = instance.privateDnsName
+    var host = instance.publicDnsName
+  
+    if host.isEmpty {
+        host = instance.privateDnsName
     }
     
-    if let url = NSURL(string: "http://\(dns)") {
+    if let url = NSURL(string: "http://\(host)") {
         NSWorkspace.sharedWorkspace().openURL(url)
     }
-
 }
 
 /** Connect to an instance */
 func connectToInstance(instance: Instance){
-    if let pemKey = instance.pemLocation {
-        println("Connect to instance with pemkey: \(pemKey)")
-    } else {
-        println("Connect to instance without pemkey")
+  var cmd: String = "ssh"
+  
+  if let pemLocation = instance.pemLocation {
+    var url: NSURLComponents = NSURLComponents(string: pemLocation)!
+    if let path = url.path {
+      cmd = cmd.stringByAppendingFormat("-i %@", path)
     }
+  }
+  
+  var host: String = instance.publicDnsName
+  
+  if host.isEmpty {
+    host = instance.privateDnsName
+  }
+
+  if let userId = instance.userId {
+    cmd = cmd.stringByAppendingFormat(" %@@%@", userId, host)
+  } else {
+    cmd = cmd.stringByAppendingFormat(" %@", host)
+  }
+  
+  
+    var scriptName: String = "scripts/connect"
+    
+    var path : String = NSBundle.mainBundle().pathForResource(scriptName, ofType: "scpt")!
+    
+    var error:NSError?
+    var source = String(contentsOfFile: path, encoding:NSUTF8StringEncoding, error: &error)!
+    if let theError = error {
+      let alert = NSAlert()
+      alert.addButtonWithTitle("Close")
+      alert.messageText = "Error loading script."
+      alert.informativeText = "\(theError.localizedDescription)"
+      alert.alertStyle = NSAlertStyle.CriticalAlertStyle
+      alert.runModal()
+    }
+    
+  source = source.stringByReplacingOccurrencesOfString("$cmd", withString: cmd)
+
+  var scriptToPerform: NSAppleScript? = NSAppleScript(source: source)
+
+  if let script = scriptToPerform {
+    var possibleError: NSDictionary?
+    script.executeAndReturnError(&possibleError)
+    
+    if let error = possibleError {
+      let alert = NSAlert()
+      alert.addButtonWithTitle("Close")
+      alert.messageText = "Error connecting to iTerm."
+      alert.informativeText = "\(error)"
+      alert.alertStyle = NSAlertStyle.CriticalAlertStyle
+      alert.runModal()
+    }
+  }
 }
 

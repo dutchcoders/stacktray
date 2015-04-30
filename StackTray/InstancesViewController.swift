@@ -188,13 +188,13 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let object : AnyObject? = objectForRow(row)
         if let account = object as? Account {
-            let view = tableView.makeViewWithIdentifier("accountCell", owner: self) as NSTableCellView
+            let view = tableView.makeViewWithIdentifier("accountCell", owner: self) as! NSTableCellView
             
             view.textField?.stringValue = account.name
             
             return view
         } else if let instance = object as? Instance {
-            let view = tableView.makeViewWithIdentifier("instanceCell", owner: self) as NSTableCellView
+            let view = tableView.makeViewWithIdentifier("instanceCell", owner: self) as! NSTableCellView
             
             switch instance.state {
             case .Running:
@@ -396,7 +396,7 @@ class DetailInstanceViewController : NSViewController {
 class InstanceTabbarController : NSTabViewController {
     var instance: Instance! {
         didSet{
-            for vc in self.tabViewItems as [NSTabViewItem] {
+            for vc in self.tabViewItems as! [NSTabViewItem] {
                 if let instanceVc = vc.viewController as? InstanceTabViewController {
                     instanceVc.instance = instance
                 }
@@ -406,7 +406,7 @@ class InstanceTabbarController : NSTabViewController {
     
     var accountController: AccountController!{
         didSet{
-            for vc in self.tabViewItems as [NSTabViewItem] {
+            for vc in self.tabViewItems as! [NSTabViewItem] {
                 if let instanceVc = vc.viewController as? InstanceTabViewController {
                     instanceVc.accountController = accountController
                 }
