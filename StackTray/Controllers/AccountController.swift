@@ -259,7 +259,7 @@ public class AccountController: NSObject, AccountDelegate {
             requestQueue.addOperationWithBlock({ () -> Void in
                 connector.startInstance(account, instance: instance, callback: { (error) -> Void in
                     if error == nil {
-                        self.startRefrehTimerForInstance(instance)
+                        self.startRefreshTimerForInstance(instance)
 
                         self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
                             callback(error : error)
@@ -281,7 +281,7 @@ public class AccountController: NSObject, AccountDelegate {
             requestQueue.addOperationWithBlock({ () -> Void in
                 connector.stopInstance(account, instance: instance, callback: { (error) -> Void in
                     if error == nil {
-                        self.startRefrehTimerForInstance(instance)
+                        self.startRefreshTimerForInstance(instance)
                         
                         self.updateAccountAtIndex(index!, account: account, callback: { (error, account) -> Void in
                             callback(error : error)
@@ -410,7 +410,7 @@ public class AccountController: NSObject, AccountDelegate {
     }
     
     /** Start the timer for an instance */
-    func startRefrehTimerForInstance(instance: Instance){
+    func startRefreshTimerForInstance(instance: Instance){
         if !contains(self.refreshingInstances, instance.instanceId){
             self.refreshingInstances.append(instance.instanceId)
         }

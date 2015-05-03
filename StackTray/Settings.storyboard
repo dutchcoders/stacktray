@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D127a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="pqf-Yo-sbn">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="DeO-Xy-xsV">
+            <objects>
+                <windowController id="pqf-Yo-sbn" sceneMemberID="viewController">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="VIt-5Z-r7r">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+                    </window>
+                    <connections>
+                        <segue destination="kgP-8j-hBG" kind="relationship" relationship="window.shadowedContentViewController" id="eCe-sP-bui"/>
+                    </connections>
+                </windowController>
+                <customObject id="d4h-Nx-ioS" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-215" y="335"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="kKJ-JG-fun">
+            <objects>
+                <viewController id="kgP-8j-hBG" customClass="SettingsViewController" customModule="StackTray" customModuleProvider="target" sceneMemberID="viewController">
+                    <containerView key="view" id="dd0-Qv-7Kc">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <segue destination="Hl6-As-U6V" kind="embed" identifier="Detail" id="V2X-xv-IJk"/>
+                        </connections>
+                    </containerView>
+                </viewController>
+                <customObject id="JAA-6c-p6d" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="492" y="310"/>
+        </scene>
+        <!--Settings Detail View Controller-->
+        <scene sceneID="J0C-ee-7o5">
+            <objects>
+                <viewController id="Hl6-As-U6V" customClass="SettingsDetailViewController" customModule="StackTray" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="QcG-Wv-dds">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gOR-ee-MxO">
+                                <rect key="frame" x="20" y="255" width="115" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Terminal" id="y5o-pg-3LA">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ls3-b7-j2u">
+                                <rect key="frame" x="18" y="224" width="415" height="26"/>
+                                <popUpButtonCell key="cell" type="push" title="Default terminal" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="CiM-Qk-ChT" id="pr1-pg-daA">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="FWe-Ty-yR9">
+                                        <items>
+                                            <menuItem title="Default terminal" state="on" id="CiM-Qk-ChT"/>
+                                            <menuItem title="Item 2" id="szN-yk-DQo"/>
+                                            <menuItem title="Item 3" id="Toy-aQ-mQi"/>
+                                        </items>
+                                    </menu>
+                                    <connections>
+                                        <action selector="terminalChanged:" target="Hl6-As-U6V" id="87t-he-Ist"/>
+                                    </connections>
+                                </popUpButtonCell>
+                            </popUpButton>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="terminalTypesSelector" destination="ls3-b7-j2u" id="8qu-L7-yNu"/>
+                    </connections>
+                </viewController>
+                <customObject id="fBc-ge-Pyt" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="Azo-fE-ACO"/>
+            </objects>
+            <point key="canvasLocation" x="1115" y="99"/>
+        </scene>
+    </scenes>
+</document>

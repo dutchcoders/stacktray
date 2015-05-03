@@ -50,14 +50,17 @@ public class Account : NSObject, NSCoding {
     
     /** Delegate */
     public var delegate : AccountDelegate?
-    
+
+  func sortOnName(this:Instance, that:Instance) -> Bool {
+    return this.name > that.name
+  }
+
     /** Instances */
     public var instances : [Instance] = [] {
         didSet{
             if let d = delegate {
                 let oldInstanceIds = oldValue.map{ $0.instanceId }
                 let newInstanceIds = instances.map{ $0.instanceId }
-                
                 for instance in instances {
                     if contains(oldInstanceIds, instance.instanceId) && contains(newInstanceIds, instance.instanceId) {
                         d.didUpdateAccountInstance(self, instanceIndex: find(instances, instance)!)

@@ -1,0 +1,6 @@
+[submodule "ModernLook-OSX"]
+	path = ModernLook-OSX
+	url = https://github.com/gyetvan-andras/ModernLook-OSX/
+[submodule "ModernLookOSX"]
+	path = ModernLookOSX
+	url = https://github.com/gyetvan-andras/ModernLook-OSX/

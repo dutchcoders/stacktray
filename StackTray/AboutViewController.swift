@@ -25,6 +25,15 @@ class AboutViewController: NSViewController {
     NSWorkspace.sharedWorkspace().openURL(NSURL(string:"http://dutchcoders.io/")!)
   }
 
+  @IBAction func gotoGithub(sender: AnyObject) {
+    NSWorkspace.sharedWorkspace().openURL(NSURL(string:"https://github.com/dutchcoders/stacktray/")!)
+  }
+
+  @IBAction func gotoIcons8(sender: AnyObject) {
+    NSWorkspace.sharedWorkspace().openURL(NSURL(string:"https://icons8.com/license/")!)
+  }
+
+  
   @IBAction func gotoTwitter(sender: AnyObject) {
 NSWorkspace.sharedWorkspace().openURL(NSURL(string:"https://twitter.com/dutchcoders")!)
   }
