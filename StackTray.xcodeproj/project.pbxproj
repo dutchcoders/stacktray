@@ -27,6 +27,7 @@
 		4022B7B11AF50A2A009ED357 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B7B01AF50A2A009ED357 /* SettingsViewController.swift */; };
 		4022B7B31AF50AAF009ED357 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4022B7B21AF50AAF009ED357 /* Settings.storyboard */; };
 		4022B7B51AF61F2F009ED357 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B7B41AF61F2F009ED357 /* SettingsController.swift */; };
+		40388D3F1AF9FC17001BC95A /* ModernLookOSX in Resources */ = {isa = PBXBuildFile; fileRef = 40388D3E1AF9FC17001BC95A /* ModernLookOSX */; };
 		404435CB1AF9F92500D5F5FD /* Default terminal.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 404435C91AF9F92500D5F5FD /* Default terminal.scpt */; };
 		404435CC1AF9F92500D5F5FD /* iTerm2.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 404435CA1AF9F92500D5F5FD /* iTerm2.scpt */; };
 		42975E4AC934F173019B16F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4932D74C135E6DC54C2B5A /* libPods.a */; };
@@ -103,6 +104,7 @@
 		4022B7B21AF50AAF009ED357 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		4022B7B41AF61F2F009ED357 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		4022B7B61AF63206009ED357 /* ModernLookOSX.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ModernLookOSX.xcodeproj; path = ModernLookOSX/ModernLookOSX/ModernLookOSX.xcodeproj; sourceTree = "<group>"; };
+		40388D3E1AF9FC17001BC95A /* ModernLookOSX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ModernLookOSX; path = ModernLookOSX/ModernLookOSX; sourceTree = "<group>"; };
 		404435C91AF9F92500D5F5FD /* Default terminal.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "Default terminal.scpt"; path = "scripts/Default terminal.scpt"; sourceTree = "<group>"; };
 		404435CA1AF9F92500D5F5FD /* iTerm2.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iTerm2.scpt; path = scripts/iTerm2.scpt; sourceTree = "<group>"; };
 		450F836B1AAE152200E49B38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,6 +176,7 @@
 		450F83621AAE152200E49B38 = {
 			isa = PBXGroup;
 			children = (
+				40388D3E1AF9FC17001BC95A /* ModernLookOSX */,
 				450F836D1AAE152200E49B38 /* StackTray */,
 				450F83801AAE152300E49B38 /* StackTrayTests */,
 				450F836C1AAE152200E49B38 /* Products */,
@@ -426,6 +429,7 @@
 				4022B7901AF254BF009ED357 /* logo.png in Resources */,
 				4022B7A31AF421FC009ED357 /* restart-26.png in Resources */,
 				450F83781AAE152300E49B38 /* Main.storyboard in Resources */,
+				40388D3F1AF9FC17001BC95A /* ModernLookOSX in Resources */,
 				4022B7A91AF42308009ED357 /* restart-48.png in Resources */,
 				4022B79F1AF420C8009ED357 /* copy-25.png in Resources */,
 				4022B7B31AF50AAF009ED357 /* Settings.storyboard in Resources */,
