@@ -15,9 +15,7 @@ class StackToolbar: NSView {
         let borderPath = NSBezierPath(roundedRect: bounds, xRadius: 5, yRadius: 5)
         self.backgroundColor.set()
         borderPath.fill()
-        
-        println(bounds)
-        
+                
         NSGraphicsContext.restoreGraphicsState()
     }
 }
