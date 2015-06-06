@@ -650,9 +650,11 @@ public class AWSAccountConnector: NSObject, AccountConnector {
                             atLeastOneInstance = true
                             
                             var name = awsInstance.instanceId
-                            for tag in awsInstance.tags as! [AWSEC2Tag] {
-                                if tag.key() == "Name" && !tag.value().isEmpty {
-                                    name = tag.value()
+                            if let tags = awsInstance.tags {
+                                for tag in tags as! [AWSEC2Tag] {
+                                    if tag.key() == "Name" && !tag.value().isEmpty {
+                                        name = tag.value()
+                                    }
                                 }
                             }
                           
