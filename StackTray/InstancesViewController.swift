@@ -144,9 +144,7 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
     @IBOutlet weak var accountsTableView: NSTableView!
     @IBOutlet weak var deselectedContentView: NSView!
     @IBOutlet weak var detailContentView: NSView!
-    
-    @IBOutlet var groupView: MLRadioGroupManager!
-    
+        
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return instanceIndexes.count + accountIndexes.count
     }
@@ -451,8 +449,8 @@ class InstanceTabViewController: NSViewController {
 }
 
 class InstanceSetupTabViewController : InstanceTabViewController {
-    @IBOutlet weak var pemKeyField: MLComboField!
-    @IBOutlet weak var userIDField: MLComboField!
+    @IBOutlet weak var pemKeyField: NSTextField!
+    @IBOutlet weak var userIDField: NSTextField!
     
     /** Browse for the pem key */
     @IBAction func browseForPemKey(sender: NSButton) {

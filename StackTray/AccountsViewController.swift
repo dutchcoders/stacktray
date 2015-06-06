@@ -198,9 +198,9 @@ class AccountsDetailViewController : NSViewController {
     var accountsViewController: AccountsViewController!
     
     /** Account Name */
-    @IBOutlet weak var accountNameField: MLComboField!
+    @IBOutlet weak var accountNameField: NSTextField!
     /** Access Key */
-    @IBOutlet weak var accessKeyField: MLComboField!
+    @IBOutlet weak var accessKeyField: NSTextField!
     /** Secret Key */
     @IBOutlet weak var secretKeyField: NSSecureTextField!
     

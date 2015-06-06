@@ -27,7 +27,6 @@
 		4022B7B11AF50A2A009ED357 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B7B01AF50A2A009ED357 /* SettingsViewController.swift */; };
 		4022B7B31AF50AAF009ED357 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4022B7B21AF50AAF009ED357 /* Settings.storyboard */; };
 		4022B7B51AF61F2F009ED357 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4022B7B41AF61F2F009ED357 /* SettingsController.swift */; };
-		40388D3F1AF9FC17001BC95A /* ModernLookOSX in Resources */ = {isa = PBXBuildFile; fileRef = 40388D3E1AF9FC17001BC95A /* ModernLookOSX */; };
 		404435CB1AF9F92500D5F5FD /* Default terminal.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 404435C91AF9F92500D5F5FD /* Default terminal.scpt */; };
 		404435CC1AF9F92500D5F5FD /* iTerm2.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 404435CA1AF9F92500D5F5FD /* iTerm2.scpt */; };
 		42975E4AC934F173019B16F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4932D74C135E6DC54C2B5A /* libPods.a */; };
@@ -48,6 +47,7 @@
 		45D8B6951AAE160B0080DEEC /* ImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68D1AAE160B0080DEEC /* ImportController.swift */; };
 		45D8B6961AAE160B0080DEEC /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68E1AAE160B0080DEEC /* Stack.swift */; };
 		45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45D8B68F1AAE160B0080DEEC /* StackTray.xcdatamodeld */; };
+		45EFCF811B236CBD003BF376 /* StackToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EFCF801B236CBD003BF376 /* StackToolbar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +104,6 @@
 		4022B7B21AF50AAF009ED357 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		4022B7B41AF61F2F009ED357 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		4022B7B61AF63206009ED357 /* ModernLookOSX.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ModernLookOSX.xcodeproj; path = ModernLookOSX/ModernLookOSX/ModernLookOSX.xcodeproj; sourceTree = "<group>"; };
-		40388D3E1AF9FC17001BC95A /* ModernLookOSX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ModernLookOSX; path = ModernLookOSX/ModernLookOSX; sourceTree = "<group>"; };
 		404435C91AF9F92500D5F5FD /* Default terminal.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "Default terminal.scpt"; path = "scripts/Default terminal.scpt"; sourceTree = "<group>"; };
 		404435CA1AF9F92500D5F5FD /* iTerm2.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iTerm2.scpt; path = scripts/iTerm2.scpt; sourceTree = "<group>"; };
 		450F836B1AAE152200E49B38 /* StackTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +132,7 @@
 		45D8B6931AAE160B0080DEEC /* StackTray 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StackTray 5.xcdatamodel"; sourceTree = "<group>"; };
 		45D8B6941AAE160B0080DEEC /* StackTray.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StackTray.xcdatamodel; sourceTree = "<group>"; };
 		45E403D91AB120ED00DF62CC /* StackTray-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StackTray-Bridging-Header.h"; sourceTree = "<group>"; };
+		45EFCF801B236CBD003BF376 /* StackToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackToolbar.swift; sourceTree = "<group>"; };
 		4C2617974971310283D2D4F4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7B4932D74C135E6DC54C2B5A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -176,7 +176,6 @@
 		450F83621AAE152200E49B38 = {
 			isa = PBXGroup;
 			children = (
-				40388D3E1AF9FC17001BC95A /* ModernLookOSX */,
 				450F836D1AAE152200E49B38 /* StackTray */,
 				450F83801AAE152300E49B38 /* StackTrayTests */,
 				450F836C1AAE152200E49B38 /* Products */,
@@ -220,6 +219,7 @@
 				4022B7931AF26712009ED357 /* StackButton.swift */,
 				4022B7981AF4116B009ED357 /* AccountsCell.swift */,
 				4022B79A1AF415FD009ED357 /* StackTabButton.swift */,
+				45EFCF801B236CBD003BF376 /* StackToolbar.swift */,
 			);
 			path = StackTray;
 			sourceTree = "<group>";
@@ -429,7 +429,6 @@
 				4022B7901AF254BF009ED357 /* logo.png in Resources */,
 				4022B7A31AF421FC009ED357 /* restart-26.png in Resources */,
 				450F83781AAE152300E49B38 /* Main.storyboard in Resources */,
-				40388D3F1AF9FC17001BC95A /* ModernLookOSX in Resources */,
 				4022B7A91AF42308009ED357 /* restart-48.png in Resources */,
 				4022B79F1AF420C8009ED357 /* copy-25.png in Resources */,
 				4022B7B31AF50AAF009ED357 /* Settings.storyboard in Resources */,
@@ -500,6 +499,7 @@
 				45D8B6971AAE160B0080DEEC /* StackTray.xcdatamodeld in Sources */,
 				459DC4091AB11FFC00B0C8B1 /* Account.swift in Sources */,
 				456194071AC84E4400E37901 /* AccountsViewController.swift in Sources */,
+				45EFCF811B236CBD003BF376 /* StackToolbar.swift in Sources */,
 				4022B7991AF4116C009ED357 /* AccountsCell.swift in Sources */,
 				450F83951AAE155E00E49B38 /* AppMenu.swift in Sources */,
 				45371ACB1ACE41AE00AFDC4D /* InstancesViewController.swift in Sources */,
@@ -624,7 +624,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = StackTray/StackTray.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = StackTray/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -641,7 +641,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = StackTray/StackTray.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = StackTray/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
