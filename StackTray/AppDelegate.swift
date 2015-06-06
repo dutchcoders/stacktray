@@ -389,11 +389,9 @@ func connectToInstance(instance: Instance){
   
   let delegate = NSApplication.sharedApplication().delegate as! AppDelegate
 
-  var scriptName: String = "scripts/"
-    scriptName = scriptName.stringByAppendingPathComponent(delegate.settingsController.settings.terminal)
-  
+    var scriptName = delegate.settingsController.settings.terminal
     var path : String = NSBundle.mainBundle().pathForResource(scriptName, ofType: "scpt")!
-    
+
     var error:NSError?
     var source = String(contentsOfFile: path, encoding:NSUTF8StringEncoding, error: &error)!
     if let theError = error {
