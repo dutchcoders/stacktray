@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="SZv-uf-kIH">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E17e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="SZv-uf-kIH">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -259,7 +259,7 @@
                                             <action selector="buttonClicked:" target="ZWk-bc-Rhb" id="xX9-lE-bDs"/>
                                         </connections>
                                     </button>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="1nm-fj-mFI">
+                                    <button toolTip="Start or stop instance" translatesAutoresizingMaskIntoConstraints="NO" id="1nm-fj-mFI">
                                         <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="48" id="8RN-lj-L2y"/>
@@ -273,7 +273,7 @@
                                             <action selector="startOrStop:" target="ZWk-bc-Rhb" id="KUU-0p-MdX"/>
                                         </connections>
                                     </button>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="wbZ-ky-Yvs">
+                                    <button toolTip="Reboot instance" translatesAutoresizingMaskIntoConstraints="NO" id="wbZ-ky-Yvs">
                                         <rect key="frame" x="48" y="13" width="29" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="29" id="B65-uO-SwU"/>
@@ -287,7 +287,7 @@
                                             <action selector="rebootInstance:" target="ZWk-bc-Rhb" id="7Ks-Nm-vad"/>
                                         </connections>
                                     </button>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="ene-Ek-6gS">
+                                    <button toolTip="Open in browser" translatesAutoresizingMaskIntoConstraints="NO" id="ene-Ek-6gS">
                                         <rect key="frame" x="77" y="0.0" width="48" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="NVs-lN-TOa"/>
@@ -301,7 +301,7 @@
                                             <action selector="browseInstance:" target="ZWk-bc-Rhb" id="tuP-8J-ea6"/>
                                         </connections>
                                     </button>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="aiE-9i-ARI">
+                                    <button toolTip="Open in terminal" translatesAutoresizingMaskIntoConstraints="NO" id="aiE-9i-ARI">
                                         <rect key="frame" x="125" y="0.0" width="48" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="cwx-Wl-4ST"/>
