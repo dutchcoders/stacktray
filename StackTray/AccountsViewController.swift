@@ -26,7 +26,18 @@ let awsRegions  = [
     When no account is selected, an appropriate viewcontroller is shown
 */
 class AccountsViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, AccountControllerObserver {
+  override func viewDidAppear() {
+    super.viewDidAppear()
     
+    if let window = self.view.window {
+      window.titleVisibility =  NSWindowTitleVisibility.Visible ;
+      window.movableByWindowBackground = true;
+      window.titlebarAppearsTransparent = true;
+      window.styleMask |= NSFullSizeContentViewWindowMask;
+      window.center()
+    }
+  }
+  
     /** Account Controller */
     var accountController: AccountController! {
         didSet{
@@ -37,7 +48,7 @@ class AccountsViewController: NSViewController, NSTableViewDataSource, NSTableVi
             accountsTableView.reloadData()
         }
     }
-    
+  
     /** View that represents an account */
     @IBOutlet weak var accountDetailView: NSView!
     
@@ -74,21 +85,24 @@ class AccountsViewController: NSViewController, NSTableViewDataSource, NSTableVi
     }
     
     /** Detail View Controller that is used to show the details of an account */
+    var noAccounts : NoAccountsViewController!
     var accountsDetail : AccountsDetailViewController!
     
     /** Prepare for segue */
     override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
-        if let detail = segue.destinationController as? AccountsDetailViewController {
-            //Assign to the variable
-            accountsDetail = detail
-            
-            //Assign the account controller
+        if let destination = segue.destinationController as? AccountsDetailViewController {
+            accountsDetail = destination
             accountsDetail.accountController = accountController
-            
             accountsDetail.accountsViewController = self
         }
+      
+      if let destination = segue.destinationController as? NoAccountsViewController {
+        noAccounts = destination
+        noAccounts.accountController = accountController
+        noAccounts.accountsViewController = self
+      }
     }
-    
+  
     /** Called when the user clicks on the add account button */
     @IBAction func addAccount(sender: AnyObject) {
         let edit = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateControllerWithIdentifier("addAccount") as! AddAccountViewController
@@ -164,17 +178,31 @@ class AccountsViewController: NSViewController, NSTableViewDataSource, NSTableVi
     }    
 }
 
+class NoAccountsViewController : NSViewController {
+  var accountController: AccountController!
+  var accountsViewController: AccountsViewController!
+
+  /** Called when the user clicks on the add account button */
+@IBAction func addAccount(sender: AnyObject) {
+  let edit = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateControllerWithIdentifier("addAccount") as! AddAccountViewController
+  
+  edit.accountController = accountController
+  
+  self.presentViewControllerAsSheet(edit)
+}
+}
+
 /** View Controller that shows the details of an account */
 class AccountsDetailViewController : NSViewController {
     
     var accountsViewController: AccountsViewController!
     
     /** Account Name */
-    @IBOutlet weak var accountNameField: MLComboField!
+    @IBOutlet weak var accountNameField: NSTextField!
     /** Access Key */
-    @IBOutlet weak var accessKeyField: MLComboField!
+    @IBOutlet weak var accessKeyField: NSTextField!
     /** Secret Key */
-    @IBOutlet weak var secretKeyField: MLComboField!
+    @IBOutlet weak var secretKeyField: NSSecureTextField!
     
     /** Region Selector */
     @IBOutlet weak var regionSelector: NSPopUpButton! {
@@ -221,7 +249,7 @@ class AccountsDetailViewController : NSViewController {
         alert.addButtonWithTitle("Delete")
         alert.addButtonWithTitle("Cancel")
         alert.messageText = "Are you sure you want to delete \"\(account.name)\"?"
-        alert.informativeText = "Deleting this account will remove it from the StackTray menu bar"
+        alert.informativeText = "Deleting this account will remove it from the StackTray menu bar."
         
         alert.alertStyle = .WarningAlertStyle
         
@@ -239,8 +267,8 @@ class AccountsDetailViewController : NSViewController {
         if let index = find(self.accountController.accounts, account){
             if let a = self.account as? AWSAccount {
                 a.name = accountNameField.stringValue
-                a.accessKey = accessKeyField.stringValue
-                a.secretKey = secretKeyField.stringValue
+                a.accessKey = accessKeyField.stringValue.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                a.secretKey = secretKeyField.stringValue.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                 a.region = regionSelector.selectedItem!.title
                 
                 accountController.updateAccountAtIndex(index, account: a, callback: { (error, account) -> Void in

@@ -9,6 +9,5 @@
 #import "SNS.h"
 #import "AWSEC2.h"
 
-#import <ModernLookOSX/ModernLookOSX.h>
 #import "NIKFontAwesomeIcon.h"
 #import "NIKFontAwesomeIconFactory.h"

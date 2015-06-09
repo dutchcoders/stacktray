@@ -9,7 +9,24 @@
 import Cocoa
 
 class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, AccountControllerObserver {
+  override func viewDidAppear() {
+    super.viewDidAppear()
     
+    if let window = self.view.window {
+      window.titleVisibility =  NSWindowTitleVisibility.Visible ;
+      window.movableByWindowBackground = true;
+      window.titlebarAppearsTransparent = true;
+      window.styleMask |= NSFullSizeContentViewWindowMask;
+      window.center()
+    }
+  }
+  
+  var instances: [Instance] = []
+  
+  func sortByName(this: Instance, that: Instance) -> Bool {
+    return this.name > that.name
+  }
+  
     /** Account Controller */
     var accountController: AccountController! {
         didSet {
@@ -127,9 +144,7 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
     @IBOutlet weak var accountsTableView: NSTableView!
     @IBOutlet weak var deselectedContentView: NSView!
     @IBOutlet weak var detailContentView: NSView!
-    
-    @IBOutlet var groupView: MLRadioGroupManager!
-    
+        
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return instanceIndexes.count + accountIndexes.count
     }
@@ -149,7 +164,8 @@ class InstancesViewController: NSViewController, NSTableViewDataSource, NSTableV
             let accountIndex = accountIndexForIndex(row)
             let instanceIndex = row - accountIndex - 1
             let account = accountController.accounts[find(accountIndexes,accountIndex)!]
-            return account.instances[instanceIndex]
+            var instances: [Instance] = account.instances // sort(&account.instances, sortByName)
+            return instances[instanceIndex]
         } else {
             return nil
         }
@@ -283,7 +299,6 @@ class DetailInstanceViewController : NSViewController {
     //MARK: Reboot
     @IBOutlet weak var rebootButton: NSButton! {
         didSet {
-            rebootButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconRefresh)
         }
     }
     
@@ -297,7 +312,6 @@ class DetailInstanceViewController : NSViewController {
     //MARK: Browse
     @IBOutlet weak var browseButton: NSButton! {
         didSet {
-            browseButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconCloudUpload)
         }
     }
     @IBAction func browseInstance(sender: NSButton) {
@@ -307,7 +321,6 @@ class DetailInstanceViewController : NSViewController {
     //MARK: Connect
     @IBOutlet weak var connectButton: NSButton! {
         didSet {
-            connectButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconChainBroken)
         }
     }
     
@@ -347,18 +360,21 @@ class DetailInstanceViewController : NSViewController {
         case .Running :
             statusLabel.textColor = NSColor.greenColor()
             startStopButton.enabled = true
-            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconStop)
-            startStopLabel.stringValue = "Stop"
+          startStopButton.image = NSImage(named: "stop-50.png")
+//            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconStop)
+//            startStopLabel.stringValue = "Stop"
         case .Stopped :
             statusLabel.textColor = NSColor.redColor()
             startStopButton.enabled = true
-            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconPlay)
-            startStopLabel.stringValue = "Start"
+            startStopButton.image = NSImage(named: "play-50.png")
+//            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconPlay)
+//            startStopLabel.stringValue = "Start"
         default :
             statusLabel.textColor = NSColor.blackColor()
             startStopButton.enabled = false
-            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconPlay)
-            startStopLabel.stringValue = "Start"
+            startStopButton.image = NSImage(named: "play-50.png")
+//            startStopButton.image = fakFactory.createImageForIcon(NIKFontAwesomeIconPlay)
+//            startStopLabel.stringValue = "Start"
         }
     }
     
@@ -433,8 +449,8 @@ class InstanceTabViewController: NSViewController {
 }
 
 class InstanceSetupTabViewController : InstanceTabViewController {
-    @IBOutlet weak var pemKeyField: MLComboField!
-    @IBOutlet weak var userIDField: MLComboField!
+    @IBOutlet weak var pemKeyField: NSTextField!
+    @IBOutlet weak var userIDField: NSTextField!
     
     /** Browse for the pem key */
     @IBAction func browseForPemKey(sender: NSButton) {
@@ -446,7 +462,7 @@ class InstanceSetupTabViewController : InstanceTabViewController {
         let clicked = panel.runModal()
         if clicked == NSFileHandlingPanelOKButton {
             if let url = panel.URL {
-                pemKeyField.stringValue = url.absoluteString!
+                pemKeyField.stringValue = url.path!
             }
         }
 

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aKg-Zc-Kef">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="HzK-ID-KHZ">
+            <objects>
+                <windowController id="aKg-Zc-Kef" sceneMemberID="viewController">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="Qpu-fF-UYd">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+                    </window>
+                    <connections>
+                        <segue destination="SIZ-g8-DOX" kind="relationship" relationship="window.shadowedContentViewController" id="mRe-rY-sXv"/>
+                    </connections>
+                </windowController>
+                <customObject id="y0N-OK-iDs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="146" y="285"/>
+        </scene>
+        <!--About View Controller-->
+        <scene sceneID="NfJ-l1-tvC">
+            <objects>
+                <viewController id="SIZ-g8-DOX" customClass="AboutViewController" customModule="StackTray" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="c6s-vx-mMJ">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="381"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sp8-7y-vxa">
+                                <rect key="frame" x="195" y="323" width="90" height="23"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Stacktray" id="e5K-5L-FaJ">
+                                    <font key="font" metaFont="system" size="19"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3xP-Hh-KJk">
+                                <rect key="frame" x="216" y="171" width="48" height="48"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="CYT-nZ-P24"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="92J-in-Cuh" customClass="ClickableTextfield" customModule="StackTray" customModuleProvider="target">
+                                <rect key="frame" x="197" y="150" width="86" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="DutchCoders" id="8fJ-hp-ilZ">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.0" green="0.00044444785845068472" blue="0.64468907828282829" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="gotoWebsite:" target="SIZ-g8-DOX" id="eLr-Kd-5sb"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EGo-eo-eIG">
+                                <rect key="frame" x="209" y="303" width="63" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Version 2.0" id="WGT-zs-pCU">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h3T-t1-NiM" customClass="ClickableTextfield" customModule="StackTray" customModuleProvider="target">
+                                <rect key="frame" x="192" y="131" width="97" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="@DutchCoders" id="ph6-wz-z9G">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.0" green="0.00044444785845068472" blue="0.64468907828282829" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="gotoTwitter:" target="SIZ-g8-DOX" id="MGT-DQ-AkE"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ETq-US-P9y">
+                                <rect key="frame" x="127" y="241" width="227" height="35"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Easy management of your Cloud stack from the OSX statusbar." id="BOx-oS-sEw">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ac-za-OgG" customClass="ClickableTextfield" customModule="StackTray" customModuleProvider="target">
+                                <rect key="frame" x="107" y="109" width="266" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="https://github.com/dutchcoders/stacktray/" id="koh-hC-oCZ">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.0" green="0.00044444785849999998" blue="0.6446890783" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="gotoGithub:" target="SIZ-g8-DOX" id="fMK-gK-8n2"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tc7-kc-Dod" customClass="ClickableTextfield" customModule="StackTray" customModuleProvider="target">
+                                <rect key="frame" x="142" y="40" width="196" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="https://icons8.com/license/" id="9G8-Nn-Nlq">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.0" green="0.00044444785849999998" blue="0.6446890783" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="gotoIcons8:" target="SIZ-g8-DOX" id="vgk-Mj-Yjc"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nxX-bE-cH3">
+                                <rect key="frame" x="127" y="52" width="227" height="22"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Icons by Icons8." id="cVd-xE-0nC">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </viewController>
+                <customObject id="9eW-gF-d0r" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="853" y="315.5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo" width="338" height="420"/>
+    </resources>
+</document>

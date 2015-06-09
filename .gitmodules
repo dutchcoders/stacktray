@@ -1,7 +1,0 @@
-[submodule "ModernLook-OSX-master"]
-	path = ModernLook-OSX
-	url = https://github.com/gyetvan-andras/ModernLook-OSX
-[submodule "ModernLook-OSX"]
-	path = ModernLook-OSX-master
-	url = https://github.com/gyetvan-andras/ModernLook-OSX
-	branch = master

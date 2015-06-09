@@ -126,14 +126,17 @@ PODS:
     - TMCache (~> 1.2.1)
     - UICKeyChainStore (~> 1.0.5)
     - XMLDictionary (~> 1.4.0)
-  - Bolts (1.1.4)
-  - FontAwesomeIconFactory (1.4)
+  - Bolts (1.1.5):
+    - Bolts/AppLinks (= 1.1.5)
+    - Bolts/Tasks (= 1.1.5)
+  - Bolts/Tasks (1.1.5)
+  - FontAwesomeIconFactory (2.0)
   - GZIP (1.0.3)
   - Mantle (1.4.1):
     - Mantle/extobjc (= 1.4.1)
   - Mantle/extobjc (1.4.1)
   - Reachability (3.1.1)
-  - TMCache (1.2.3)
+  - TMCache (1.2.4)
   - UICKeyChainStore (1.0.5)
   - XMLDictionary (1.4)
 
@@ -152,13 +155,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AWSiOSSDKv2: c6c8d39b2cb254f6c315a2e7ea27b98d3ef028a1
-  Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
-  FontAwesomeIconFactory: 6ef139e879d779e8e4561980ca170ea0981f5f9e
-  GZIP: f27c434ffee5e9a9b34f4e9c19e91350fa8bbde1
-  Mantle: 1ca9c0fa84d3d3fc98524e7229f30489b6dd44e5
-  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  TMCache: 11589ef8c40909114a5e60132711c9a559e01d97
-  UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35
-  XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
+  Bolts: aac24961496d504aa56fc267cde95162a71bac39
+  FontAwesomeIconFactory: d161a1832f8220d764033e0fcc4f4a8388495ab7
+  GZIP: f0863fda354e8f83316508c0a2c7bbe385e39129
+  Mantle: 3219c0181d918508689af61c77891b12dbb28215
+  Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
+  TMCache: a93984b045a5ee84bd8941bd5e0b54296059cc52
+  UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
+  XMLDictionary: f9f51601ba76678b594ab485f2b00ec1fed23724
 
 COCOAPODS: 0.35.0

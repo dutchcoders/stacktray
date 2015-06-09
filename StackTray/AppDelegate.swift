@@ -27,7 +27,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
     
     //Account Controller
     lazy var accountController: AccountController = AccountController(rootURL: self.dataDirectory)
-    
+
+    lazy var settingsController: SettingsController = SettingsController(rootURL: self.dataDirectory)
+
     //Accounts
     lazy var accounts : NSWindowController = {
         let window = NSStoryboard(name: "Accounts", bundle: nil)?.instantiateInitialController() as! NSWindowController
@@ -49,7 +51,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         
         return window
     }()
+  
+    //About
+    lazy var about : NSWindowController = {
+        let window = NSStoryboard(name: "About", bundle: nil)?.instantiateInitialController() as! NSWindowController
+        return window
+    }()
+  
+  //Settings
+  lazy var settings : NSWindowController = {
+    let window = NSStoryboard(name: "Settings", bundle: nil)?.instantiateInitialController() as! NSWindowController
     
+    if let content = window.contentViewController as? SettingsViewController {
+      content.settingsController = self.settingsController
+    }
+
+    return window
+    }()
+  
     /** App Menu */
     lazy var appMenu: AppMenu = {
         let menu = AppMenu()
@@ -91,10 +110,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         appMenu.initMenu()
         
         appMenu.addItem(NSMenuItem.separatorItem())
-        appMenu.addItem(NSMenuItem(title: "Accounts...", action: Selector("showAccounts:"), keyEquivalent: ""))
         appMenu.addItem(NSMenuItem(title: "Instances...", action: Selector("showInstances:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Accounts...", action: Selector("showAccounts:"), keyEquivalent: ""))
         appMenu.addItem(NSMenuItem.separatorItem())
-        appMenu.addItem(NSMenuItem(title: "About", action: Selector("about:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "Settings", action: Selector("showSettings:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem(title: "About", action: Selector("showAbout:"), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem.separatorItem())
         appMenu.addItem(NSMenuItem(title: "Quit StackTray", action: Selector("quit:"), keyEquivalent: ""))
 
         //Open Preferences if there are no accounts configured
@@ -168,10 +189,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppMenuDataSource, AccountCo
         return "Instance \(index + 1)"
     }
     
-    @IBAction func about(sender: AnyObject) {
-        println("About")
+    @IBAction func showAbout(sender: AnyObject) {
+        about.showWindow(self)
+  
+        //Focus on window
+        NSApp.activateIgnoringOtherApps(true)
+        about.window!.makeKeyAndOrderFront(nil)
+      
     }
+  
+  @IBAction func showSettings(sender: AnyObject) {
+    settings.showWindow(self)
     
+    //Focus on window
+    NSApp.activateIgnoringOtherApps(true)
+    settings.window!.makeKeyAndOrderFront(nil)
+    
+  }
+  
+  
     /** Show the accounts */
     func showAccounts(sender: AnyObject?) {
         accounts.showWindow(self)
@@ -317,23 +353,86 @@ func presentAWSError(error: NSError){
 
 /** Open an instance in the browser */
 func browseToInstance(instance: Instance){
-    var dns = instance.publicDnsName
-    if dns.isEmpty {
-        dns = instance.privateDnsName
+    var host = instance.publicDnsName
+  
+    if host.isEmpty {
+        host = instance.privateDnsName
     }
     
-    if let url = NSURL(string: "http://\(dns)") {
+    if let url = NSURL(string: "http://\(host)") {
         NSWorkspace.sharedWorkspace().openURL(url)
     }
-
 }
 
 /** Connect to an instance */
 func connectToInstance(instance: Instance){
-    if let pemKey = instance.pemLocation {
-        println("Connect to instance with pemkey: \(pemKey)")
-    } else {
-        println("Connect to instance without pemkey")
+  var cmd: String = "ssh"
+  
+  if let pemLocation = instance.pemLocation {
+    var url: NSURLComponents = NSURLComponents(string: pemLocation)!
+    if let path = url.path {
+      cmd = cmd.stringByAppendingFormat("-i %@", path)
     }
+  }
+  
+  var host: String = instance.publicDnsName
+  
+  if host.isEmpty {
+    host = instance.privateDnsName
+  }
+
+  if let userId = instance.userId {
+    cmd = cmd.stringByAppendingFormat(" %@@%@", userId, host)
+  } else {
+    cmd = cmd.stringByAppendingFormat(" %@", host)
+  }
+  
+  let delegate = NSApplication.sharedApplication().delegate as! AppDelegate
+
+    var scriptName = delegate.settingsController.settings.terminal
+    var path : String = NSBundle.mainBundle().pathForResource(scriptName, ofType: "scpt")!
+
+    var error:NSError?
+    var source = String(contentsOfFile: path, encoding:NSUTF8StringEncoding, error: &error)!
+    if let theError = error {
+      let alert = NSAlert()
+      alert.addButtonWithTitle("Close")
+      alert.messageText = "Error loading script."
+      alert.informativeText = "\(theError.localizedDescription)"
+      alert.alertStyle = NSAlertStyle.CriticalAlertStyle
+      alert.runModal()
+    }
+    
+  source = source.stringByReplacingOccurrencesOfString("$cmd", withString: cmd)
+
+  source = source.stringByReplacingOccurrencesOfString("$host", withString: host)
+  
+  if let userId = instance.userId {
+    var userId2: String = userId.stringByAppendingString("@")
+    source = source.stringByReplacingOccurrencesOfString("$username", withString: userId2)
+  } else {
+    source = source.stringByReplacingOccurrencesOfString("$username", withString: "")
+  }
+
+  
+  var scriptToPerform: NSAppleScript? = NSAppleScript(source: source)
+
+  if let script = scriptToPerform {
+    var possibleError: NSDictionary?
+    script.executeAndReturnError(&possibleError)
+    
+    if let error = possibleError {
+      let alert = NSAlert()
+      alert.addButtonWithTitle("Close")
+      alert.messageText = "Error connecting to iTerm."
+      
+      if let message = error[NSAppleScriptErrorMessage] as? String {
+        alert.informativeText = "\(message)"
+      }
+      
+      alert.alertStyle = NSAlertStyle.CriticalAlertStyle
+      alert.runModal()
+    }
+  }
 }
 

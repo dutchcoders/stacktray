@@ -95,7 +95,7 @@ public class ImportController: NSObject {
             if error != nil {
                 dict[NSUnderlyingErrorKey] = error
             }
-            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict as [NSObject : AnyObject])
+            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict as [NSObject : AnyObject] as [NSObject : AnyObject])
             println("Error: \(error)")
             return nil
         } else {
