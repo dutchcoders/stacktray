@@ -10,7 +10,8 @@ Using IAM you can create an account with less privileges, eg. to only read, stop
 
 Example policy file that allows stop and start for the instances with environment tag stacktray:
 
-```{
+```
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -25,5 +26,6 @@ Example policy file that allows stop and start for the instances with environmen
             }
         }
     ]
-}```
+}
+```
 
